@@ -396,3 +396,5 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+/TechnipFMC.Finapp.Service.API/VarianceAnalysisReport_12062023110920.xlsx
+/TechnipFMC.Finapp.Service.API/Reports/ProjectLifeCycleReport_Pinnacle Portfolio.xlsx
