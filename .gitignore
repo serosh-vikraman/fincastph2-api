@@ -398,3 +398,8 @@ FodyWeavers.xsd
 *.sln.iml
 /TechnipFMC.Finapp.Service.API/VarianceAnalysisReport_12062023110920.xlsx
 /TechnipFMC.Finapp.Service.API/Reports/ProjectLifeCycleReport_Pinnacle Portfolio.xlsx
+/TechnipFMC.Finapp.Service.API/Reports
+/TechnipFMC.Finapp.Service.API/ReportsVarianceAnalysisReport_10072024105450.xlsx
+/TechnipFMC.Finapp.Service.API/ReportsVarianceAnalysisReport_10072024105801.xlsx
+/TechnipFMC.Finapp.Service.API/ReportsVarianceAnalysisReport_10072024113657.xlsx
+/TechnipFMC.Finapp.Service.API/ReportsVarianceAnalysisReport_10072024231720.xlsx
