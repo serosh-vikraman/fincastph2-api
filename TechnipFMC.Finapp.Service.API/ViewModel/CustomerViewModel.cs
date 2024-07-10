@@ -22,6 +22,7 @@ namespace TechnipFMC.Finapp.Service.API.ViewModel
         public int CreatedBy { get; set; }
         public string PlanName { get; set; }
         public string PlanType { get; set; }
+        public string DataEntryInterval { get; set; }
     }
     public class VerifyEmailModel
     {

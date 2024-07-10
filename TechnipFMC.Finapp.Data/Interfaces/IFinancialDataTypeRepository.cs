@@ -16,7 +16,7 @@ namespace TechnipFMC.Finapp.Data.Interfaces
         FinancialDataType Save(FinancialDataType financialDataType);
         bool Map(FinancialDataTypeMapping financialDataType);
         FinancialDataType GetById(int Id);
-        bool MapReportDatatypes(int reportId,int[] ids);
+        bool MapReportDatatypes(int reportId,string[] ids);
         
         FinancialDataType Update(FinancialDataType financialDataType);
 

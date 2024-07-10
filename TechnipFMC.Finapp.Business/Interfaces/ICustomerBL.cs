@@ -13,7 +13,7 @@ namespace TechnipFMC.Finapp.Business
         IEnumerable<SignUpCountry> GetAllCountries();
         Customer Save(Customer customer);
         int Signup(Customer customer);
-        int InitialSignup(Customer customer);
+        Task<int> InitialSignup(Customer customer);
         VerifyCustomer VerifyEmail(string loginId,string token);
         Customer GetById(int Id);
         string GetPlanUrl();
@@ -25,7 +25,7 @@ namespace TechnipFMC.Finapp.Business
         VerifyCustomer GetPlanDetailsofuser(string loginId, string token);
         string GetPaymentLink(string planname, string plantype);
         string Getrenewlink(string Email);
-        Customer ResendEmail(string email);
+        Task<Customer> ResendEmail(string email);
         List<PlanDetails> getallplans();
     }
 }

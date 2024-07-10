@@ -31,6 +31,8 @@ namespace TechnipFMC.Finapp.Models
         public string Authorized { get; set; }
         public string subscription_end { get; set; }
         public string PlanName { get; set; }
+        public string DataEntryInterval { get; set; }
+        
     }
     public class ChangePasswordModel
     {

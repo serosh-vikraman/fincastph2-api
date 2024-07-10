@@ -305,11 +305,11 @@ namespace TechnipFMC.Finapp.Data
                 base.Dispose();
             }
         }
-        public bool MapReportDatatypes(int reportId, int[] ids)
+        public bool MapReportDatatypes(int reportId, string[] codes)
         {
             try
             {
-                var xmldata = new XElement("TDS", ids.Select(id => new XElement("TD", id)));
+                var xmldata = new XElement("TDS", codes.Select(code => new XElement("TD", code)));
                 using (SqlCommand cmd = base.DBConnection.CreateCommand())
                 {
                     cmd.CommandType = CommandType.StoredProcedure;

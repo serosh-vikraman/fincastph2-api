@@ -33,6 +33,8 @@ namespace TechnipFMC.Finapp.Service.API.ViewModel
         public string stripe_status { get; set; }
         public string Authorized { get; set; }
         public string PlanName { get; set; }
+        public string DataEntryInterval { get; set; }
+        
     }
     public class SubscriptionDetails
     {

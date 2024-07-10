@@ -12,6 +12,8 @@ using System.Net.Mail;
 using System.Web;
 using RestSharp;
 using RestSharp.Authenticators;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 
 
@@ -319,6 +321,7 @@ namespace TechnipFMC.Finapp.Data
                     userMaster.OrgName = ds.Tables[1].Rows[0]["OrgName"].ToString().Decrypt();
                     userMaster.AdminEmail = ds.Tables[1].Rows[0]["AdminEmail"].ToString().Decrypt();
                     userMaster.UserMasterId = Convert.ToInt32(ds.Tables[1].Rows[0]["UserMasterId"]);
+                    userMaster.DataEntryInterval = ds.Tables[1].Rows[0]["DataEntryInterval"].ToString();
                 }
                 if ((ds != null) && (ds.Tables.Count > 2) && (ds.Tables[2] != null))
                 {
@@ -344,7 +347,7 @@ namespace TechnipFMC.Finapp.Data
                 base.Dispose();
             }
         }
-        public UserMaster ValidateEmail(string loginId)
+        public async Task<UserMaster> ValidateEmail(string loginId)
         {
             try
             {
@@ -376,47 +379,12 @@ namespace TechnipFMC.Finapp.Data
                         userMaster.CustomerID = (int)reader["CustomerID"];
                         userMaster.ActiveStatus = (bool)reader["ActiveStatus"];
                         try
-                        {
-                            // set your Mailgun API key and domain
-                            string apiKey = "key-dfbb807e5d442758507dcbc6e4a5f2cb";
-                            string domain = "connect.raintels.com";
-
-                            // create a new RestSharp client instance
-                            var client = new RestClient($"https://api.mailgun.net/v3/{domain}");
-
+                        {                           
                             StringBuilder sb = new StringBuilder();
                             sb.Append($"Hi {userMaster.UserName.ToUpper()},<br/> Click on below given link to Reset Your Password<br/>");
                             sb.Append("<b><a href=https://fincast.app/forgotpassword?username=" + encodedloginId + "&code=" + authToken + ">Click here</a><br/></b>");
                             sb.Append("Thanks,<br> Fincast Team <br/>");
-
-                            // create a new RestSharp request instance for sending the email
-                            var request = new RestRequest("messages", Method.POST);
-
-                            // set the request parameters for sending the email
-                            request.AddParameter("domain", domain);
-                            request.AddParameter("from", "Fincast <fincast@raintels.com>");
-                            request.AddParameter("to", $"{userMaster.UserName} <{userMaster.EmailID}>");
-                            request.AddParameter("subject", "Fincast Reset Passoword Link");
-                            request.AddParameter("html", sb);
-
-                            // set the Mailgun API key header for authentication
-                            request.AddHeader("Authorization", $"Basic {Convert.ToBase64String(Encoding.ASCII.GetBytes($"api:{apiKey}"))}");
-                            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
-                            // execute the RestSharp request and get the response
-                            var response = client.Execute(request);
-
-                            // check the response status code and display the result
-                            if (response.StatusCode == HttpStatusCode.OK)
-                            {
-                                //Console.WriteLine("Email sent successfully!");
-                            }
-                            else
-                            {
-                                Console.WriteLine($"Error sending email: {response.ErrorMessage}");
-                            }
-
-
-                            
+                            int ret = await SendEmail(userMaster.EmailID, sb.ToString(), "Fincast Reset Password Link");                            
                         }
                         catch (Exception ex) {
                         }

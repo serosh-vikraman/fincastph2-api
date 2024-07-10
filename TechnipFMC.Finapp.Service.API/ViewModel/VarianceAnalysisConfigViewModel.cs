@@ -39,18 +39,42 @@ namespace TechnipFMC.Finapp.Service.API.ViewModel
         public Decimal? BaseQ2 { get; set; }
         public Decimal? BaseQ3 { get; set; }
         public Decimal? BaseQ4 { get; set; }
+        public Decimal? BaseQ5 { get; set; }
+        public Decimal? BaseQ6 { get; set; }
+        public Decimal? BaseQ7 { get; set; }
+        public Decimal? BaseQ8 { get; set; }
+        public Decimal? BaseQ9 { get; set; }
+        public Decimal? BaseQ10 { get; set; }
+        public Decimal? BaseQ11 { get; set; }
+        public Decimal? BaseQ12 { get; set; }
         public Decimal? TotalBase { get; set; }
 
         public Decimal? CS1Q1 { get; set; }
         public Decimal? CS1Q2 { get; set; }
         public Decimal? CS1Q3 { get; set; }
         public Decimal? CS1Q4 { get; set; }
+        public Decimal? CS1Q5 { get; set; }
+        public Decimal? CS1Q6 { get; set; }
+        public Decimal? CS1Q7 { get; set; }
+        public Decimal? CS1Q8 { get; set; }
+        public Decimal? CS1Q9 { get; set; }
+        public Decimal? CS1Q10 { get; set; }
+        public Decimal? CS1Q11 { get; set; }
+        public Decimal? CS1Q12 { get; set; }
         public Decimal? TotalCS1 { get; set; }
 
         public Decimal? CS2Q1 { get; set; }
         public Decimal? CS2Q2 { get; set; }
         public Decimal? CS2Q3 { get; set; }
         public Decimal? CS2Q4 { get; set; }
+        public Decimal? CS2Q5 { get; set; }
+        public Decimal? CS2Q6 { get; set; }
+        public Decimal? CS2Q7 { get; set; }
+        public Decimal? CS2Q8 { get; set; }
+        public Decimal? CS2Q9 { get; set; }
+        public Decimal? CS2Q10 { get; set; }
+        public Decimal? CS2Q11 { get; set; }
+        public Decimal? CS2Q12 { get; set; }
         public Decimal? TotalCS2 { get; set; }
 
         public Decimal? Var1 { get; set; }

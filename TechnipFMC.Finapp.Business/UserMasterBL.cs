@@ -57,7 +57,7 @@ namespace TechnipFMC.Finapp.Business
             UserMasterRepository _userMasterRepo = new UserMasterRepository();
             return _userMasterRepo.ValidateUser(loginId, password);
         }
-        public UserMaster ValidateEmail(string loginId)
+        public Task<UserMaster> ValidateEmail(string loginId)
         {
             UserMasterRepository _userMasterRepo = new UserMasterRepository();
             return _userMasterRepo.ValidateEmail(loginId);

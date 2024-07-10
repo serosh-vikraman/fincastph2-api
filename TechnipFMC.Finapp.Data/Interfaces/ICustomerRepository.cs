@@ -24,7 +24,8 @@ namespace TechnipFMC.Finapp.Data.Interfaces
         VerifyCustomer GetPlanDetailsofuser(string loginId, string token);
         string GetPaymentLink(string planname, string plantype);
         string Getrenewlink(string Email);
-        Customer ResendEmail(string email);
+        Task<Customer> ResendEmail(string email);
         List<PlanDetails> getallplans();
+        Task<int> InitialSignup(Customer customer);
     }
 }

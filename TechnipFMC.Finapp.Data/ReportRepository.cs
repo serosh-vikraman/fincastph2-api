@@ -158,30 +158,43 @@ namespace TechnipFMC.Finapp.Data
                     $"AND ScenarioTypeCode = (Select ScenarioScopeCode FROM Scenario WHERE ScenarioID = {config.CompareScenarioBId}) AND FinancialDataTypeID = 2";
 
                 var command = "SELECT DISTINCT  P.ProjectID,P.ProjectName,P.IFSProjectCode,PE.ProjectEntityName" +
-                    ", PS.ProjectSegmentName,CS.ContractStatusName,CT.ContractTypeName,BU.BUCategoryName" +
-                    ", RVSD1.Q1New RV_S1Q1, RVSD1.Q2New RV_S1Q2, RVSD1.Q3New RV_S1Q3, RVSD1.Q4New RV_S1Q4" +
-                    ", RVSD2.Q1New RV_S2Q1, RVSD2.Q2New RV_S2Q2, RVSD2.Q3New RV_S2Q3, RVSD2.Q4New RV_S2Q4" +
-                    ", RVSD3.Q1New RV_S3Q1, RVSD3.Q2New RV_S3Q2, RVSD3.Q3New RV_S3Q3, RVSD3.Q4New RV_S3Q4" +
-                    ", GMSD1.Q1New GM_S1Q1, GMSD1.Q2New GM_S1Q2, GMSD1.Q3New GM_S1Q3, GMSD1.Q4New GM_S1Q4" +
-                    ", GMSD2.Q1New GM_S2Q1, GMSD2.Q2New GM_S2Q2, GMSD2.Q3New GM_S2Q3, GMSD2.Q4New GM_S2Q4" +
-                    ", GMSD3.Q1New GM_S3Q1, GMSD3.Q2New GM_S3Q2, GMSD3.Q3New GM_S3Q3, GMSD3.Q4New GM_S3Q4 " +
+     ", PS.ProjectSegmentName,CS.ContractStatusName,CT.ContractTypeName,BU.BUCategoryName" +
+     ", RVSD1.Q1New RV_S1Q1, RVSD1.Q2New RV_S1Q2, RVSD1.Q3New RV_S1Q3, RVSD1.Q4New RV_S1Q4" +
+     ", RVSD1.Q5New RV_S1Q5, RVSD1.Q6New RV_S1Q6, RVSD1.Q7New RV_S1Q7, RVSD1.Q8New RV_S1Q8" +
+     ", RVSD1.Q9New RV_S1Q9, RVSD1.Q10New RV_S1Q10, RVSD1.Q11New RV_S1Q11, RVSD1.Q12New RV_S1Q12" +
+     ", RVSD2.Q1New RV_S2Q1, RVSD2.Q2New RV_S2Q2, RVSD2.Q3New RV_S2Q3, RVSD2.Q4New RV_S2Q4" +
+     ", RVSD2.Q5New RV_S2Q5, RVSD2.Q6New RV_S2Q6, RVSD2.Q7New RV_S2Q7, RVSD2.Q8New RV_S2Q8" +
+     ", RVSD2.Q9New RV_S2Q9, RVSD2.Q10New RV_S2Q10, RVSD2.Q11New RV_S2Q11, RVSD2.Q12New RV_S2Q12" +
+     ", RVSD3.Q1New RV_S3Q1, RVSD3.Q2New RV_S3Q2, RVSD3.Q3New RV_S3Q3, RVSD3.Q4New RV_S3Q4" +
+     ", RVSD3.Q5New RV_S3Q5, RVSD3.Q6New RV_S3Q6, RVSD3.Q7New RV_S3Q7, RVSD3.Q8New RV_S3Q8" +
+     ", RVSD3.Q9New RV_S3Q9, RVSD3.Q10New RV_S3Q10, RVSD3.Q11New RV_S3Q11, RVSD3.Q12New RV_S3Q12" +
+     ", GMSD1.Q1New GM_S1Q1, GMSD1.Q2New GM_S1Q2, GMSD1.Q3New GM_S1Q3, GMSD1.Q4New GM_S1Q4" +
+     ", GMSD1.Q5New GM_S1Q5, GMSD1.Q6New GM_S1Q6, GMSD1.Q7New GM_S1Q7, GMSD1.Q8New GM_S1Q8" +
+     ", GMSD1.Q9New GM_S1Q9, GMSD1.Q10New GM_S1Q10, GMSD1.Q11New GM_S1Q11, GMSD1.Q12New GM_S1Q12" +
+     ", GMSD2.Q1New GM_S2Q1, GMSD2.Q2New GM_S2Q2, GMSD2.Q3New GM_S2Q3, GMSD2.Q4New GM_S2Q4" +
+     ", GMSD2.Q5New GM_S2Q5, GMSD2.Q6New GM_S2Q6, GMSD2.Q7New GM_S2Q7, GMSD2.Q8New GM_S2Q8" +
+     ", GMSD2.Q9New GM_S2Q9, GMSD2.Q10New GM_S2Q10, GMSD2.Q11New GM_S2Q11, GMSD2.Q12New GM_S2Q12" +
+     ", GMSD3.Q1New GM_S3Q1, GMSD3.Q2New GM_S3Q2, GMSD3.Q3New GM_S3Q3, GMSD3.Q4New GM_S3Q4" +
+     ", GMSD3.Q5New GM_S3Q5, GMSD3.Q6New GM_S3Q6, GMSD3.Q7New GM_S3Q7, GMSD3.Q8New GM_S3Q8" +
+     ", GMSD3.Q9New GM_S3Q9, GMSD3.Q10New GM_S3Q10, GMSD3.Q11New GM_S3Q11, GMSD3.Q12New GM_S3Q12 " +
 
-                    "FROM Project P " +
-                    "INNER JOIN BUCategoryMaster BU ON BU.BUCategoryCode = P.BUCategoryCode " +
-                    "INNER JOIN ProjectEntityMaster PE ON PE.ProjectEntityCode = P.ProjectEntityCode " +
-                    "INNER JOIN ProjectSegmentMaster PS ON PS.ProjectSegmentCode = P.ProjectSegmentCode " +
-                    "INNER JOIN ContractStatusMaster CS ON CS.ContractStatusCode = P.ContractStatusCode " +
-                    "INNER JOIN ContractTypeMaster CT ON CT.ContractTypeCode = P.ContractTypeCode " +
+     "FROM Project P " +
+     "INNER JOIN BUCategoryMaster BU ON BU.BUCategoryCode = P.BUCategoryCode " +
+     "INNER JOIN ProjectEntityMaster PE ON PE.ProjectEntityCode = P.ProjectEntityCode " +
+     "INNER JOIN ProjectSegmentMaster PS ON PS.ProjectSegmentCode = P.ProjectSegmentCode " +
+     "INNER JOIN ContractStatusMaster CS ON CS.ContractStatusCode = P.ContractStatusCode " +
+     "INNER JOIN ContractTypeMaster CT ON CT.ContractTypeCode = P.ContractTypeCode " +
 
-                    $"LEFT JOIN ScenarioData RVSD1 ON(RVSD1.ProjectID = P.ProjectID AND RVSD1.ScenarioDataTypeID = ({rv_ScenarioBase}) AND RVSD1.[Year] = {config.Year}) " +
-                    $"LEFT JOIN ScenarioData RVSD2 ON(RVSD2.ProjectID = P.ProjectID AND RVSD2.ScenarioDataTypeID = ({rv_ScenarioA}) AND RVSD2.[Year] = {config.Year}) " +
-                    $"LEFT JOIN ScenarioData RVSD3 ON(RVSD3.ProjectID = P.ProjectID AND RVSD3.ScenarioDataTypeID = ({rv_ScenarioB}) AND RVSD3.[Year] = {config.Year}) " +
-                    $"LEFT JOIN ScenarioData GMSD1 ON(GMSD1.ProjectID = P.ProjectID AND GMSD1.ScenarioDataTypeID = ({gm_ScenarioBase}) AND GMSD1.[Year] = {config.Year}) " +
-                    $"LEFT JOIN ScenarioData GMSD2 ON(GMSD2.ProjectID = P.ProjectID AND GMSD2.ScenarioDataTypeID = ({gm_ScenarioA}) AND GMSD2.[Year] = {config.Year}) " +
-                    $"LEFT JOIN ScenarioData GMSD3 ON(GMSD3.ProjectID = P.ProjectID AND GMSD3.ScenarioDataTypeID = ({gm_ScenarioB}) AND GMSD3.[Year] = {config.Year}) " +
+     $"LEFT JOIN ScenarioData RVSD1 ON(RVSD1.ProjectID = P.ProjectID AND RVSD1.ScenarioDataTypeID = ({rv_ScenarioBase}) AND RVSD1.[Year] = {config.Year}) " +
+     $"LEFT JOIN ScenarioData RVSD2 ON(RVSD2.ProjectID = P.ProjectID AND RVSD2.ScenarioDataTypeID = ({rv_ScenarioA}) AND RVSD2.[Year] = {config.Year}) " +
+     $"LEFT JOIN ScenarioData RVSD3 ON(RVSD3.ProjectID = P.ProjectID AND RVSD3.ScenarioDataTypeID = ({rv_ScenarioB}) AND RVSD3.[Year] = {config.Year}) " +
+     $"LEFT JOIN ScenarioData GMSD1 ON(GMSD1.ProjectID = P.ProjectID AND GMSD1.ScenarioDataTypeID = ({gm_ScenarioBase}) AND GMSD1.[Year] = {config.Year}) " +
+     $"LEFT JOIN ScenarioData GMSD2 ON(GMSD2.ProjectID = P.ProjectID AND GMSD2.ScenarioDataTypeID = ({gm_ScenarioA}) AND GMSD2.[Year] = {config.Year}) " +
+     $"LEFT JOIN ScenarioData GMSD3 ON(GMSD3.ProjectID = P.ProjectID AND GMSD3.ScenarioDataTypeID = ({gm_ScenarioB}) AND GMSD3.[Year] = {config.Year}) " +
 
-                    $"WHERE(RVSD1.ScenarioID = {config.BaseScenarioId} AND RVSD2.ScenarioID = {config.CompareScenarioAId} AND RVSD3.ScenarioID = {config.CompareScenarioBId}) " +
-                    $"OR (GMSD1.ScenarioID = {config.BaseScenarioId} OR GMSD2.ScenarioID = {config.CompareScenarioAId} AND GMSD3.ScenarioID = {config.CompareScenarioBId}) ";
+     $"WHERE(RVSD1.ScenarioID = {config.BaseScenarioId} AND RVSD2.ScenarioID = {config.CompareScenarioAId} AND RVSD3.ScenarioID = {config.CompareScenarioBId}) " +
+     $"OR (GMSD1.ScenarioID = {config.BaseScenarioId} OR GMSD2.ScenarioID = {config.CompareScenarioAId} AND GMSD3.ScenarioID = {config.CompareScenarioBId}) ";
+
                 if (config.GroupLevels != "")
                 {
                     command += $"ORDER BY {config.GroupLevels}";

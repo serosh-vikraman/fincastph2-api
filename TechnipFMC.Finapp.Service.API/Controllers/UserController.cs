@@ -94,6 +94,7 @@ namespace TechnipFMC.Finapp.Service.API.Controllers
                     userInfo.Add("DepartmentCode", userMasterModel.DepartmentCode);
                     userInfo.Add("UserMasterId", userMasterModel.UserMasterId.ToString());
                     userInfo.Add("PlanName", userMasterModel.PlanName.ToString());
+                    userInfo.Add("DataEntryInterval", userMasterModel.DataEntryInterval.ToString());
                     string subscriptionEndString = userMasterModel.subscription_end;
                     
                     if (!string.IsNullOrWhiteSpace(subscriptionEndString))
@@ -519,7 +520,7 @@ namespace TechnipFMC.Finapp.Service.API.Controllers
 
         [Route("api/user/verifyemail")]
         [HttpPost]
-        public HttpResponseMessage Verifyemail([FromBody] UserMaster obj)
+        public async Task<HttpResponseMessage> Verifyemail([FromBody] UserMaster obj)
         {
             try
             {
@@ -527,7 +528,7 @@ namespace TechnipFMC.Finapp.Service.API.Controllers
                 UserMasterViewModel userMasterView = new UserMasterViewModel();
                 UserMaster userMasterModel = new UserMaster();
 
-                userMasterModel = _userMasterBL.ValidateEmail(obj.EmailID);
+                userMasterModel = await _userMasterBL.ValidateEmail(obj.EmailID);
                 if (userMasterModel == null || userMasterModel.ActiveStatus == false)
                 {
                     return Request.CreateResponse(HttpStatusCode.Unauthorized, obj.EmailID);

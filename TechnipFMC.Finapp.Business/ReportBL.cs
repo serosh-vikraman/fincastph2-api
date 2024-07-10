@@ -574,6 +574,7 @@ namespace TechnipFMC.Finapp.Business
         public byte[] GetVarianceAnalysisExcel(VarianceAnalysisConfig config, VarianceAnalysisResponseModel data, VarianceAnalysisResponseModel dataGM)
         {
             // number formats
+            var dataEntryInterval = data.GridResponse[0].DataEntryInterval;
             string positiveFormat = "#,##0.00_)";
             string negativeFormat = "(#,##0.00)";
             string zeroFormat = "-_)";
@@ -1035,42 +1036,28 @@ namespace TechnipFMC.Finapp.Business
             //worksheet.Cells[rowcount, colcount].Style.Fill.BackgroundColor.SetColor(colFromHexYellow);
             //colcount++;
 
-            if (quarters.Contains("Q1"))
+            var quarterToMonthMap = new Dictionary<string, string>
+{
+    { "Q1", "Jan" }, { "Q2", "Feb" }, { "Q3", "Mar" }, { "Q4", "Apr" },
+    { "Q5", "May" }, { "Q6", "Jun" }, { "Q7", "Jul" }, { "Q8", "Aug" },
+    { "Q9", "Sep" }, { "Q10", "Oct" }, { "Q11", "Nov" }, { "Q12", "Dec" }
+};
+
+            foreach (var quarter in quarters)
             {
-                worksheet.Cells[rowcount, colcount].Value = "Q1 " + config.Year;
-                worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
-                worksheet.Column(colcount).Width = dataWidth;
-                worksheet.Cells[rowcount, colcount].Style.Fill.PatternType = ExcelFillStyle.Solid;
-                worksheet.Cells[rowcount, colcount].Style.Fill.BackgroundColor.SetColor(colFromHexYellow);
-                colcount++;
+                if (quarterToMonthMap.ContainsKey(quarter))
+                {
+                    var period = dataEntryInterval == "Monthly" ? quarterToMonthMap[quarter] : quarter;
+
+                    worksheet.Cells[rowcount, colcount].Value = period + " " + config.Year;
+                    worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+                    worksheet.Column(colcount).Width = dataWidth;
+                    worksheet.Cells[rowcount, colcount].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                    worksheet.Cells[rowcount, colcount].Style.Fill.BackgroundColor.SetColor(colFromHexYellow);
+                    colcount++;
+                }
             }
-            if (quarters.Contains("Q2"))
-            {
-                worksheet.Cells[rowcount, colcount].Value = "Q2 " + config.Year;
-                worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
-                worksheet.Column(colcount).Width = dataWidth;
-                worksheet.Cells[rowcount, colcount].Style.Fill.PatternType = ExcelFillStyle.Solid;
-                worksheet.Cells[rowcount, colcount].Style.Fill.BackgroundColor.SetColor(colFromHexYellow);
-                colcount++;
-            }
-            if (quarters.Contains("Q3"))
-            {
-                worksheet.Cells[rowcount, colcount].Value = "Q3 " + config.Year;
-                worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
-                worksheet.Column(colcount).Width = dataWidth;
-                worksheet.Cells[rowcount, colcount].Style.Fill.PatternType = ExcelFillStyle.Solid;
-                worksheet.Cells[rowcount, colcount].Style.Fill.BackgroundColor.SetColor(colFromHexYellow);
-                colcount++;
-            }
-            if (quarters.Contains("Q4"))
-            {
-                worksheet.Cells[rowcount, colcount].Value = "Q4 " + config.Year;
-                worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
-                worksheet.Column(colcount).Width = dataWidth;
-                worksheet.Cells[rowcount, colcount].Style.Fill.PatternType = ExcelFillStyle.Solid;
-                worksheet.Cells[rowcount, colcount].Style.Fill.BackgroundColor.SetColor(colFromHexYellow);
-                colcount++;
-            }
+
 
 
             worksheet.Cells[rowcount, colcount].Value = "Total Cumulative";
@@ -1080,42 +1067,21 @@ namespace TechnipFMC.Finapp.Business
             worksheet.Cells[rowcount, colcount].Style.Fill.BackgroundColor.SetColor(colFromHexYellow);
             colcount++;
 
-            if (quarters.Contains("Q1"))
+            foreach (var quarter in quarters)
             {
-                worksheet.Cells[rowcount, colcount].Value = "Q1 " + config.Year;
-                worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
-                worksheet.Column(colcount).Width = dataWidth;
-                worksheet.Cells[rowcount, colcount].Style.Fill.PatternType = ExcelFillStyle.Solid;
-                worksheet.Cells[rowcount, colcount].Style.Fill.BackgroundColor.SetColor(colFromHexYellow);
-                colcount++;
+                if (quarterToMonthMap.ContainsKey(quarter))
+                {
+                    var period = dataEntryInterval == "Monthly" ? quarterToMonthMap[quarter] : quarter;
+
+                    worksheet.Cells[rowcount, colcount].Value = period + " " + config.Year;
+                    worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+                    worksheet.Column(colcount).Width = dataWidth;
+                    worksheet.Cells[rowcount, colcount].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                    worksheet.Cells[rowcount, colcount].Style.Fill.BackgroundColor.SetColor(colFromHexYellow);
+                    colcount++;
+                }
             }
-            if (quarters.Contains("Q2"))
-            {
-                worksheet.Cells[rowcount, colcount].Value = "Q2 " + config.Year;
-                worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
-                worksheet.Column(colcount).Width = dataWidth;
-                worksheet.Cells[rowcount, colcount].Style.Fill.PatternType = ExcelFillStyle.Solid;
-                worksheet.Cells[rowcount, colcount].Style.Fill.BackgroundColor.SetColor(colFromHexYellow);
-                colcount++;
-            }
-            if (quarters.Contains("Q3"))
-            {
-                worksheet.Cells[rowcount, colcount].Value = "Q3 " + config.Year;
-                worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
-                worksheet.Column(colcount).Width = dataWidth;
-                worksheet.Cells[rowcount, colcount].Style.Fill.PatternType = ExcelFillStyle.Solid;
-                worksheet.Cells[rowcount, colcount].Style.Fill.BackgroundColor.SetColor(colFromHexYellow);
-                colcount++;
-            }
-            if (quarters.Contains("Q4"))
-            {
-                worksheet.Cells[rowcount, colcount].Value = "Q4 " + config.Year;
-                worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
-                worksheet.Column(colcount).Width = dataWidth;
-                worksheet.Cells[rowcount, colcount].Style.Fill.PatternType = ExcelFillStyle.Solid;
-                worksheet.Cells[rowcount, colcount].Style.Fill.BackgroundColor.SetColor(colFromHexYellow);
-                colcount++;
-            }
+
 
 
             worksheet.Cells[rowcount, colcount].Value = "Total Cumulative";
@@ -1125,41 +1091,19 @@ namespace TechnipFMC.Finapp.Business
             worksheet.Cells[rowcount, colcount].Style.Fill.BackgroundColor.SetColor(colFromHexGreenCum);
             colcount++;
 
-            if (quarters.Contains("Q1"))
+            foreach (var quarter in quarters)
             {
-                worksheet.Cells[rowcount, colcount].Value = "Q1 " + config.Year;
-                worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
-                worksheet.Column(colcount).Width = dataWidth;
-                worksheet.Cells[rowcount, colcount].Style.Fill.PatternType = ExcelFillStyle.Solid;
-                worksheet.Cells[rowcount, colcount].Style.Fill.BackgroundColor.SetColor(colFromHexYellow);
-                colcount++;
-            }
-            if (quarters.Contains("Q2"))
-            {
-                worksheet.Cells[rowcount, colcount].Value = "Q2 " + config.Year;
-                worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
-                worksheet.Column(colcount).Width = dataWidth;
-                worksheet.Cells[rowcount, colcount].Style.Fill.PatternType = ExcelFillStyle.Solid;
-                worksheet.Cells[rowcount, colcount].Style.Fill.BackgroundColor.SetColor(colFromHexYellow);
-                colcount++;
-            }
-            if (quarters.Contains("Q3"))
-            {
-                worksheet.Cells[rowcount, colcount].Value = "Q3 " + config.Year;
-                worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
-                worksheet.Column(colcount).Width = dataWidth;
-                worksheet.Cells[rowcount, colcount].Style.Fill.PatternType = ExcelFillStyle.Solid;
-                worksheet.Cells[rowcount, colcount].Style.Fill.BackgroundColor.SetColor(colFromHexYellow);
-                colcount++;
-            }
-            if (quarters.Contains("Q4"))
-            {
-                worksheet.Cells[rowcount, colcount].Value = "Q4 " + config.Year;
-                worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
-                worksheet.Column(colcount).Width = dataWidth;
-                worksheet.Cells[rowcount, colcount].Style.Fill.PatternType = ExcelFillStyle.Solid;
-                worksheet.Cells[rowcount, colcount].Style.Fill.BackgroundColor.SetColor(colFromHexYellow);
-                colcount++;
+                if (quarterToMonthMap.ContainsKey(quarter))
+                {
+                    var period = dataEntryInterval == "Monthly" ? quarterToMonthMap[quarter] : quarter;
+
+                    worksheet.Cells[rowcount, colcount].Value = period + " " + config.Year;
+                    worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+                    worksheet.Column(colcount).Width = dataWidth;
+                    worksheet.Cells[rowcount, colcount].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                    worksheet.Cells[rowcount, colcount].Style.Fill.BackgroundColor.SetColor(colFromHexYellow);
+                    colcount++;
+                }
             }
 
 
@@ -1185,43 +1129,20 @@ namespace TechnipFMC.Finapp.Business
 
             //GM
             colcount++;
-            if (quarters.Contains("Q1"))
+            foreach (var quarter in quarters)
             {
-                worksheet.Cells[rowcount, colcount].Value = "Q1 " + config.Year;
-                worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
-                worksheet.Column(colcount).Width = dataWidth;
-                worksheet.Cells[rowcount, colcount].Style.Fill.PatternType = ExcelFillStyle.Solid;
-                worksheet.Cells[rowcount, colcount].Style.Fill.BackgroundColor.SetColor(colFromHexYellow);
-                colcount++;
-            }
-            if (quarters.Contains("Q2"))
-            {
-                worksheet.Cells[rowcount, colcount].Value = "Q2 " + config.Year;
-                worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
-                worksheet.Column(colcount).Width = dataWidth;
-                worksheet.Cells[rowcount, colcount].Style.Fill.PatternType = ExcelFillStyle.Solid;
-                worksheet.Cells[rowcount, colcount].Style.Fill.BackgroundColor.SetColor(colFromHexYellow);
-                colcount++;
-            }
-            if (quarters.Contains("Q3"))
-            {
-                worksheet.Cells[rowcount, colcount].Value = "Q3 " + config.Year;
-                worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
-                worksheet.Column(colcount).Width = dataWidth;
-                worksheet.Cells[rowcount, colcount].Style.Fill.PatternType = ExcelFillStyle.Solid;
-                worksheet.Cells[rowcount, colcount].Style.Fill.BackgroundColor.SetColor(colFromHexYellow);
-                colcount++;
-            }
-            if (quarters.Contains("Q4"))
-            {
-                worksheet.Cells[rowcount, colcount].Value = "Q4 " + config.Year;
-                worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
-                worksheet.Column(colcount).Width = dataWidth;
-                worksheet.Cells[rowcount, colcount].Style.Fill.PatternType = ExcelFillStyle.Solid;
-                worksheet.Cells[rowcount, colcount].Style.Fill.BackgroundColor.SetColor(colFromHexYellow);
-                colcount++;
-            }
+                if (quarterToMonthMap.ContainsKey(quarter))
+                {
+                    var period = dataEntryInterval == "Monthly" ? quarterToMonthMap[quarter] : quarter;
 
+                    worksheet.Cells[rowcount, colcount].Value = period + " " + config.Year;
+                    worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+                    worksheet.Column(colcount).Width = dataWidth;
+                    worksheet.Cells[rowcount, colcount].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                    worksheet.Cells[rowcount, colcount].Style.Fill.BackgroundColor.SetColor(colFromHexYellow);
+                    colcount++;
+                }
+            }
 
             worksheet.Cells[rowcount, colcount].Value = "Total Cumulative";
             worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
@@ -1229,44 +1150,20 @@ namespace TechnipFMC.Finapp.Business
             worksheet.Cells[rowcount, colcount].Style.Fill.PatternType = ExcelFillStyle.Solid;
             worksheet.Cells[rowcount, colcount].Style.Fill.BackgroundColor.SetColor(colFromHexYellow);
             colcount++;
+            foreach (var quarter in quarters)
+            {
+                if (quarterToMonthMap.ContainsKey(quarter))
+                {
+                    var period = dataEntryInterval == "Monthly" ? quarterToMonthMap[quarter] : quarter;
 
-            if (quarters.Contains("Q1"))
-            {
-                worksheet.Cells[rowcount, colcount].Value = "Q1 " + config.Year;
-                worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
-                worksheet.Column(colcount).Width = dataWidth;
-                worksheet.Cells[rowcount, colcount].Style.Fill.PatternType = ExcelFillStyle.Solid;
-                worksheet.Cells[rowcount, colcount].Style.Fill.BackgroundColor.SetColor(colFromHexYellow);
-                colcount++;
+                    worksheet.Cells[rowcount, colcount].Value = period + " " + config.Year;
+                    worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+                    worksheet.Column(colcount).Width = dataWidth;
+                    worksheet.Cells[rowcount, colcount].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                    worksheet.Cells[rowcount, colcount].Style.Fill.BackgroundColor.SetColor(colFromHexYellow);
+                    colcount++;
+                }
             }
-            if (quarters.Contains("Q2"))
-            {
-                worksheet.Cells[rowcount, colcount].Value = "Q2 " + config.Year;
-                worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
-                worksheet.Column(colcount).Width = dataWidth;
-                worksheet.Cells[rowcount, colcount].Style.Fill.PatternType = ExcelFillStyle.Solid;
-                worksheet.Cells[rowcount, colcount].Style.Fill.BackgroundColor.SetColor(colFromHexYellow);
-                colcount++;
-            }
-            if (quarters.Contains("Q3"))
-            {
-                worksheet.Cells[rowcount, colcount].Value = "Q3 " + config.Year;
-                worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
-                worksheet.Column(colcount).Width = dataWidth;
-                worksheet.Cells[rowcount, colcount].Style.Fill.PatternType = ExcelFillStyle.Solid;
-                worksheet.Cells[rowcount, colcount].Style.Fill.BackgroundColor.SetColor(colFromHexYellow);
-                colcount++;
-            }
-            if (quarters.Contains("Q4"))
-            {
-                worksheet.Cells[rowcount, colcount].Value = "Q4 " + config.Year;
-                worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
-                worksheet.Column(colcount).Width = dataWidth;
-                worksheet.Cells[rowcount, colcount].Style.Fill.PatternType = ExcelFillStyle.Solid;
-                worksheet.Cells[rowcount, colcount].Style.Fill.BackgroundColor.SetColor(colFromHexYellow);
-                colcount++;
-            }
-
 
             worksheet.Cells[rowcount, colcount].Value = "Total Cumulative";
             worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
@@ -1274,44 +1171,20 @@ namespace TechnipFMC.Finapp.Business
             worksheet.Cells[rowcount, colcount].Style.Fill.PatternType = ExcelFillStyle.Solid;
             worksheet.Cells[rowcount, colcount].Style.Fill.BackgroundColor.SetColor(colFromHexGreenCum);
             colcount++;
+            foreach (var quarter in quarters)
+            {
+                if (quarterToMonthMap.ContainsKey(quarter))
+                {
+                    var period = dataEntryInterval == "Monthly" ? quarterToMonthMap[quarter] : quarter;
 
-            if (quarters.Contains("Q1"))
-            {
-                worksheet.Cells[rowcount, colcount].Value = "Q1 " + config.Year;
-                worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
-                worksheet.Column(colcount).Width = dataWidth;
-                worksheet.Cells[rowcount, colcount].Style.Fill.PatternType = ExcelFillStyle.Solid;
-                worksheet.Cells[rowcount, colcount].Style.Fill.BackgroundColor.SetColor(colFromHexYellow);
-                colcount++;
+                    worksheet.Cells[rowcount, colcount].Value = period + " " + config.Year;
+                    worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+                    worksheet.Column(colcount).Width = dataWidth;
+                    worksheet.Cells[rowcount, colcount].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                    worksheet.Cells[rowcount, colcount].Style.Fill.BackgroundColor.SetColor(colFromHexYellow);
+                    colcount++;
+                }
             }
-            if (quarters.Contains("Q2"))
-            {
-                worksheet.Cells[rowcount, colcount].Value = "Q2 " + config.Year;
-                worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
-                worksheet.Column(colcount).Width = dataWidth;
-                worksheet.Cells[rowcount, colcount].Style.Fill.PatternType = ExcelFillStyle.Solid;
-                worksheet.Cells[rowcount, colcount].Style.Fill.BackgroundColor.SetColor(colFromHexYellow);
-                colcount++;
-            }
-            if (quarters.Contains("Q3"))
-            {
-                worksheet.Cells[rowcount, colcount].Value = "Q3 " + config.Year;
-                worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
-                worksheet.Column(colcount).Width = dataWidth;
-                worksheet.Cells[rowcount, colcount].Style.Fill.PatternType = ExcelFillStyle.Solid;
-                worksheet.Cells[rowcount, colcount].Style.Fill.BackgroundColor.SetColor(colFromHexYellow);
-                colcount++;
-            }
-            if (quarters.Contains("Q4"))
-            {
-                worksheet.Cells[rowcount, colcount].Value = "Q4 " + config.Year;
-                worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
-                worksheet.Column(colcount).Width = dataWidth;
-                worksheet.Cells[rowcount, colcount].Style.Fill.PatternType = ExcelFillStyle.Solid;
-                worksheet.Cells[rowcount, colcount].Style.Fill.BackgroundColor.SetColor(colFromHexYellow);
-                colcount++;
-            }
-
 
             worksheet.Cells[rowcount, colcount].Value = "Total Cumulative";
             worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
@@ -1425,75 +1298,41 @@ namespace TechnipFMC.Finapp.Business
                     //worksheet.Column(colcount).Width = projectCodeElseWidth;
                     //colcount++;
                 }
+                
 
-                if (quarters.Contains("Q1"))
+                foreach (var quarter in quarters)
                 {
-                    worksheet.Cells[rowcount, colcount].Style.Numberformat.Format = fullNumberFormat;
-                    if (item.CS2Q1.HasValue)
-                    {
-                        worksheet.Cells[rowcount, colcount].Value = item.CS2Q1.Value;
-                        if (item.CS2Q1.Value < 0)
-                            worksheet.Cells[rowcount, colcount].Style.Font.Color.SetColor(Color.Red);
+                    var propertyName = $"CS2{quarter}";
+                    var propertyInfo = item.GetType().GetProperty(propertyName);
 
-                    }
-                    worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
-                    worksheet.Column(colcount).Width = dataWidth;
-                    worksheet.Cells[rowcount, colcount].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
-                    colcount++;
-                }
-                if (quarters.Contains("Q2"))
-                {
-                    worksheet.Cells[rowcount, colcount].Style.Numberformat.Format = fullNumberFormat;
-                    if (item.CS2Q2.HasValue)
+                    if (quarters.Contains(quarter))
                     {
-                        worksheet.Cells[rowcount, colcount].Value = (item.CS2Q2.Value);
-                        if (item.CS2Q2.Value < 0)
-                            worksheet.Cells[rowcount, colcount].Style.Font.Color.SetColor(Color.Red);
+                        worksheet.Cells[rowcount, colcount].Style.Numberformat.Format = fullNumberFormat;
 
-                    }
-                    worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
-                    worksheet.Column(colcount).Width = dataWidth;
-                    worksheet.Cells[rowcount, colcount].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
-                    colcount++;
-                }
-                if (quarters.Contains("Q3"))
-                {
-                    worksheet.Cells[rowcount, colcount].Style.Numberformat.Format = fullNumberFormat;
-                    if (item.CS2Q3.HasValue)
-                    {
-                        worksheet.Cells[rowcount, colcount].Value = (item.CS2Q3.Value);
-                        if (item.CS2Q3.Value < 0)
-                            worksheet.Cells[rowcount, colcount].Style.Font.Color.SetColor(Color.Red);
+                        if (propertyInfo != null)
+                        {
+                            var value = propertyInfo.GetValue(item) as decimal?;
+                            if (value.HasValue)
+                            {
+                                worksheet.Cells[rowcount, colcount].Value = value.Value;
+                                if (value.Value < 0)
+                                    worksheet.Cells[rowcount, colcount].Style.Font.Color.SetColor(Color.Red);
+                            }
+                        }
 
+                        worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+                        worksheet.Column(colcount).Width = dataWidth;
+                        worksheet.Cells[rowcount, colcount].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+                        colcount++;
                     }
-                    worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
-                    worksheet.Column(colcount).Width = dataWidth;
-                    worksheet.Cells[rowcount, colcount].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
-                    colcount++;
-                }
-                if (quarters.Contains("Q4"))
-                {
-                    worksheet.Cells[rowcount, colcount].Style.Numberformat.Format = fullNumberFormat;
-                    if (item.CS2Q4.HasValue)
-                    {
-                        worksheet.Cells[rowcount, colcount].Value = (item.CS2Q4.Value);
-                        if (item.CS2Q4.Value < 0)
-                            worksheet.Cells[rowcount, colcount].Style.Font.Color.SetColor(Color.Red);
-
-                    }
-                    worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
-                    worksheet.Column(colcount).Width = dataWidth;
-                    worksheet.Cells[rowcount, colcount].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
-                    colcount++;
                 }
 
                 worksheet.Cells[rowcount, colcount].Style.Numberformat.Format = fullNumberFormat;
                 if (item.TotalCS2.HasValue)
                 {
-                    worksheet.Cells[rowcount, colcount].Value = (item.TotalCS2.Value);
+                    worksheet.Cells[rowcount, colcount].Value = item.TotalCS2.Value;
                     if (item.TotalCS2.Value < 0)
                         worksheet.Cells[rowcount, colcount].Style.Font.Color.SetColor(Color.Red);
-
                 }
                 worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
                 worksheet.Column(colcount).Width = dataWidth;
@@ -1504,74 +1343,41 @@ namespace TechnipFMC.Finapp.Business
 
                 colcount++;
 
-                if (quarters.Contains("Q1"))
+                foreach (var quarter in quarters)
                 {
-                    worksheet.Cells[rowcount, colcount].Style.Numberformat.Format = fullNumberFormat;
-                    if (item.CS1Q1.HasValue)
-                    {
-                        worksheet.Cells[rowcount, colcount].Value = (item.CS1Q1.Value);
-                        if (item.CS1Q1.Value < 0)
-                            worksheet.Cells[rowcount, colcount].Style.Font.Color.SetColor(Color.Red);
+                    var propertyName = $"CS1{quarter}";
+                    var propertyInfo = item.GetType().GetProperty(propertyName);
 
-                    }
-                    worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
-                    worksheet.Column(colcount).Width = dataWidth;
-                    worksheet.Cells[rowcount, colcount].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
-                    colcount++;
-                }
-                if (quarters.Contains("Q2"))
-                {
-                    worksheet.Cells[rowcount, colcount].Style.Numberformat.Format = fullNumberFormat;
-                    if (item.CS1Q2.HasValue)
+                    if (quarters.Contains(quarter))
                     {
-                        worksheet.Cells[rowcount, colcount].Value = (item.CS1Q2.Value);
-                        if (item.CS1Q2.Value < 0)
-                            worksheet.Cells[rowcount, colcount].Style.Font.Color.SetColor(Color.Red);
+                        worksheet.Cells[rowcount, colcount].Style.Numberformat.Format = fullNumberFormat;
 
-                    }
-                    worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
-                    worksheet.Column(colcount).Width = dataWidth;
-                    worksheet.Cells[rowcount, colcount].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
-                    colcount++;
-                }
-                if (quarters.Contains("Q3"))
-                {
-                    worksheet.Cells[rowcount, colcount].Style.Numberformat.Format = fullNumberFormat;
-                    if (item.CS1Q3.HasValue)
-                    {
+                        if (propertyInfo != null)
+                        {
+                            var value = propertyInfo.GetValue(item) as decimal?;
+                            if (value.HasValue)
+                            {
+                                worksheet.Cells[rowcount, colcount].Value = value.Value;
+                                if (value.Value < 0)
+                                    worksheet.Cells[rowcount, colcount].Style.Font.Color.SetColor(Color.Red);
+                            }
+                        }
 
-                        worksheet.Cells[rowcount, colcount].Value = (item.CS1Q3.Value);
-                        if (item.CS1Q3.Value < 0)
-                            worksheet.Cells[rowcount, colcount].Style.Font.Color.SetColor(Color.Red);
+                        worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+                        worksheet.Column(colcount).Width = dataWidth;
+                        worksheet.Cells[rowcount, colcount].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+                        colcount++;
                     }
-                    worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
-                    worksheet.Column(colcount).Width = dataWidth;
-                    worksheet.Cells[rowcount, colcount].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
-                    colcount++;
-                }
-                if (quarters.Contains("Q4"))
-                {
-                    worksheet.Cells[rowcount, colcount].Style.Numberformat.Format = fullNumberFormat;
-                    if (item.CS1Q4.HasValue)
-                    {
-                        worksheet.Cells[rowcount, colcount].Value = (item.CS1Q4.Value);
-                        if (item.CS1Q4.Value < 0)
-                            worksheet.Cells[rowcount, colcount].Style.Font.Color.SetColor(Color.Red);
-                    }
-                    worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
-                    worksheet.Column(colcount).Width = dataWidth;
-                    worksheet.Cells[rowcount, colcount].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
-                    colcount++;
-
                 }
 
                 worksheet.Cells[rowcount, colcount].Style.Numberformat.Format = fullNumberFormat;
                 if (item.TotalCS1.HasValue)
                 {
-                    worksheet.Cells[rowcount, colcount].Value = (item.TotalCS1.Value);
+                    worksheet.Cells[rowcount, colcount].Value = item.TotalCS1.Value;
                     if (item.TotalCS1.Value < 0)
                         worksheet.Cells[rowcount, colcount].Style.Font.Color.SetColor(Color.Red);
                 }
+
                 worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
                 worksheet.Column(colcount).Width = dataWidth;
                 worksheet.Cells[rowcount, colcount].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
@@ -1580,71 +1386,42 @@ namespace TechnipFMC.Finapp.Business
                     worksheet.Cells[rowcount, colcount].Style.Fill.BackgroundColor.SetColor(colFromHexBlue);
                 colcount++;
 
-                if (quarters.Contains("Q1"))
-                {
-                    worksheet.Cells[rowcount, colcount].Style.Numberformat.Format = fullNumberFormat;
-                    if (item.BaseQ1.HasValue)
-                    {
-                        worksheet.Cells[rowcount, colcount].Value = (item.BaseQ1.Value);
-                        if (item.BaseQ1.Value < 0)
-                            worksheet.Cells[rowcount, colcount].Style.Font.Color.SetColor(Color.Red);
-                    }
-                    worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
-                    worksheet.Column(colcount).Width = dataWidth;
-                    worksheet.Cells[rowcount, colcount].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
-                    colcount++;
-                }
-                if (quarters.Contains("Q2"))
-                {
-                    worksheet.Cells[rowcount, colcount].Style.Numberformat.Format = fullNumberFormat;
-                    if (item.BaseQ2.HasValue)
-                    {
-                        worksheet.Cells[rowcount, colcount].Value = (item.BaseQ2.Value);
-                        if (item.BaseQ2.Value < 0)
-                            worksheet.Cells[rowcount, colcount].Style.Font.Color.SetColor(Color.Red);
-                    }
-                    worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
-                    worksheet.Column(colcount).Width = dataWidth;
-                    worksheet.Cells[rowcount, colcount].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
-                    colcount++;
-                }
-                if (quarters.Contains("Q3"))
-                {
-                    worksheet.Cells[rowcount, colcount].Style.Numberformat.Format = fullNumberFormat;
-                    if (item.BaseQ3.HasValue)
-                    {
-                        worksheet.Cells[rowcount, colcount].Value = (item.BaseQ3.Value);
-                        if (item.BaseQ3.Value < 0)
-                            worksheet.Cells[rowcount, colcount].Style.Font.Color.SetColor(Color.Red);
-                    }
-                    worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
-                    worksheet.Column(colcount).Width = dataWidth;
-                    worksheet.Cells[rowcount, colcount].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
-                    colcount++;
-                }
-                if (quarters.Contains("Q4"))
-                {
-                    worksheet.Cells[rowcount, colcount].Style.Numberformat.Format = fullNumberFormat;
-                    if (item.BaseQ4.HasValue)
-                    {
-                        worksheet.Cells[rowcount, colcount].Value = (item.BaseQ4.Value);
-                        if (item.BaseQ4.Value < 0)
-                            worksheet.Cells[rowcount, colcount].Style.Font.Color.SetColor(Color.Red);
-                    }
-                    worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
-                    worksheet.Column(colcount).Width = dataWidth;
-                    worksheet.Cells[rowcount, colcount].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
-                    colcount++;
 
+                foreach (var quarter in quarters)
+                {
+                    var propertyName = $"Base{quarter}";
+                    var propertyInfo = item.GetType().GetProperty(propertyName);
+
+                    if (quarters.Contains(quarter))
+                    {
+                        worksheet.Cells[rowcount, colcount].Style.Numberformat.Format = fullNumberFormat;
+
+                        if (propertyInfo != null)
+                        {
+                            var value = propertyInfo.GetValue(item) as decimal?;
+                            if (value.HasValue)
+                            {
+                                worksheet.Cells[rowcount, colcount].Value = value.Value;
+                                if (value.Value < 0)
+                                    worksheet.Cells[rowcount, colcount].Style.Font.Color.SetColor(Color.Red);
+                            }
+                        }
+
+                        worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+                        worksheet.Column(colcount).Width = dataWidth;
+                        worksheet.Cells[rowcount, colcount].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+                        colcount++;
+                    }
                 }
 
                 worksheet.Cells[rowcount, colcount].Style.Numberformat.Format = fullNumberFormat;
                 if (item.TotalBase.HasValue)
                 {
-                    worksheet.Cells[rowcount, colcount].Value = (item.TotalBase.Value);
+                    worksheet.Cells[rowcount, colcount].Value = item.TotalBase.Value;
                     if (item.TotalBase.Value < 0)
                         worksheet.Cells[rowcount, colcount].Style.Font.Color.SetColor(Color.Red);
                 }
+
                 worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
                 worksheet.Column(colcount).Width = dataWidth;
                 worksheet.Cells[rowcount, colcount].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
@@ -1692,70 +1469,42 @@ namespace TechnipFMC.Finapp.Business
                     throw new Exception("More than one record found!");
                 }
                 var itemGMrecord = itemGM.FirstOrDefault();
-                if (quarters.Contains("Q1"))
+
+                foreach (var quarter in quarters)
                 {
-                    worksheet.Cells[rowcount, colcount].Style.Numberformat.Format = fullNumberFormat;
-                    if (itemGMrecord.CS2Q1.HasValue)
+                    var propertyName = $"CS2{quarter}";
+                    var propertyInfo = itemGMrecord.GetType().GetProperty(propertyName);
+
+                    if (quarters.Contains(quarter))
                     {
-                        worksheet.Cells[rowcount, colcount].Value = (itemGMrecord.CS2Q1.Value);
-                        if (itemGMrecord.CS2Q1.Value < 0)
-                            worksheet.Cells[rowcount, colcount].Style.Font.Color.SetColor(Color.Red);
+                        worksheet.Cells[rowcount, colcount].Style.Numberformat.Format = fullNumberFormat;
+
+                        if (propertyInfo != null)
+                        {
+                            var value = propertyInfo.GetValue(itemGMrecord) as decimal?;
+                            if (value.HasValue)
+                            {
+                                worksheet.Cells[rowcount, colcount].Value = value.Value;
+                                if (value.Value < 0)
+                                    worksheet.Cells[rowcount, colcount].Style.Font.Color.SetColor(Color.Red);
+                            }
+                        }
+
+                        worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+                        worksheet.Column(colcount).Width = dataWidth;
+                        worksheet.Cells[rowcount, colcount].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+                        colcount++;
                     }
-                    worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
-                    worksheet.Column(colcount).Width = dataWidth;
-                    worksheet.Cells[rowcount, colcount].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
-                    colcount++;
-                }
-                if (quarters.Contains("Q2"))
-                {
-                    worksheet.Cells[rowcount, colcount].Style.Numberformat.Format = fullNumberFormat;
-                    if (itemGMrecord.CS2Q2.HasValue)
-                    {
-                        worksheet.Cells[rowcount, colcount].Value = (itemGMrecord.CS2Q2.Value);
-                        if (itemGMrecord.CS2Q2.Value < 0)
-                            worksheet.Cells[rowcount, colcount].Style.Font.Color.SetColor(Color.Red);
-                    }
-                    worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
-                    worksheet.Column(colcount).Width = dataWidth;
-                    worksheet.Cells[rowcount, colcount].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
-                    colcount++;
-                }
-                if (quarters.Contains("Q3"))
-                {
-                    worksheet.Cells[rowcount, colcount].Style.Numberformat.Format = fullNumberFormat;
-                    if (itemGMrecord.CS2Q3.HasValue)
-                    {
-                        worksheet.Cells[rowcount, colcount].Value = (itemGMrecord.CS2Q3.Value);
-                        if (itemGMrecord.CS2Q3.Value < 0)
-                            worksheet.Cells[rowcount, colcount].Style.Font.Color.SetColor(Color.Red);
-                    }
-                    worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
-                    worksheet.Column(colcount).Width = dataWidth;
-                    worksheet.Cells[rowcount, colcount].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
-                    colcount++;
-                }
-                if (quarters.Contains("Q4"))
-                {
-                    worksheet.Cells[rowcount, colcount].Style.Numberformat.Format = fullNumberFormat;
-                    if (itemGMrecord.CS2Q4.HasValue)
-                    {
-                        worksheet.Cells[rowcount, colcount].Value = (itemGMrecord.CS2Q4.Value);
-                        if (itemGMrecord.CS2Q4.Value < 0)
-                            worksheet.Cells[rowcount, colcount].Style.Font.Color.SetColor(Color.Red);
-                    }
-                    worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
-                    worksheet.Column(colcount).Width = dataWidth;
-                    worksheet.Cells[rowcount, colcount].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
-                    colcount++;
                 }
 
                 worksheet.Cells[rowcount, colcount].Style.Numberformat.Format = fullNumberFormat;
                 if (itemGMrecord.TotalCS2.HasValue)
                 {
-                    worksheet.Cells[rowcount, colcount].Value = (itemGMrecord.TotalCS2.Value);
+                    worksheet.Cells[rowcount, colcount].Value = itemGMrecord.TotalCS2.Value;
                     if (itemGMrecord.TotalCS2.Value < 0)
                         worksheet.Cells[rowcount, colcount].Style.Font.Color.SetColor(Color.Red);
                 }
+
                 worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
                 worksheet.Column(colcount).Width = dataWidth;
                 worksheet.Cells[rowcount, colcount].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
@@ -1764,71 +1513,41 @@ namespace TechnipFMC.Finapp.Business
                     worksheet.Cells[rowcount, colcount].Style.Fill.BackgroundColor.SetColor(colFromHexYellow);
                 colcount++;
 
-                if (quarters.Contains("Q1"))
+                foreach (var quarter in quarters)
                 {
-                    worksheet.Cells[rowcount, colcount].Style.Numberformat.Format = fullNumberFormat;
-                    if (itemGMrecord.CS1Q1.HasValue)
-                    {
-                        worksheet.Cells[rowcount, colcount].Value = (itemGMrecord.CS1Q1.Value);
-                        if (itemGMrecord.CS1Q1.Value < 0)
-                            worksheet.Cells[rowcount, colcount].Style.Font.Color.SetColor(Color.Red);
-                    }
-                    worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
-                    worksheet.Column(colcount).Width = dataWidth;
-                    worksheet.Cells[rowcount, colcount].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
-                    colcount++;
-                }
-                if (quarters.Contains("Q2"))
-                {
-                    worksheet.Cells[rowcount, colcount].Style.Numberformat.Format = fullNumberFormat;
-                    if (itemGMrecord.CS1Q2.HasValue)
-                    {
-                        worksheet.Cells[rowcount, colcount].Value = (itemGMrecord.CS1Q2.Value);
-                        if (itemGMrecord.CS1Q2.Value < 0)
-                            worksheet.Cells[rowcount, colcount].Style.Font.Color.SetColor(Color.Red);
-                    }
-                    worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
-                    worksheet.Column(colcount).Width = dataWidth;
-                    worksheet.Cells[rowcount, colcount].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
-                    colcount++;
-                }
-                if (quarters.Contains("Q3"))
-                {
-                    worksheet.Cells[rowcount, colcount].Style.Numberformat.Format = fullNumberFormat;
-                    if (itemGMrecord.CS1Q3.HasValue)
-                    {
-                        worksheet.Cells[rowcount, colcount].Value = (itemGMrecord.CS1Q3.Value);
-                        if (itemGMrecord.CS1Q3.Value < 0)
-                            worksheet.Cells[rowcount, colcount].Style.Font.Color.SetColor(Color.Red);
-                    }
-                    worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
-                    worksheet.Column(colcount).Width = dataWidth;
-                    worksheet.Cells[rowcount, colcount].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
-                    colcount++;
-                }
-                if (quarters.Contains("Q4"))
-                {
-                    worksheet.Cells[rowcount, colcount].Style.Numberformat.Format = fullNumberFormat;
-                    if (itemGMrecord.CS1Q4.HasValue)
-                    {
-                        worksheet.Cells[rowcount, colcount].Value = (itemGMrecord.CS1Q4.Value);
-                        if (itemGMrecord.CS1Q4.Value < 0)
-                            worksheet.Cells[rowcount, colcount].Style.Font.Color.SetColor(Color.Red);
-                    }
-                    worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
-                    worksheet.Column(colcount).Width = dataWidth;
-                    worksheet.Cells[rowcount, colcount].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
-                    colcount++;
+                    var propertyName = $"CS1{quarter}";
+                    var propertyInfo = itemGMrecord.GetType().GetProperty(propertyName);
 
+                    if (quarters.Contains(quarter))
+                    {
+                        worksheet.Cells[rowcount, colcount].Style.Numberformat.Format = fullNumberFormat;
+
+                        if (propertyInfo != null)
+                        {
+                            var value = propertyInfo.GetValue(itemGMrecord) as decimal?;
+                            if (value.HasValue)
+                            {
+                                worksheet.Cells[rowcount, colcount].Value = value.Value;
+                                if (value.Value < 0)
+                                    worksheet.Cells[rowcount, colcount].Style.Font.Color.SetColor(Color.Red);
+                            }
+                        }
+
+                        worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+                        worksheet.Column(colcount).Width = dataWidth;
+                        worksheet.Cells[rowcount, colcount].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+                        colcount++;
+                    }
                 }
 
                 worksheet.Cells[rowcount, colcount].Style.Numberformat.Format = fullNumberFormat;
                 if (itemGMrecord.TotalCS1.HasValue)
                 {
-                    worksheet.Cells[rowcount, colcount].Value = (itemGMrecord.TotalCS1.Value);
+                    worksheet.Cells[rowcount, colcount].Value = itemGMrecord.TotalCS1.Value;
                     if (itemGMrecord.TotalCS1.Value < 0)
                         worksheet.Cells[rowcount, colcount].Style.Font.Color.SetColor(Color.Red);
                 }
+
                 worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
                 worksheet.Column(colcount).Width = dataWidth;
                 worksheet.Cells[rowcount, colcount].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
@@ -1837,71 +1556,38 @@ namespace TechnipFMC.Finapp.Business
                     worksheet.Cells[rowcount, colcount].Style.Fill.BackgroundColor.SetColor(colFromHexBlue);
                 colcount++;
 
-                if (quarters.Contains("Q1"))
+                foreach (var quarter in quarters)
                 {
-                    worksheet.Cells[rowcount, colcount].Style.Numberformat.Format = fullNumberFormat;
-                    if (itemGMrecord.BaseQ1.HasValue)
-                    {
-                        worksheet.Cells[rowcount, colcount].Value = (itemGMrecord.BaseQ1.Value);
-                        if (itemGMrecord.BaseQ1.Value < 0)
-                            worksheet.Cells[rowcount, colcount].Style.Font.Color.SetColor(Color.Red);
-                    }
-                    worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
-                    worksheet.Column(colcount).Width = dataWidth;
-                    worksheet.Cells[rowcount, colcount].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
-                    colcount++;
-                }
-                if (quarters.Contains("Q2"))
-                {
-                    worksheet.Cells[rowcount, colcount].Style.Numberformat.Format = fullNumberFormat;
-                    if (itemGMrecord.BaseQ2.HasValue)
-                    {
-                        worksheet.Cells[rowcount, colcount].Value = (itemGMrecord.BaseQ2.Value);
-                        if (itemGMrecord.BaseQ2.Value < 0)
-                            worksheet.Cells[rowcount, colcount].Style.Font.Color.SetColor(Color.Red);
-                    }
-                    worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
-                    worksheet.Column(colcount).Width = dataWidth;
-                    worksheet.Cells[rowcount, colcount].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
-                    colcount++;
-                }
-                if (quarters.Contains("Q3"))
-                {
-                    worksheet.Cells[rowcount, colcount].Style.Numberformat.Format = fullNumberFormat;
-                    if (itemGMrecord.BaseQ3.HasValue)
-                    {
-                        worksheet.Cells[rowcount, colcount].Value = (itemGMrecord.BaseQ3.Value);
-                        if (itemGMrecord.BaseQ3.Value < 0)
-                            worksheet.Cells[rowcount, colcount].Style.Font.Color.SetColor(Color.Red);
-                    }
-                    worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
-                    worksheet.Column(colcount).Width = dataWidth;
-                    worksheet.Cells[rowcount, colcount].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
-                    colcount++;
-                }
-                if (quarters.Contains("Q4"))
-                {
-                    worksheet.Cells[rowcount, colcount].Style.Numberformat.Format = fullNumberFormat;
-                    if (itemGMrecord.BaseQ4.HasValue)
-                    {
-                        worksheet.Cells[rowcount, colcount].Value = (itemGMrecord.BaseQ4.Value);
-                        if (itemGMrecord.BaseQ4.Value < 0)
-                            worksheet.Cells[rowcount, colcount].Style.Font.Color.SetColor(Color.Red);
-                    }
-                    worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
-                    worksheet.Column(colcount).Width = dataWidth;
-                    worksheet.Cells[rowcount, colcount].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
-                    colcount++;
+                    var propertyName = $"Base{quarter}";
+                    var propertyInfo = itemGMrecord.GetType().GetProperty(propertyName);
 
+                    if (propertyInfo != null)
+                    {
+                        worksheet.Cells[rowcount, colcount].Style.Numberformat.Format = fullNumberFormat;
+
+                        var value = propertyInfo.GetValue(itemGMrecord) as decimal?;
+                        if (value.HasValue)
+                        {
+                            worksheet.Cells[rowcount, colcount].Value = value.Value;
+                            if (value.Value < 0)
+                                worksheet.Cells[rowcount, colcount].Style.Font.Color.SetColor(Color.Red);
+                        }
+
+                        worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+                        worksheet.Column(colcount).Width = dataWidth;
+                        worksheet.Cells[rowcount, colcount].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+                        colcount++;
+                    }
                 }
 
                 worksheet.Cells[rowcount, colcount].Style.Numberformat.Format = fullNumberFormat;
                 if (itemGMrecord.TotalBase.HasValue)
                 {
-                    worksheet.Cells[rowcount, colcount].Value = (itemGMrecord.TotalBase.Value);
+                    worksheet.Cells[rowcount, colcount].Value = itemGMrecord.TotalBase.Value;
                     if (itemGMrecord.TotalBase.Value < 0)
                         worksheet.Cells[rowcount, colcount].Style.Font.Color.SetColor(Color.Red);
                 }
+
                 worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
                 worksheet.Column(colcount).Width = dataWidth;
                 worksheet.Cells[rowcount, colcount].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
@@ -1980,57 +1666,29 @@ namespace TechnipFMC.Finapp.Business
                 //worksheet.Column(colcount).Width = projectCodeElseWidth;
                 //colcount++;
 
-                if (quarters.Contains("Q1"))
+                foreach (var quarter in quarters)
                 {
-                    worksheet.Cells[rowcount, colcount].Style.Numberformat.Format = fullNumberFormat;
-                    if (item.CS2Q1.HasValue)
-                        worksheet.Cells[rowcount, colcount].Value = (item.CS2Q1.Value);
-                    worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
-                    worksheet.Column(colcount).Width = dataWidth;
-                    worksheet.Cells[rowcount, colcount].Style.Fill.PatternType = ExcelFillStyle.Solid;
-                    worksheet.Cells[rowcount, colcount].Style.Fill.BackgroundColor.SetColor(colFromHexgrandTotal);
-                    worksheet.Cells[rowcount, colcount].Style.Font.Bold = true;
-                    worksheet.Cells[rowcount, colcount].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
-                    colcount++;
-                }
-                if (quarters.Contains("Q2"))
-                {
-                    worksheet.Cells[rowcount, colcount].Style.Numberformat.Format = fullNumberFormat;
-                    if (item.CS2Q2.HasValue)
-                        worksheet.Cells[rowcount, colcount].Value = (item.CS2Q2.Value);
-                    worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
-                    worksheet.Column(colcount).Width = dataWidth;
-                    worksheet.Cells[rowcount, colcount].Style.Fill.PatternType = ExcelFillStyle.Solid;
-                    worksheet.Cells[rowcount, colcount].Style.Fill.BackgroundColor.SetColor(colFromHexgrandTotal);
-                    worksheet.Cells[rowcount, colcount].Style.Font.Bold = true;
-                    worksheet.Cells[rowcount, colcount].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
-                    colcount++;
-                }
-                if (quarters.Contains("Q3"))
-                {
-                    worksheet.Cells[rowcount, colcount].Style.Numberformat.Format = fullNumberFormat;
-                    if (item.CS2Q3.HasValue)
-                        worksheet.Cells[rowcount, colcount].Value = (item.CS2Q3.Value);
-                    worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
-                    worksheet.Column(colcount).Width = dataWidth;
-                    worksheet.Cells[rowcount, colcount].Style.Fill.PatternType = ExcelFillStyle.Solid;
-                    worksheet.Cells[rowcount, colcount].Style.Fill.BackgroundColor.SetColor(colFromHexgrandTotal);
-                    worksheet.Cells[rowcount, colcount].Style.Font.Bold = true;
-                    worksheet.Cells[rowcount, colcount].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
-                    colcount++;
-                }
-                if (quarters.Contains("Q4"))
-                {
-                    worksheet.Cells[rowcount, colcount].Style.Numberformat.Format = fullNumberFormat;
-                    if (item.CS2Q4.HasValue)
-                        worksheet.Cells[rowcount, colcount].Value = (item.CS2Q4.Value);
-                    worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
-                    worksheet.Column(colcount).Width = dataWidth;
-                    worksheet.Cells[rowcount, colcount].Style.Fill.PatternType = ExcelFillStyle.Solid;
-                    worksheet.Cells[rowcount, colcount].Style.Fill.BackgroundColor.SetColor(colFromHexgrandTotal);
-                    worksheet.Cells[rowcount, colcount].Style.Font.Bold = true;
-                    worksheet.Cells[rowcount, colcount].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
-                    colcount++;
+                    var propertyName = $"CS2{quarter}";
+                    var propertyInfo = item.GetType().GetProperty(propertyName);
+
+                    if (propertyInfo != null)
+                    {
+                        worksheet.Cells[rowcount, colcount].Style.Numberformat.Format = fullNumberFormat;
+
+                        var value = propertyInfo.GetValue(item) as decimal?;
+                        if (value.HasValue)
+                        {
+                            worksheet.Cells[rowcount, colcount].Value = value.Value;
+                        }
+
+                        worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+                        worksheet.Column(colcount).Width = dataWidth;
+                        worksheet.Cells[rowcount, colcount].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                        worksheet.Cells[rowcount, colcount].Style.Fill.BackgroundColor.SetColor(colFromHexgrandTotal);
+                        worksheet.Cells[rowcount, colcount].Style.Font.Bold = true;
+                        worksheet.Cells[rowcount, colcount].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+                        colcount++;
+                    }
                 }
 
                 worksheet.Cells[rowcount, colcount].Style.Numberformat.Format = fullNumberFormat;
@@ -2044,58 +1702,29 @@ namespace TechnipFMC.Finapp.Business
                 worksheet.Cells[rowcount, colcount].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
                 colcount++;
 
-                if (quarters.Contains("Q1"))
+                foreach (var quarter in quarters)
                 {
-                    worksheet.Cells[rowcount, colcount].Style.Numberformat.Format = fullNumberFormat;
-                    if (item.CS1Q1.HasValue)
-                        worksheet.Cells[rowcount, colcount].Value = (item.CS1Q1.Value);
-                    worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
-                    worksheet.Column(colcount).Width = dataWidth;
-                    worksheet.Cells[rowcount, colcount].Style.Fill.PatternType = ExcelFillStyle.Solid;
-                    worksheet.Cells[rowcount, colcount].Style.Fill.BackgroundColor.SetColor(colFromHexgrandTotal);
-                    worksheet.Cells[rowcount, colcount].Style.Font.Bold = true;
-                    worksheet.Cells[rowcount, colcount].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
-                    colcount++;
-                }
-                if (quarters.Contains("Q2"))
-                {
-                    worksheet.Cells[rowcount, colcount].Style.Numberformat.Format = fullNumberFormat;
-                    if (item.CS1Q2.HasValue)
-                        worksheet.Cells[rowcount, colcount].Value = (item.CS1Q2.Value);
-                    worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
-                    worksheet.Column(colcount).Width = dataWidth;
-                    worksheet.Cells[rowcount, colcount].Style.Fill.PatternType = ExcelFillStyle.Solid;
-                    worksheet.Cells[rowcount, colcount].Style.Fill.BackgroundColor.SetColor(colFromHexgrandTotal);
-                    worksheet.Cells[rowcount, colcount].Style.Font.Bold = true;
-                    worksheet.Cells[rowcount, colcount].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
-                    colcount++;
-                }
-                if (quarters.Contains("Q3"))
-                {
-                    worksheet.Cells[rowcount, colcount].Style.Numberformat.Format = fullNumberFormat;
-                    if (item.CS1Q3.HasValue)
-                        worksheet.Cells[rowcount, colcount].Value = (item.CS1Q3.Value);
-                    worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
-                    worksheet.Column(colcount).Width = dataWidth;
-                    worksheet.Cells[rowcount, colcount].Style.Fill.PatternType = ExcelFillStyle.Solid;
-                    worksheet.Cells[rowcount, colcount].Style.Fill.BackgroundColor.SetColor(colFromHexgrandTotal);
-                    worksheet.Cells[rowcount, colcount].Style.Font.Bold = true;
-                    worksheet.Cells[rowcount, colcount].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
-                    colcount++;
-                }
-                if (quarters.Contains("Q4"))
-                {
-                    worksheet.Cells[rowcount, colcount].Style.Numberformat.Format = fullNumberFormat;
-                    if (item.CS1Q4.HasValue)
-                        worksheet.Cells[rowcount, colcount].Value = (item.CS1Q4.Value);
-                    worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
-                    worksheet.Column(colcount).Width = dataWidth;
-                    worksheet.Cells[rowcount, colcount].Style.Fill.PatternType = ExcelFillStyle.Solid;
-                    worksheet.Cells[rowcount, colcount].Style.Fill.BackgroundColor.SetColor(colFromHexgrandTotal);
-                    worksheet.Cells[rowcount, colcount].Style.Font.Bold = true;
-                    worksheet.Cells[rowcount, colcount].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
-                    colcount++;
+                    var propertyName = $"CS1{quarter}";
+                    var propertyInfo = item.GetType().GetProperty(propertyName);
 
+                    if (propertyInfo != null)
+                    {
+                        worksheet.Cells[rowcount, colcount].Style.Numberformat.Format = fullNumberFormat;
+
+                        var value = propertyInfo.GetValue(item) as decimal?;
+                        if (value.HasValue)
+                        {
+                            worksheet.Cells[rowcount, colcount].Value = value.Value;
+                        }
+
+                        worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+                        worksheet.Column(colcount).Width = dataWidth;
+                        worksheet.Cells[rowcount, colcount].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                        worksheet.Cells[rowcount, colcount].Style.Fill.BackgroundColor.SetColor(colFromHexgrandTotal);
+                        worksheet.Cells[rowcount, colcount].Style.Font.Bold = true;
+                        worksheet.Cells[rowcount, colcount].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+                        colcount++;
+                    }
                 }
 
                 worksheet.Cells[rowcount, colcount].Style.Numberformat.Format = fullNumberFormat;
@@ -2109,60 +1738,31 @@ namespace TechnipFMC.Finapp.Business
                 worksheet.Cells[rowcount, colcount].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
                 colcount++;
 
-                if (quarters.Contains("Q1"))
+                foreach (var quarter in quarters)
                 {
-                    worksheet.Cells[rowcount, colcount].Style.Numberformat.Format = fullNumberFormat;
-                    if (item.BaseQ1.HasValue)
-                        worksheet.Cells[rowcount, colcount].Value = (item.BaseQ1.Value);
-                    worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
-                    worksheet.Column(colcount).Width = dataWidth;
-                    worksheet.Cells[rowcount, colcount].Style.Fill.PatternType = ExcelFillStyle.Solid;
-                    worksheet.Cells[rowcount, colcount].Style.Fill.BackgroundColor.SetColor(colFromHexgrandTotal);
-                    worksheet.Cells[rowcount, colcount].Style.Font.Bold = true;
-                    worksheet.Cells[rowcount, colcount].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
-                    colcount++;
-                }
-                if (quarters.Contains("Q2"))
-                {
-                    worksheet.Cells[rowcount, colcount].Style.Numberformat.Format = fullNumberFormat;
-                    if (item.BaseQ2.HasValue)
-                        worksheet.Cells[rowcount, colcount].Value = (item.BaseQ2.Value);
-                    worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
-                    worksheet.Column(colcount).Width = dataWidth;
-                    worksheet.Cells[rowcount, colcount].Style.Fill.PatternType = ExcelFillStyle.Solid;
-                    worksheet.Cells[rowcount, colcount].Style.Fill.BackgroundColor.SetColor(colFromHexgrandTotal);
-                    worksheet.Cells[rowcount, colcount].Style.Font.Bold = true;
-                    worksheet.Cells[rowcount, colcount].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
-                    colcount++;
-                }
-                if (quarters.Contains("Q3"))
-                {
-                    worksheet.Cells[rowcount, colcount].Style.Numberformat.Format = fullNumberFormat;
-                    if (item.BaseQ3.HasValue)
-                        worksheet.Cells[rowcount, colcount].Value = (item.BaseQ3.Value);
-                    worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
-                    worksheet.Column(colcount).Width = dataWidth;
-                    worksheet.Cells[rowcount, colcount].Style.Fill.PatternType = ExcelFillStyle.Solid;
-                    worksheet.Cells[rowcount, colcount].Style.Fill.BackgroundColor.SetColor(colFromHexgrandTotal);
-                    worksheet.Cells[rowcount, colcount].Style.Font.Bold = true;
-                    worksheet.Cells[rowcount, colcount].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
-                    colcount++;
-                }
-                if (quarters.Contains("Q4"))
-                {
-                    worksheet.Cells[rowcount, colcount].Style.Numberformat.Format = fullNumberFormat;
-                    if (item.BaseQ4.HasValue)
-                        worksheet.Cells[rowcount, colcount].Value = (item.BaseQ4.Value);
-                    worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
-                    worksheet.Column(colcount).Width = dataWidth;
-                    worksheet.Cells[rowcount, colcount].Style.Fill.PatternType = ExcelFillStyle.Solid;
-                    worksheet.Cells[rowcount, colcount].Style.Fill.BackgroundColor.SetColor(colFromHexgrandTotal);
-                    worksheet.Cells[rowcount, colcount].Style.Font.Bold = true;
-                    worksheet.Cells[rowcount, colcount].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
-                    colcount++;
+                    var propertyName = $"Base{quarter}";
+                    var propertyInfo = item.GetType().GetProperty(propertyName);
 
-                }
+                    if (propertyInfo != null)
+                    {
+                        worksheet.Cells[rowcount, colcount].Style.Numberformat.Format = fullNumberFormat;
 
+                        var value = propertyInfo.GetValue(item) as decimal?;
+                        if (value.HasValue)
+                        {
+                            worksheet.Cells[rowcount, colcount].Value = value.Value;
+                        }
+
+                        worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+                        worksheet.Column(colcount).Width = dataWidth;
+                        worksheet.Cells[rowcount, colcount].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                        worksheet.Cells[rowcount, colcount].Style.Fill.BackgroundColor.SetColor(colFromHexgrandTotal);
+                        worksheet.Cells[rowcount, colcount].Style.Font.Bold = true;
+                        worksheet.Cells[rowcount, colcount].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+                        colcount++;
+                    }
+                }
+                
                 worksheet.Cells[rowcount, colcount].Style.Numberformat.Format = fullNumberFormat;
                 if (item.TotalBase.HasValue)
                     worksheet.Cells[rowcount, colcount].Value = (item.TotalBase.Value);
@@ -2200,57 +1800,32 @@ namespace TechnipFMC.Finapp.Business
                 {
                     colcount++;
 
-                    if (quarters.Contains("Q1"))
+                    foreach (var quarter in quarters)
                     {
-                        worksheet.Cells[rowcount, colcount].Style.Numberformat.Format = fullNumberFormat;
-                        if (itemGM.CS2Q1.HasValue)
-                            worksheet.Cells[rowcount, colcount].Value = (itemGM.CS2Q1.Value);
-                        worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
-                        worksheet.Column(colcount).Width = dataWidth;
-                        worksheet.Cells[rowcount, colcount].Style.Fill.PatternType = ExcelFillStyle.Solid;
-                        worksheet.Cells[rowcount, colcount].Style.Fill.BackgroundColor.SetColor(colFromHexgrandTotal);
-                        worksheet.Cells[rowcount, colcount].Style.Font.Bold = true;
-                        worksheet.Cells[rowcount, colcount].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
-                        colcount++;
-                    }
-                    if (quarters.Contains("Q2"))
-                    {
-                        worksheet.Cells[rowcount, colcount].Style.Numberformat.Format = fullNumberFormat;
-                        if (itemGM.CS2Q2.HasValue)
-                            worksheet.Cells[rowcount, colcount].Value = (itemGM.CS2Q2.Value);
-                        worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
-                        worksheet.Column(colcount).Width = dataWidth;
-                        worksheet.Cells[rowcount, colcount].Style.Fill.PatternType = ExcelFillStyle.Solid;
-                        worksheet.Cells[rowcount, colcount].Style.Fill.BackgroundColor.SetColor(colFromHexgrandTotal);
-                        worksheet.Cells[rowcount, colcount].Style.Font.Bold = true;
-                        worksheet.Cells[rowcount, colcount].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
-                        colcount++;
-                    }
-                    if (quarters.Contains("Q3"))
-                    {
-                        worksheet.Cells[rowcount, colcount].Style.Numberformat.Format = fullNumberFormat;
-                        if (itemGM.CS2Q3.HasValue)
-                            worksheet.Cells[rowcount, colcount].Value = (itemGM.CS2Q3.Value);
-                        worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
-                        worksheet.Column(colcount).Width = dataWidth;
-                        worksheet.Cells[rowcount, colcount].Style.Fill.PatternType = ExcelFillStyle.Solid;
-                        worksheet.Cells[rowcount, colcount].Style.Fill.BackgroundColor.SetColor(colFromHexgrandTotal);
-                        worksheet.Cells[rowcount, colcount].Style.Font.Bold = true;
-                        worksheet.Cells[rowcount, colcount].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
-                        colcount++;
-                    }
-                    if (quarters.Contains("Q4"))
-                    {
-                        worksheet.Cells[rowcount, colcount].Style.Numberformat.Format = fullNumberFormat;
-                        if (itemGM.CS2Q4.HasValue)
-                            worksheet.Cells[rowcount, colcount].Value = (itemGM.CS2Q4.Value);
-                        worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
-                        worksheet.Column(colcount).Width = dataWidth;
-                        worksheet.Cells[rowcount, colcount].Style.Fill.PatternType = ExcelFillStyle.Solid;
-                        worksheet.Cells[rowcount, colcount].Style.Fill.BackgroundColor.SetColor(colFromHexgrandTotal);
-                        worksheet.Cells[rowcount, colcount].Style.Font.Bold = true;
-                        worksheet.Cells[rowcount, colcount].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
-                        colcount++;
+                        if (quarters.Contains(quarter))
+                        {
+                            var propertyName = $"CS2{quarter}";
+                            var propertyInfo = itemGM.GetType().GetProperty(propertyName);
+
+                            if (propertyInfo != null)
+                            {
+                                worksheet.Cells[rowcount, colcount].Style.Numberformat.Format = fullNumberFormat;
+
+                                var value = propertyInfo.GetValue(itemGM) as decimal?;
+                                if (value.HasValue)
+                                {
+                                    worksheet.Cells[rowcount, colcount].Value = value.Value;
+                                }
+
+                                worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+                                worksheet.Column(colcount).Width = dataWidth;
+                                worksheet.Cells[rowcount, colcount].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                                worksheet.Cells[rowcount, colcount].Style.Fill.BackgroundColor.SetColor(colFromHexgrandTotal);
+                                worksheet.Cells[rowcount, colcount].Style.Font.Bold = true;
+                                worksheet.Cells[rowcount, colcount].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+                                colcount++;
+                            }
+                        }
                     }
 
                     worksheet.Cells[rowcount, colcount].Style.Numberformat.Format = fullNumberFormat;
@@ -2265,58 +1840,32 @@ namespace TechnipFMC.Finapp.Business
                     colcount++;
 
 
-                    if (quarters.Contains("Q1"))
+                    foreach (var quarter in quarters)
                     {
-                        worksheet.Cells[rowcount, colcount].Style.Numberformat.Format = fullNumberFormat;
-                        if (itemGM.CS1Q1.HasValue)
-                            worksheet.Cells[rowcount, colcount].Value = (itemGM.CS1Q1.Value);
-                        worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
-                        worksheet.Column(colcount).Width = dataWidth;
-                        worksheet.Cells[rowcount, colcount].Style.Fill.PatternType = ExcelFillStyle.Solid;
-                        worksheet.Cells[rowcount, colcount].Style.Fill.BackgroundColor.SetColor(colFromHexgrandTotal);
-                        worksheet.Cells[rowcount, colcount].Style.Font.Bold = true;
-                        worksheet.Cells[rowcount, colcount].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
-                        colcount++;
-                    }
-                    if (quarters.Contains("Q2"))
-                    {
-                        worksheet.Cells[rowcount, colcount].Style.Numberformat.Format = fullNumberFormat;
-                        if (itemGM.CS1Q2.HasValue)
-                            worksheet.Cells[rowcount, colcount].Value = (itemGM.CS1Q2.Value);
-                        worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
-                        worksheet.Column(colcount).Width = dataWidth;
-                        worksheet.Cells[rowcount, colcount].Style.Fill.PatternType = ExcelFillStyle.Solid;
-                        worksheet.Cells[rowcount, colcount].Style.Fill.BackgroundColor.SetColor(colFromHexgrandTotal);
-                        worksheet.Cells[rowcount, colcount].Style.Font.Bold = true;
-                        worksheet.Cells[rowcount, colcount].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
-                        colcount++;
-                    }
-                    if (quarters.Contains("Q3"))
-                    {
-                        worksheet.Cells[rowcount, colcount].Style.Numberformat.Format = fullNumberFormat;
-                        if (itemGM.CS1Q3.HasValue)
-                            worksheet.Cells[rowcount, colcount].Value = (itemGM.CS1Q3.Value);
-                        worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
-                        worksheet.Column(colcount).Width = dataWidth;
-                        worksheet.Cells[rowcount, colcount].Style.Fill.PatternType = ExcelFillStyle.Solid;
-                        worksheet.Cells[rowcount, colcount].Style.Fill.BackgroundColor.SetColor(colFromHexgrandTotal);
-                        worksheet.Cells[rowcount, colcount].Style.Font.Bold = true;
-                        worksheet.Cells[rowcount, colcount].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
-                        colcount++;
-                    }
-                    if (quarters.Contains("Q4"))
-                    {
-                        worksheet.Cells[rowcount, colcount].Style.Numberformat.Format = fullNumberFormat;
-                        if (itemGM.CS1Q4.HasValue)
-                            worksheet.Cells[rowcount, colcount].Value = (itemGM.CS1Q4.Value);
-                        worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
-                        worksheet.Column(colcount).Width = dataWidth;
-                        worksheet.Cells[rowcount, colcount].Style.Fill.PatternType = ExcelFillStyle.Solid;
-                        worksheet.Cells[rowcount, colcount].Style.Fill.BackgroundColor.SetColor(colFromHexgrandTotal);
-                        worksheet.Cells[rowcount, colcount].Style.Font.Bold = true;
-                        worksheet.Cells[rowcount, colcount].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
-                        colcount++;
+                        if (quarters.Contains(quarter))
+                        {
+                            var propertyName = $"CS1{quarter}";
+                            var propertyInfo = itemGM.GetType().GetProperty(propertyName);
 
+                            if (propertyInfo != null)
+                            {
+                                worksheet.Cells[rowcount, colcount].Style.Numberformat.Format = fullNumberFormat;
+
+                                var value = propertyInfo.GetValue(itemGM) as decimal?;
+                                if (value.HasValue)
+                                {
+                                    worksheet.Cells[rowcount, colcount].Value = value.Value;
+                                }
+
+                                worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+                                worksheet.Column(colcount).Width = dataWidth;
+                                worksheet.Cells[rowcount, colcount].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                                worksheet.Cells[rowcount, colcount].Style.Fill.BackgroundColor.SetColor(colFromHexgrandTotal);
+                                worksheet.Cells[rowcount, colcount].Style.Font.Bold = true;
+                                worksheet.Cells[rowcount, colcount].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+                                colcount++;
+                            }
+                        }
                     }
 
                     worksheet.Cells[rowcount, colcount].Style.Numberformat.Format = fullNumberFormat;
@@ -2330,58 +1879,32 @@ namespace TechnipFMC.Finapp.Business
                     worksheet.Cells[rowcount, colcount].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
                     colcount++;
 
-                    if (quarters.Contains("Q1"))
+                    foreach (var quarter in quarters)
                     {
-                        worksheet.Cells[rowcount, colcount].Style.Numberformat.Format = fullNumberFormat;
-                        if (itemGM.BaseQ1.HasValue)
-                            worksheet.Cells[rowcount, colcount].Value = (itemGM.BaseQ1.Value);
-                        worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
-                        worksheet.Column(colcount).Width = dataWidth;
-                        worksheet.Cells[rowcount, colcount].Style.Fill.PatternType = ExcelFillStyle.Solid;
-                        worksheet.Cells[rowcount, colcount].Style.Fill.BackgroundColor.SetColor(colFromHexgrandTotal);
-                        worksheet.Cells[rowcount, colcount].Style.Font.Bold = true;
-                        worksheet.Cells[rowcount, colcount].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
-                        colcount++;
-                    }
-                    if (quarters.Contains("Q2"))
-                    {
-                        worksheet.Cells[rowcount, colcount].Style.Numberformat.Format = fullNumberFormat;
-                        if (itemGM.BaseQ2.HasValue)
-                            worksheet.Cells[rowcount, colcount].Value = (itemGM.BaseQ2.Value);
-                        worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
-                        worksheet.Column(colcount).Width = dataWidth;
-                        worksheet.Cells[rowcount, colcount].Style.Fill.PatternType = ExcelFillStyle.Solid;
-                        worksheet.Cells[rowcount, colcount].Style.Fill.BackgroundColor.SetColor(colFromHexgrandTotal);
-                        worksheet.Cells[rowcount, colcount].Style.Font.Bold = true;
-                        worksheet.Cells[rowcount, colcount].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
-                        colcount++;
-                    }
-                    if (quarters.Contains("Q3"))
-                    {
-                        worksheet.Cells[rowcount, colcount].Style.Numberformat.Format = fullNumberFormat;
-                        if (itemGM.BaseQ3.HasValue)
-                            worksheet.Cells[rowcount, colcount].Value = (itemGM.BaseQ3.Value);
-                        worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
-                        worksheet.Column(colcount).Width = dataWidth;
-                        worksheet.Cells[rowcount, colcount].Style.Fill.PatternType = ExcelFillStyle.Solid;
-                        worksheet.Cells[rowcount, colcount].Style.Fill.BackgroundColor.SetColor(colFromHexgrandTotal);
-                        worksheet.Cells[rowcount, colcount].Style.Font.Bold = true;
-                        worksheet.Cells[rowcount, colcount].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
-                        colcount++;
-                    }
-                    if (quarters.Contains("Q4"))
-                    {
-                        worksheet.Cells[rowcount, colcount].Style.Numberformat.Format = fullNumberFormat;
-                        if (itemGM.BaseQ4.HasValue)
-                            worksheet.Cells[rowcount, colcount].Value = (itemGM.BaseQ4.Value);
-                        worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
-                        worksheet.Column(colcount).Width = dataWidth;
-                        worksheet.Cells[rowcount, colcount].Style.Fill.PatternType = ExcelFillStyle.Solid;
-                        worksheet.Cells[rowcount, colcount].Style.Fill.BackgroundColor.SetColor(colFromHexgrandTotal);
-                        worksheet.Cells[rowcount, colcount].Style.Font.Bold = true;
-                        worksheet.Cells[rowcount, colcount].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
-                        colcount++;
+                        if (quarters.Contains(quarter))
+                        {
+                            var propertyName = $"Base{quarter}";
+                            var propertyInfo = itemGM.GetType().GetProperty(propertyName);
 
+                            if (propertyInfo != null)
+                            {
+                                worksheet.Cells[rowcount, colcount].Style.Numberformat.Format = fullNumberFormat;
+
+                                var value = propertyInfo.GetValue(itemGM) as decimal?;
+                                if (value.HasValue)
+                                {
+                                    worksheet.Cells[rowcount, colcount].Value = value.Value;
+                                }
+
+                                worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+                                worksheet.Column(colcount).Width = dataWidth;
+                                worksheet.Cells[rowcount, colcount].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                                worksheet.Cells[rowcount, colcount].Style.Fill.BackgroundColor.SetColor(colFromHexgrandTotal);
+                                worksheet.Cells[rowcount, colcount].Style.Font.Bold = true;
+                                worksheet.Cells[rowcount, colcount].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+                                colcount++;
+                            }
+                        }
                     }
 
                     worksheet.Cells[rowcount, colcount].Style.Numberformat.Format = fullNumberFormat;
@@ -2430,17 +1953,18 @@ namespace TechnipFMC.Finapp.Business
             var quarters = config.Quarters.Split(',').OrderBy(c => c).ToList();
             var returnList = new ReportRepository().GetVarianceAnalysisReport(config);
             var groupName = "00";
-
+            var dataentryinterval = returnList[0].DataEntryInterval;
             Decimal? TotalBase = null;
             Decimal? TotalCS1 = null;
             Decimal? TotalCS2 = null;
 
-            Decimal? GroupBaseQ1 = null, GroupBaseQ2 = null, GroupBaseQ3 = null, GroupBaseQ4 = null, GroupBaseTotal = null;
-            Decimal? GroupCS1Q1 = null, GroupCS1Q2 = null, GroupCS1Q3 = null, GroupCS1Q4 = null, GroupCS1Total = null;
-            Decimal? GroupCS2Q1 = null, GroupCS2Q2 = null, GroupCS2Q3 = null, GroupCS2Q4 = null, GroupCS2Total = null;
-            Decimal? GrossBaseQ1 = null, GrossBaseQ2 = null, GrossBaseQ3 = null, GrossBaseQ4 = null, GrossBaseTotal = null;
-            Decimal? GrossCS1Q1 = null, GrossCS1Q2 = null, GrossCS1Q3 = null, GrossCS1Q4 = null, GrossCS1Total = null;
-            Decimal? GrossCS2Q1 = null, GrossCS2Q2 = null, GrossCS2Q3 = null, GrossCS2Q4 = null, GrossCS2Total = null;
+            Decimal? GroupBaseQ1 = null, GroupBaseQ2 = null, GroupBaseQ3 = null, GroupBaseQ4 = null, GroupBaseQ5 = null, GroupBaseQ6 = null, GroupBaseQ7 = null, GroupBaseQ8 = null, GroupBaseQ9 = null, GroupBaseQ10 = null, GroupBaseQ11 = null, GroupBaseQ12 = null, GroupBaseTotal = null;
+            Decimal? GroupCS1Q1 = null, GroupCS1Q2 = null, GroupCS1Q3 = null, GroupCS1Q4 = null, GroupCS1Q5 = null, GroupCS1Q6 = null, GroupCS1Q7 = null, GroupCS1Q8 = null, GroupCS1Q9 = null, GroupCS1Q10 = null, GroupCS1Q11 = null, GroupCS1Q12 = null, GroupCS1Total = null;
+            Decimal? GroupCS2Q1 = null, GroupCS2Q2 = null, GroupCS2Q3 = null, GroupCS2Q4 = null, GroupCS2Q5 = null, GroupCS2Q6 = null, GroupCS2Q7 = null, GroupCS2Q8 = null, GroupCS2Q9 = null, GroupCS2Q10 = null, GroupCS2Q11 = null, GroupCS2Q12 = null, GroupCS2Total = null;
+            Decimal? GrossBaseQ1 = null, GrossBaseQ2 = null, GrossBaseQ3 = null, GrossBaseQ4 = null, GrossBaseQ5 = null, GrossBaseQ6 = null, GrossBaseQ7 = null, GrossBaseQ8 = null, GrossBaseQ9 = null, GrossBaseQ10 = null, GrossBaseQ11 = null, GrossBaseQ12 = null, GrossBaseTotal = null;
+            Decimal? GrossCS1Q1 = null, GrossCS1Q2 = null, GrossCS1Q3 = null, GrossCS1Q4 = null, GrossCS1Q5 = null, GrossCS1Q6 = null, GrossCS1Q7 = null, GrossCS1Q8 = null, GrossCS1Q9 = null, GrossCS1Q10 = null, GrossCS1Q11 = null, GrossCS1Q12 = null, GrossCS1Total = null;
+            Decimal? GrossCS2Q1 = null, GrossCS2Q2 = null, GrossCS2Q3 = null, GrossCS2Q4 = null, GrossCS2Q5 = null, GrossCS2Q6 = null, GrossCS2Q7 = null, GrossCS2Q8 = null, GrossCS2Q9 = null, GrossCS2Q10 = null, GrossCS2Q11 = null, GrossCS2Q12 = null, GrossCS2Total = null;
+
 
             string baseScenario = "";
             string cs1 = "";
@@ -2491,42 +2015,79 @@ namespace TechnipFMC.Finapp.Business
                     }
                     if (config.SubTotalRequired == "Y")
                     {
-                        response.Add(
-                            new VarianceAnalysisResponse()
-                            {
-                                RecordType = "GroupTotal",
-                                ProjectNo = "SUBTOTAL " + _GroupingParametersName,
-                                BaseQ1 = GroupBaseQ1,
-                                BaseQ2 = GroupBaseQ2,
-                                BaseQ3 = GroupBaseQ3,
-                                BaseQ4 = GroupBaseQ4,
-                                TotalBase = GroupBaseTotal,
-                                CS1Q1 = GroupCS1Q1,
-                                CS1Q2 = GroupCS1Q2,
-                                CS1Q3 = GroupCS1Q3,
-                                CS1Q4 = GroupCS1Q4,
-                                TotalCS1 = GroupCS1Total,
-                                CS2Q1 = GroupCS2Q1,
-                                CS2Q2 = GroupCS2Q2,
-                                CS2Q3 = GroupCS2Q3,
-                                CS2Q4 = GroupCS2Q4,
-                                TotalCS2 = GroupCS2Total,
-                                Var1 = var11,
-                                Var2 = var22,
-                                OriginalProjectNo = _LastGroupingParametersCode,
-                                GroupingParametersCode = _LastGroupingParametersCode,
-                                OriginalProjectName = $"{item.ProjectNo} - {item.ProjectName}"
+                        var varianceResponse = new VarianceAnalysisResponse()
+                        {
+                            RecordType = "GroupTotal",
+                            ProjectNo = "SUBTOTAL " + _GroupingParametersName,
+                            BaseQ1 = GroupBaseQ1,
+                            BaseQ2 = GroupBaseQ2,
+                            BaseQ3 = GroupBaseQ3,
+                            BaseQ4 = GroupBaseQ4,
+                            TotalBase = GroupBaseTotal,
+                            CS1Q1 = GroupCS1Q1,
+                            CS1Q2 = GroupCS1Q2,
+                            CS1Q3 = GroupCS1Q3,
+                            CS1Q4 = GroupCS1Q4,
+                            TotalCS1 = GroupCS1Total,
+                            CS2Q1 = GroupCS2Q1,
+                            CS2Q2 = GroupCS2Q2,
+                            CS2Q3 = GroupCS2Q3,
+                            CS2Q4 = GroupCS2Q4,
+                            TotalCS2 = GroupCS2Total,
+                            Var1 = var11,
+                            Var2 = var22,
+                            OriginalProjectNo = _LastGroupingParametersCode,
+                            GroupingParametersCode = _LastGroupingParametersCode,
+                            OriginalProjectName = $"{item.ProjectNo} - {item.ProjectName}"
+                        };
 
-                            }
-                            );
+                        if (dataentryinterval == "Monthly")
+                        {
+                            // Adding properties for quarters Q5 to Q12
+                            varianceResponse.BaseQ5 = GroupBaseQ5;
+                            varianceResponse.BaseQ6 = GroupBaseQ6;
+                            varianceResponse.BaseQ7 = GroupBaseQ7;
+                            varianceResponse.BaseQ8 = GroupBaseQ8;
+                            varianceResponse.BaseQ9 = GroupBaseQ9;
+                            varianceResponse.BaseQ10 = GroupBaseQ10;
+                            varianceResponse.BaseQ11 = GroupBaseQ11;
+                            varianceResponse.BaseQ12 = GroupBaseQ12;
+
+                            varianceResponse.CS1Q5 = GroupCS1Q5;
+                            varianceResponse.CS1Q6 = GroupCS1Q6;
+                            varianceResponse.CS1Q7 = GroupCS1Q7;
+                            varianceResponse.CS1Q8 = GroupCS1Q8;
+                            varianceResponse.CS1Q9 = GroupCS1Q9;
+                            varianceResponse.CS1Q10 = GroupCS1Q10;
+                            varianceResponse.CS1Q11 = GroupCS1Q11;
+                            varianceResponse.CS1Q12 = GroupCS1Q12;
+
+                            varianceResponse.CS2Q5 = GroupCS2Q5;
+                            varianceResponse.CS2Q6 = GroupCS2Q6;
+                            varianceResponse.CS2Q7 = GroupCS2Q7;
+                            varianceResponse.CS2Q8 = GroupCS2Q8;
+                            varianceResponse.CS2Q9 = GroupCS2Q9;
+                            varianceResponse.CS2Q10 = GroupCS2Q10;
+                            varianceResponse.CS2Q11 = GroupCS2Q11;
+                            varianceResponse.CS2Q12 = GroupCS2Q12;
+                        }
+
+                        response.Add(varianceResponse);
                     }
+
 
                 }
                 if (IsGroupChanged)
                 {
-                    GroupBaseQ1 = null; GroupBaseQ2 = null; GroupBaseQ3 = null; GroupBaseQ4 = null; GroupBaseTotal = null;
-                    GroupCS1Q1 = null; GroupCS1Q2 = null; GroupCS1Q3 = null; GroupCS1Q4 = null; GroupCS1Total = null;
-                    GroupCS2Q1 = null; GroupCS2Q2 = null; GroupCS2Q3 = null; GroupCS2Q4 = null; GroupCS2Total = null;
+                    GroupBaseQ1 = null; GroupBaseQ2 = null; GroupBaseQ3 = null; GroupBaseQ4 = null; GroupBaseQ5 = null; GroupBaseQ6 = null; GroupBaseQ7 = null;
+                    GroupBaseQ8 = null; GroupBaseQ9 = null;  GroupBaseQ10 = null; GroupBaseQ11 = null; GroupBaseQ12 = null; GroupBaseTotal = null;
+
+                    GroupCS1Q1 = null;  GroupCS1Q2 = null;  GroupCS1Q3 = null;GroupCS1Q4 = null; GroupCS1Q5 = null; GroupCS1Q6 = null; GroupCS1Q7 = null;
+                    GroupCS1Q8 = null;  GroupCS1Q9 = null;  GroupCS1Q10 = null; GroupCS1Q11 = null;  GroupCS1Q12 = null;GroupCS1Total = null;
+
+                    GroupCS2Q1 = null; GroupCS2Q2 = null;  GroupCS2Q3 = null; GroupCS2Q4 = null; GroupCS2Q5 = null; GroupCS2Q6 = null; GroupCS2Q7 = null;
+                    GroupCS2Q8 = null; GroupCS2Q9 = null;  GroupCS2Q10 = null;  GroupCS2Q11 = null;  GroupCS2Q12 = null; GroupCS2Total = null;
+
                 }
                 //if (item.GroupingParametersCode == "")
                 //{
@@ -2536,527 +2097,216 @@ namespace TechnipFMC.Finapp.Business
                 //}
 
                 VarianceAnalysisResponse respItem = new VarianceAnalysisResponse();
-                if (quarters.Contains("Q1"))
-                {
-                    if (item.BaseQ1.HasValue)
-                    {
-                        if (TotalBase.HasValue)
-                            TotalBase += item.BaseQ1.Value;
-                        else
-                            TotalBase = item.BaseQ1.Value;
-                    }
-                    //TotalBase += (item.BaseQ1.HasValue == true ? item.BaseQ1.Value : item.BaseQ1);
-                    if (item.CS1Q1.HasValue)
-                    {
-                        if (TotalCS1.HasValue)
-                            TotalCS1 += item.CS1Q1.Value;
-                        else
-                            TotalCS1 = item.CS1Q1.Value;
-                    }
-                    //TotalCS1 += (item.CS1Q1.HasValue == true ? item.CS1Q1.Value : item.CS1Q1);
-                    if (item.CS2Q1.HasValue)
-                    {
-                        if (TotalCS2.HasValue)
-                            TotalCS2 += item.CS2Q1.Value;
-                        else
-                            TotalCS2 = item.CS2Q1.Value;
-                    }
-                    //TotalCS2 += (item.CS2Q1.HasValue == true ? item.CS2Q1.Value : item.CS2Q1);
-                    if (item.BaseQ1.HasValue)
-                    {
-                        if (GroupBaseQ1.HasValue)
-                            GroupBaseQ1 += item.BaseQ1.Value;
-                        else
-                            GroupBaseQ1 = item.BaseQ1.Value;
-                    }
-                    //GroupBaseQ1 += (item.BaseQ1.HasValue == true ? item.BaseQ1.Value : item.BaseQ1);
-                    if (item.CS1Q1.HasValue)
-                    {
-                        if (GroupCS1Q1.HasValue)
-                            GroupCS1Q1 += item.CS1Q1.Value;
-                        else
-                            GroupCS1Q1 = item.CS1Q1.Value;
-                    }
-                    //GroupCS1Q1 += (item.CS1Q1.HasValue == true ? item.CS1Q1.Value : item.CS1Q1);
-                    if (item.CS2Q1.HasValue)
-                    {
-                        if (GroupCS2Q1.HasValue)
-                            GroupCS2Q1 += item.CS2Q1.Value;
-                        else
-                            GroupCS2Q1 = item.CS2Q1.Value;
-                    }
-                    //GroupCS2Q1 += (item.CS2Q1.HasValue == true ? item.CS2Q1.Value : item.CS2Q1);
-                    if (item.BaseQ1.HasValue)
-                    {
-                        if (GroupBaseTotal.HasValue)
-                            GroupBaseTotal += item.BaseQ1.Value;
-                        else
-                            GroupBaseTotal = item.BaseQ1.Value;
-                    }
-                    // GroupBaseTotal += (item.BaseQ1.HasValue == true ? item.BaseQ1.Value : item.BaseQ1);
-                    if (item.CS1Q1.HasValue)
-                    {
-                        if (GroupCS1Total.HasValue)
-                            GroupCS1Total += item.CS1Q1.Value;
-                        else
-                            GroupCS1Total = item.CS1Q1.Value;
-                    }
-                    //GroupCS1Total += (item.CS1Q1.HasValue == true ? item.CS1Q1.Value : item.CS1Q1);
-                    if (item.CS2Q1.HasValue)
-                    {
-                        if (GroupCS2Total.HasValue)
-                            GroupCS2Total += item.CS2Q1.Value;
-                        else
-                            GroupCS2Total = item.CS2Q1.Value;
-                    }
-                    //GroupCS2Total += (item.CS2Q1.HasValue == true ? item.CS2Q1.Value : item.CS2Q1);
-                    if (item.BaseQ1.HasValue)
-                    {
-                        if (GrossBaseQ1.HasValue)
-                            GrossBaseQ1 += item.BaseQ1.Value;
-                        else
-                            GrossBaseQ1 = item.BaseQ1.Value;
-                    }
-                    //GrossBaseQ1 += (item.BaseQ1.HasValue == true ? item.BaseQ1.Value : item.BaseQ1);
-                    if (item.BaseQ1.HasValue)
-                    {
-                        if (GrossBaseTotal.HasValue)
-                            GrossBaseTotal += item.BaseQ1.Value;
-                        else
-                            GrossBaseTotal = item.BaseQ1.Value;
-                    }
-                    //GrossBaseTotal += (item.BaseQ1.HasValue == true ? item.BaseQ1.Value : item.BaseQ1);
-                    if (item.CS1Q1.HasValue)
-                    {
-                        if (GrossCS1Q1.HasValue)
-                            GrossCS1Q1 += item.CS1Q1.Value;
-                        else
-                            GrossCS1Q1 = item.CS1Q1.Value;
-                    }
-                    //GrossCS1Q1 += (item.CS1Q1.HasValue == true ? item.CS1Q1.Value : item.CS1Q1);
-                    if (item.CS1Q1.HasValue)
-                    {
-                        if (GrossCS1Total.HasValue)
-                            GrossCS1Total += item.CS1Q1.Value;
-                        else
-                            GrossCS1Total = item.CS1Q1.Value;
-                    }
-                    //GrossCS1Total += (item.CS1Q1.HasValue == true ? item.CS1Q1.Value : item.CS1Q1);
-                    if (item.CS2Q1.HasValue)
-                    {
-                        if (GrossCS2Q1.HasValue)
-                            GrossCS2Q1 += item.CS2Q1.Value;
-                        else
-                            GrossCS2Q1 = item.CS2Q1.Value;
-                    }
-                    //GrossCS2Q1 += (item.CS2Q1.HasValue == true ? item.CS2Q1.Value : item.CS2Q1);
-                    if (item.CS2Q1.HasValue)
-                    {
-                        if (GrossCS2Total.HasValue)
-                            GrossCS2Total += item.CS2Q1.Value;
-                        else
-                            GrossCS2Total = item.CS2Q1.Value;
-                    }
-                    //GrossCS2Total += (item.CS2Q1.HasValue == true ? item.CS2Q1.Value : item.CS2Q1);
-                }
-                else
-                {
-                    item.BaseQ1 = null;
-                    item.CS1Q1 = null;
-                    item.CS2Q1 = null;
-                }
-                if (quarters.Contains("Q2"))
-                {
-                    if (item.BaseQ2.HasValue)
-                    {
-                        if (TotalBase.HasValue)
-                            TotalBase += item.BaseQ2.Value;
-                        else
-                            TotalBase = item.BaseQ2.Value;
-                    }
-                    //TotalBase += (item.BaseQ2.HasValue == true ? item.BaseQ2.Value : item.BaseQ2);
-                    if (item.CS1Q2.HasValue)
-                    {
-                        if (TotalCS1.HasValue)
-                            TotalCS1 += item.CS1Q2.Value;
-                        else
-                            TotalCS1 = item.CS1Q2.Value;
-                    }
-                    //TotalCS1 += (item.CS1Q2.HasValue == true ? item.CS1Q2.Value : item.CS1Q2);
-                    if (item.CS2Q2.HasValue)
-                    {
-                        if (TotalCS2.HasValue)
-                            TotalCS2 += item.CS2Q2.Value;
-                        else
-                            TotalCS2 = item.CS2Q2.Value;
-                    }
-                    //TotalCS2 += (item.CS2Q2.HasValue == true ? item.CS2Q2.Value : item.CS2Q2);
-                    if (item.BaseQ2.HasValue)
-                    {
-                        if (GroupBaseQ2.HasValue)
-                            GroupBaseQ2 += item.BaseQ2.Value;
-                        else
-                            GroupBaseQ2 = item.BaseQ2.Value;
-                    }
-                    //GroupBaseQ2 += (item.BaseQ2.HasValue == true ? item.BaseQ2.Value : item.BaseQ2);
-                    if (item.CS1Q2.HasValue)
-                    {
-                        if (GroupCS1Q2.HasValue)
-                            GroupCS1Q2 += item.CS1Q2.Value;
-                        else
-                            GroupCS1Q2 = item.CS1Q2.Value;
-                    }
-                    //GroupCS1Q2 += (item.CS1Q2.HasValue == true ? item.CS1Q2.Value : item.CS1Q2);
-                    if (item.CS2Q2.HasValue)
-                    {
-                        if (GroupCS2Q2.HasValue)
-                            GroupCS2Q2 += item.CS2Q2.Value;
-                        else
-                            GroupCS2Q2 = item.CS2Q2.Value;
-                    }
-                    //GroupCS2Q2 += (item.CS2Q2.HasValue == true ? item.CS2Q2.Value : item.CS2Q2);
-                    if (item.BaseQ2.HasValue)
-                    {
-                        if (GroupBaseTotal.HasValue)
-                            GroupBaseTotal += item.BaseQ2.Value;
-                        else
-                            GroupBaseTotal = item.BaseQ2.Value;
-                    }
-                    //GroupBaseTotal += (item.BaseQ2.HasValue == true ? item.BaseQ2.Value : item.BaseQ2);
-                    if (item.CS1Q2.HasValue)
-                    {
-                        if (GroupCS1Total.HasValue)
-                            GroupCS1Total += item.CS1Q2.Value;
-                        else
-                            GroupCS1Total = item.CS1Q2.Value;
-                    }
-                    //GroupCS1Total += (item.CS1Q2.HasValue == true ? item.CS1Q2.Value : item.CS1Q2);
-                    if (item.CS2Q2.HasValue)
-                    {
-                        if (GroupCS2Total.HasValue)
-                            GroupCS2Total += item.CS2Q2.Value;
-                        else
-                            GroupCS2Total = item.CS2Q2.Value;
-                    }
-                    //GroupCS2Total += (item.CS2Q2.HasValue == true ? item.CS2Q2.Value : item.CS2Q2);
-                    if (item.BaseQ2.HasValue)
-                    {
-                        if (GrossBaseQ2.HasValue)
-                            GrossBaseQ2 += item.BaseQ2.Value;
-                        else
-                            GrossBaseQ2 = item.BaseQ2.Value;
-                    }
-                    //GrossBaseQ2 += (item.BaseQ2.HasValue == true ? item.BaseQ2.Value : item.BaseQ2);
-                    if (item.BaseQ2.HasValue)
-                    {
-                        if (GrossBaseTotal.HasValue)
-                            GrossBaseTotal += item.BaseQ2.Value;
-                        else
-                            GrossBaseTotal = item.BaseQ2.Value;
-                    }
-                    //GrossBaseTotal += (item.BaseQ2.HasValue == true ? item.BaseQ2.Value : item.BaseQ2);
-                    if (item.CS1Q2.HasValue)
-                    {
-                        if (GrossCS1Q2.HasValue)
-                            GrossCS1Q2 += item.CS1Q2.Value;
-                        else
-                            GrossCS1Q2 = item.CS1Q2.Value;
-                    }
-                    //GrossCS1Q2 += (item.CS1Q2.HasValue == true ? item.CS1Q2.Value : item.CS1Q2);
-                    if (item.CS1Q2.HasValue)
-                    {
-                        if (GrossCS1Total.HasValue)
-                            GrossCS1Total += item.CS1Q2.Value;
-                        else
-                            GrossCS1Total = item.CS1Q2.Value;
-                    }
-                    //GrossCS1Total += (item.CS1Q2.HasValue == true ? item.CS1Q2.Value : item.CS1Q2);
-                    if (item.CS2Q2.HasValue)
-                    {
-                        if (GrossCS2Q2.HasValue)
-                            GrossCS2Q2 += item.CS2Q2.Value;
-                        else
-                            GrossCS2Q2 = item.CS2Q2.Value;
-                    }
-                    //GrossCS2Q2 += (item.CS2Q2.HasValue == true ? item.CS2Q2.Value : item.CS2Q2);
-                    if (item.CS2Q2.HasValue)
-                    {
-                        if (GrossCS2Total.HasValue)
-                            GrossCS2Total += item.CS2Q2.Value;
-                        else
-                            GrossCS2Total = item.CS2Q2.Value;
-                    }
-                    //GrossCS2Total += (item.CS2Q2.HasValue == true ? item.CS2Q2.Value : item.CS2Q2);
+                
 
-                }
-                else
-                {
-                    item.BaseQ2 = null;
-                    item.CS1Q2 = null;
-                    item.CS2Q2 = null;
-                }
-                if (quarters.Contains("Q3"))
-                {
-                    if (item.BaseQ3.HasValue)
-                    {
-                        if (TotalBase.HasValue)
-                            TotalBase += item.BaseQ3.Value;
-                        else
-                            TotalBase = item.BaseQ3.Value;
-                    }
-                    //TotalBase += (item.BaseQ3.HasValue == true ? item.BaseQ3.Value : item.BaseQ3);
-                    if (item.CS1Q3.HasValue)
-                    {
-                        if (TotalCS1.HasValue)
-                            TotalCS1 += item.CS1Q3.Value;
-                        else
-                            TotalCS1 = item.CS1Q3.Value;
-                    }
-                    //TotalCS1 += (item.CS1Q3.HasValue == true ? item.CS1Q3.Value : item.CS1Q3);
-                    if (item.CS2Q3.HasValue)
-                    {
-                        if (TotalCS2.HasValue)
-                            TotalCS2 += item.CS2Q3.Value;
-                        else
-                            TotalCS2 = item.CS2Q3.Value;
-                    }
-                    //TotalCS2 += (item.CS2Q3.HasValue == true ? item.CS2Q3.Value : item.CS2Q3);
-                    if (item.BaseQ3.HasValue)
-                    {
-                        if (GroupBaseQ3.HasValue)
-                            GroupBaseQ3 += item.BaseQ3.Value;
-                        else
-                            GroupBaseQ3 = item.BaseQ3.Value;
-                    }
-                    //GroupBaseQ3 += (item.BaseQ3.HasValue == true ? item.BaseQ3.Value : item.BaseQ3);
-                    if (item.CS1Q3.HasValue)
-                    {
-                        if (GroupCS1Q3.HasValue)
-                            GroupCS1Q3 += item.CS1Q3.Value;
-                        else
-                            GroupCS1Q3 = item.CS1Q3.Value;
-                    }
-                    //GroupCS1Q3 += (item.CS1Q3.HasValue == true ? item.CS1Q3.Value : item.CS1Q3);
-                    if (item.CS2Q3.HasValue)
-                    {
-                        if (GroupCS2Q3.HasValue)
-                            GroupCS2Q3 += item.CS2Q3.Value;
-                        else
-                            GroupCS2Q3 = item.CS2Q3.Value;
-                    }
-                    //GroupCS2Q3 += (item.CS2Q3.HasValue == true ? item.CS2Q3.Value : item.CS2Q3);
-                    if (item.BaseQ3.HasValue)
-                    {
-                        if (GroupBaseTotal.HasValue)
-                            GroupBaseTotal += item.BaseQ3.Value;
-                        else
-                            GroupBaseTotal = item.BaseQ3.Value;
-                    }
-                    //GroupBaseTotal += (item.BaseQ3.HasValue == true ? item.BaseQ3.Value : item.BaseQ3);
-                    if (item.CS1Q3.HasValue)
-                    {
-                        if (GroupCS1Total.HasValue)
-                            GroupCS1Total += item.CS1Q3.Value;
-                        else
-                            GroupCS1Total = item.CS1Q3.Value;
-                    }
-                    //GroupCS1Total += (item.CS1Q3.HasValue == true ? item.CS1Q3.Value : item.CS1Q3);
-                    if (item.CS2Q3.HasValue)
-                    {
-                        if (GroupCS2Total.HasValue)
-                            GroupCS2Total += item.CS2Q3.Value;
-                        else
-                            GroupCS2Total = item.CS2Q3.Value;
-                    }
-                    //GroupCS2Total += (item.CS2Q3.HasValue == true ? item.CS2Q3.Value : item.CS2Q3);
-                    if (item.BaseQ3.HasValue)
-                    {
-                        if (GrossBaseQ3.HasValue)
-                            GrossBaseQ3 += item.BaseQ3.Value;
-                        else
-                            GrossBaseQ3 = item.BaseQ3.Value;
-                    }
-                    //GrossBaseQ3 += (item.BaseQ3.HasValue == true ? item.BaseQ3.Value : item.BaseQ3);
-                    if (item.BaseQ3.HasValue)
-                    {
-                        if (GrossBaseTotal.HasValue)
-                            GrossBaseTotal += item.BaseQ3.Value;
-                        else
-                            GrossBaseTotal = item.BaseQ3.Value;
-                    }
-                    //GrossBaseTotal += (item.BaseQ3.HasValue == true ? item.BaseQ3.Value : item.BaseQ3);
-                    if (item.CS1Q3.HasValue)
-                    {
-                        if (GrossCS1Q3.HasValue)
-                            GrossCS1Q3 += item.CS1Q3.Value;
-                        else
-                            GrossCS1Q3 = item.CS1Q3.Value;
-                    }
-                    //GrossCS1Q3 += (item.CS1Q3.HasValue == true ? item.CS1Q3.Value : item.CS1Q3);
-                    if (item.CS1Q3.HasValue)
-                    {
-                        if (GrossCS1Total.HasValue)
-                            GrossCS1Total += item.CS1Q3.Value;
-                        else
-                            GrossCS1Total = item.CS1Q3.Value;
-                    }
-                    //GrossCS1Total += (item.CS1Q3.HasValue == true ? item.CS1Q3.Value : item.CS1Q3);
-                    if (item.CS2Q3.HasValue)
-                    {
-                        if (GrossCS2Q3.HasValue)
-                            GrossCS2Q3 += item.CS2Q3.Value;
-                        else
-                            GrossCS2Q3 = item.CS2Q3.Value;
-                    }
-                    //GrossCS2Q3 += (item.CS2Q3.HasValue == true ? item.CS2Q3.Value : item.CS2Q3);
-                    if (item.CS2Q3.HasValue)
-                    {
-                        if (GrossCS2Total.HasValue)
-                            GrossCS2Total += item.CS2Q3.Value;
-                        else
-                            GrossCS2Total = item.CS2Q3.Value;
-                    }
-                    //GrossCS2Total += (item.CS2Q3.HasValue == true ? item.CS2Q3.Value : item.CS2Q3);
+                // List of property names to process for each quarter
+                var propertyNames = new[] { "Base", "CS1", "CS2" };
 
+                // Dictionary to hold the total values
+                var totalValues = new Dictionary<string, decimal?>
+        {
+    { "TotalBase", null },
+    { "TotalCS1", null },
+    { "TotalCS2", null },
+    { "GroupBaseQ1", null },
+    { "GroupBaseQ2", null },
+  { "GroupBaseQ3", null },
+  { "GroupBaseQ4", null },
+  { "GroupBaseQ5", null },
+  { "GroupBaseQ6", null },
+  { "GroupBaseQ7", null },
+  { "GroupBaseQ8", null },
+  { "GroupBaseQ9", null },
+  { "GroupBaseQ10", null },
+  { "GroupBaseQ11", null },
+  { "GroupBaseQ12", null },
+    { "GroupCS1Q1", null },
+    { "GroupCS1Q2", null },
+    { "GroupCS1Q3", null },
+    { "GroupCS1Q4", null },
+    { "GroupCS1Q5", null },
+    { "GroupCS1Q6", null },
+    { "GroupCS1Q7", null },
+    { "GroupCS1Q8", null },
+    { "GroupCS1Q9", null },
+    { "GroupCS1Q10", null },
+    { "GroupCS1Q11", null },
+    { "GroupCS1Q12", null },
+    { "GroupCS2Q1", null },
+    { "GroupCS2Q2", null },
+    { "GroupCS2Q3", null },
+    { "GroupCS2Q4", null },
+    { "GroupCS2Q5", null },
+    { "GroupCS2Q6", null },
+    { "GroupCS2Q7", null },
+    { "GroupCS2Q8", null },
+    { "GroupCS2Q9", null },
+    { "GroupCS2Q10", null },
+    { "GroupCS2Q11", null },
+    { "GroupCS2Q12", null },
+    { "GroupBaseTotal", null },
+    { "GroupCS1Total", null },
+    { "GroupCS2Total", null },
+     { "GrossBaseQ1", null },
+    { "GrossBaseQ2", null },
+    { "GrossBaseQ3", null },
+    { "GrossBaseQ4", null },
+    { "GrossBaseQ5", null },
+    { "GrossBaseQ6", null },
+    { "GrossBaseQ7", null },
+    { "GrossBaseQ8", null },
+    { "GrossBaseQ9", null },
+    { "GrossBaseQ10", null },
+    { "GrossBaseQ11", null },
+    { "GrossBaseQ12", null },
+    { "GrossCS1Q1", null },
+    { "GrossCS1Q2", null },
+    { "GrossCS1Q3", null },
+    { "GrossCS1Q4", null },
+    { "GrossCS1Q5", null },
+    { "GrossCS1Q6", null },
+    { "GrossCS1Q7", null },
+    { "GrossCS1Q8", null },
+    { "GrossCS1Q9", null },
+    { "GrossCS1Q10", null },
+    { "GrossCS1Q11", null },
+    { "GrossCS1Q12", null },
+    { "GrossCS2Q1", null },
+    { "GrossCS2Q2", null },
+    { "GrossCS2Q3", null },
+    { "GrossCS2Q4", null },
+    { "GrossCS2Q5", null },
+    { "GrossCS2Q6", null },
+    { "GrossCS2Q7", null },
+    { "GrossCS2Q8", null },
+    { "GrossCS2Q9", null },
+    { "GrossCS2Q10", null },
+    { "GrossCS2Q11", null },
+    { "GrossCS2Q12", null },
+    { "GrossBaseTotal", null },
+    { "GrossCS1Total", null },
+    { "GrossCS2Total", null }
+};
 
-                }
-                else
+                foreach (var quarter in quarters)
                 {
-                    item.BaseQ3 = null;
-                    item.CS1Q3 = null;
-                    item.CS2Q3 = null;
-                }
-                if (quarters.Contains("Q4"))
-                {
-                    if (item.BaseQ4.HasValue)
-                    {
-                        if (TotalBase.HasValue)
-                            TotalBase += item.BaseQ4.Value;
-                        else
-                            TotalBase = item.BaseQ4.Value;
-                    }
-                    //TotalBase += (item.BaseQ4.HasValue == true ? item.BaseQ4.Value : item.BaseQ4);
-                    if (item.CS1Q4.HasValue)
-                    {
-                        if (TotalCS1.HasValue)
-                            TotalCS1 += item.CS1Q4.Value;
-                        else
-                            TotalCS1 = item.CS1Q4.Value;
-                    }
-                    //TotalCS1 += (item.CS1Q4.HasValue == true ? item.CS1Q4.Value : item.CS1Q4);
-                    if (item.CS2Q4.HasValue)
-                    {
-                        if (TotalCS2.HasValue)
-                            TotalCS2 += item.CS2Q4.Value;
-                        else
-                            TotalCS2 = item.CS2Q4.Value;
-                    }
-                    //TotalCS2 += (item.CS2Q4.HasValue == true ? item.CS2Q4.Value : item.CS2Q4);
-                    if (item.BaseQ4.HasValue)
-                    {
-                        if (GroupBaseQ4.HasValue)
-                            GroupBaseQ4 += item.BaseQ4.Value;
-                        else
-                            GroupBaseQ4 = item.BaseQ4.Value;
-                    }
-                    //GroupBaseQ4 += (item.BaseQ4.HasValue == true ? item.BaseQ4.Value : item.BaseQ4);
-                    if (item.CS1Q4.HasValue)
-                    {
-                        if (GroupCS1Q4.HasValue)
-                            GroupCS1Q4 += item.CS1Q4.Value;
-                        else
-                            GroupCS1Q4 = item.CS1Q4.Value;
-                    }
-                    //GroupCS1Q4 += (item.CS1Q4.HasValue == true ? item.CS1Q4.Value : item.CS1Q4);
-                    if (item.CS2Q4.HasValue)
-                    {
-                        if (GroupCS2Q4.HasValue)
-                            GroupCS2Q4 += item.CS2Q4.Value;
-                        else
-                            GroupCS2Q4 = item.CS2Q4.Value;
-                    }
-                    //GroupCS2Q4 += (item.CS2Q4.HasValue == true ? item.CS2Q4.Value : item.CS2Q4);
-                    if (item.BaseQ4.HasValue)
-                    {
-                        if (GroupBaseTotal.HasValue)
-                            GroupBaseTotal += item.BaseQ4.Value;
-                        else
-                            GroupBaseTotal = item.BaseQ4.Value;
-                    }
-                    //GroupBaseTotal += (item.BaseQ4.HasValue == true ? item.BaseQ4.Value : item.BaseQ4);
-                    if (item.CS1Q4.HasValue)
-                    {
-                        if (GroupCS1Total.HasValue)
-                            GroupCS1Total += item.CS1Q4.Value;
-                        else
-                            GroupCS1Total = item.CS1Q4.Value;
-                    }
-                    //GroupCS1Total += (item.CS1Q4.HasValue == true ? item.CS1Q4.Value : item.CS1Q4);
-                    if (item.CS2Q4.HasValue)
-                    {
-                        if (GroupCS2Total.HasValue)
-                            GroupCS2Total += item.CS2Q4.Value;
-                        else
-                            GroupCS2Total = item.CS2Q4.Value;
-                    }
-                    //GroupCS2Total += (item.CS2Q4.HasValue == true ? item.CS2Q4.Value : item.CS2Q4);
-                    if (item.BaseQ4.HasValue)
-                    {
-                        if (GrossBaseQ4.HasValue)
-                            GrossBaseQ4 += item.BaseQ4.Value;
-                        else
-                            GrossBaseQ4 = item.BaseQ4.Value;
-                    }
-                    //GrossBaseQ4 += (item.BaseQ4.HasValue == true ? item.BaseQ4.Value : item.BaseQ4);
-                    if (item.BaseQ4.HasValue)
-                    {
-                        if (GrossBaseTotal.HasValue)
-                            GrossBaseTotal += item.BaseQ4.Value;
-                        else
-                            GrossBaseTotal = item.BaseQ4.Value;
-                    }
-                    //GrossBaseTotal += (item.BaseQ4.HasValue == true ? item.BaseQ4.Value : item.BaseQ4);
-                    if (item.CS1Q4.HasValue)
-                    {
-                        if (GrossCS1Q4.HasValue)
-                            GrossCS1Q4 += item.CS1Q4.Value;
-                        else
-                            GrossCS1Q4 = item.CS1Q4.Value;
-                    }
-                    //GrossCS1Q4 += (item.CS1Q4.HasValue == true ? item.CS1Q4.Value : item.CS1Q4);
-                    if (item.CS1Q4.HasValue)
-                    {
-                        if (GrossCS1Total.HasValue)
-                            GrossCS1Total += item.CS1Q4.Value;
-                        else
-                            GrossCS1Total = item.CS1Q4.Value;
-                    }
-                    //GrossCS1Total += (item.CS1Q4.HasValue == true ? item.CS1Q4.Value : item.CS1Q4);
-                    if (item.CS2Q4.HasValue)
-                    {
-                        if (GrossCS2Q4.HasValue)
-                            GrossCS2Q4 += item.CS2Q4.Value;
-                        else
-                            GrossCS2Q4 = item.CS2Q4.Value;
-                    }
-                    //GrossCS2Q4 += (item.CS2Q4.HasValue == true ? item.CS2Q4.Value : item.CS2Q4);
-                    if (item.CS2Q4.HasValue)
-                    {
-                        if (GrossCS2Total.HasValue)
-                            GrossCS2Total += item.CS2Q4.Value;
-                        else
-                            GrossCS2Total = item.CS2Q4.Value;
-                    }
-                    //GrossCS2Total += (item.CS2Q4.HasValue == true ? item.CS2Q4.Value : item.CS2Q4);
-                }
-                else
-                {
-                    item.BaseQ4 = null;
-                    item.CS1Q4 = null;
-                    item.CS2Q4 = null;
-                }
+                    if (!quarters.Contains(quarter)) continue;
 
+                    foreach (var propertyName in propertyNames)
+                    {
+                        var quarterProperty = $"{propertyName}{quarter}";
+                        var itemQuarterValue = item.GetType().GetProperty(quarterProperty)?.GetValue(item) as decimal?;
 
+                        if (itemQuarterValue.HasValue)
+                        {
+                            // Update Total values
+                            var totalProperty = $"Total{propertyName}";
+                            totalValues[totalProperty] = totalValues [totalProperty].HasValue ? totalValues[totalProperty] + itemQuarterValue : itemQuarterValue;
+
+                            // Update Group values for the specific quarter
+                            var groupQuarterProperty = $"Group{propertyName}{quarter}";
+                            totalValues[groupQuarterProperty] = totalValues[groupQuarterProperty].HasValue ? totalValues[groupQuarterProperty] + itemQuarterValue : itemQuarterValue;
+
+                            // Update Group Total values
+                            var groupTotalProperty = $"Group{propertyName}Total";
+                            totalValues[groupTotalProperty] = totalValues[groupTotalProperty].HasValue ? totalValues[groupTotalProperty] + itemQuarterValue : itemQuarterValue;
+
+                            // Update Gross values for the specific quarter
+                            var grossQuarterProperty = $"Gross{propertyName}{quarter}";
+                            totalValues[grossQuarterProperty] = totalValues[grossQuarterProperty].HasValue ? totalValues[grossQuarterProperty] + itemQuarterValue : itemQuarterValue;
+
+                            // Update Gross Total values
+                            var grossTotalProperty = $"Gross{propertyName}Total";
+                            totalValues[grossTotalProperty] = totalValues[grossTotalProperty].HasValue ? totalValues[grossTotalProperty] + itemQuarterValue : itemQuarterValue;
+                        }
+                        else
+                        {
+                            // Set the item's quarter property to null if no value is present
+                            item.GetType().GetProperty(quarterProperty)?.SetValue(item, null);
+                        }
+                    }
+                }
+                TotalBase = totalValues["TotalBase"];
+                TotalCS1 = totalValues["TotalCS1"];
+                TotalCS2 = totalValues["TotalCS2"];
+                GroupBaseQ1 = totalValues["GroupBaseQ1"];
+                GroupBaseQ2 = totalValues["GroupBaseQ2"];
+                GroupBaseQ3 = totalValues["GroupBaseQ3"];
+                GroupBaseQ4 = totalValues["GroupBaseQ4"];
+                GroupBaseQ5 = totalValues["GroupBaseQ5"];
+                GroupBaseQ6 = totalValues["GroupBaseQ6"];
+                GroupBaseQ7 = totalValues["GroupBaseQ7"];
+                GroupBaseQ8 = totalValues["GroupBaseQ8"];
+                GroupBaseQ9 = totalValues["GroupBaseQ9"];
+                GroupBaseQ10 = totalValues["GroupBaseQ10"];
+                GroupBaseQ11 = totalValues["GroupBaseQ11"];
+                GroupBaseQ12 = totalValues["GroupBaseQ12"];
+                GroupCS1Q1 = totalValues["GroupCS1Q1"];
+                GroupCS1Q2 = totalValues["GroupCS1Q2"];
+                GroupCS1Q3 = totalValues["GroupCS1Q3"];
+                GroupCS1Q4 = totalValues["GroupCS1Q4"];
+                GroupCS1Q5 = totalValues["GroupCS1Q5"];
+                GroupCS1Q6 = totalValues["GroupCS1Q6"];
+                GroupCS1Q7 = totalValues["GroupCS1Q7"];
+                GroupCS1Q8 = totalValues["GroupCS1Q8"];
+                GroupCS1Q9 = totalValues["GroupCS1Q9"];
+                GroupCS1Q10 = totalValues["GroupCS1Q10"];
+                GroupCS1Q11 = totalValues["GroupCS1Q11"];
+                GroupCS1Q12 = totalValues["GroupCS1Q12"];
+                GroupCS2Q1 = totalValues["GroupCS2Q1"];
+                GroupCS2Q2 = totalValues["GroupCS2Q2"];
+                GroupCS2Q3 = totalValues["GroupCS2Q3"];
+                GroupCS2Q4 = totalValues["GroupCS2Q4"];
+                GroupCS2Q5 = totalValues["GroupCS2Q5"];
+                GroupCS2Q6 = totalValues["GroupCS2Q6"];
+                GroupCS2Q7 = totalValues["GroupCS2Q7"];
+                GroupCS2Q8 = totalValues["GroupCS2Q8"];
+                GroupCS2Q9 = totalValues["GroupCS2Q9"];
+                GroupCS2Q10 = totalValues["GroupCS2Q10"];
+                GroupCS2Q11 = totalValues["GroupCS2Q11"];
+                GroupCS2Q12 = totalValues["GroupCS2Q12"];
+                GroupBaseTotal = totalValues["GroupBaseTotal"];
+                GroupCS1Total = totalValues["GroupCS1Total"];
+                GroupCS2Total = totalValues["GroupCS2Total"];
+                GrossBaseQ1 = totalValues["GrossBaseQ1"];
+                GrossBaseQ2 = totalValues["GrossBaseQ2"];
+                GrossBaseQ3 = totalValues["GrossBaseQ3"];
+                GrossBaseQ4 = totalValues["GrossBaseQ4"];
+                GrossBaseQ5 = totalValues["GrossBaseQ5"];
+                GrossBaseQ6 = totalValues["GrossBaseQ6"];
+                GrossBaseQ7 = totalValues["GrossBaseQ7"];
+                GrossBaseQ8 = totalValues["GrossBaseQ8"];
+                GrossBaseQ9 = totalValues["GrossBaseQ9"];
+                GrossBaseQ10 = totalValues["GrossBaseQ10"];
+                GrossBaseQ11 = totalValues["GrossBaseQ11"];
+                GrossBaseQ12 = totalValues["GrossBaseQ12"];
+                GrossCS1Q1 = totalValues["GrossCS1Q1"];
+                GrossCS1Q2 = totalValues["GrossCS1Q2"];
+                GrossCS1Q3 = totalValues["GrossCS1Q3"];
+                GrossCS1Q4 = totalValues["GrossCS1Q4"];
+                GrossCS1Q5 = totalValues["GrossCS1Q5"];
+                GrossCS1Q6 = totalValues["GrossCS1Q6"];
+                GrossCS1Q7 = totalValues["GrossCS1Q7"];
+                GrossCS1Q8 = totalValues["GrossCS1Q8"];
+                GrossCS1Q9 = totalValues["GrossCS1Q9"];
+                GrossCS1Q10 = totalValues["GrossCS1Q10"];
+                GrossCS1Q11 = totalValues["GrossCS1Q11"];
+                GrossCS1Q12 = totalValues["GrossCS1Q12"];
+                GrossCS2Q1 = totalValues["GrossCS2Q1"];
+                GrossCS2Q2 = totalValues["GrossCS2Q2"];
+                GrossCS2Q3 = totalValues["GrossCS2Q3"];
+                GrossCS2Q4 = totalValues["GrossCS2Q4"];
+                GrossCS2Q5 = totalValues["GrossCS2Q5"];
+                GrossCS2Q6 = totalValues["GrossCS2Q6"];
+                GrossCS2Q7 = totalValues["GrossCS2Q7"];
+                GrossCS2Q8 = totalValues["GrossCS2Q8"];
+                GrossCS2Q9 = totalValues["GrossCS2Q9"];
+                GrossCS2Q10 = totalValues["GrossCS2Q10"];
+                GrossCS2Q11 = totalValues["GrossCS2Q11"];
+                GrossCS2Q12 = totalValues["GrossCS2Q12"];
+                GrossBaseTotal = totalValues["GrossBaseTotal"];
+                GrossCS1Total = totalValues["GrossCS1Total"];
+                GrossCS2Total = totalValues["GrossCS2Total"];
                 Decimal? var1 = null;
                 Decimal? var2 = null;
                 if (TotalBase.HasValue)
@@ -3095,7 +2345,7 @@ namespace TechnipFMC.Finapp.Business
             }
             if (groupName != "")
             {
-
+                
                 Decimal? var11 = null;
                 Decimal? var22 = null;
                 if (GroupBaseTotal.HasValue)
@@ -3116,34 +2366,64 @@ namespace TechnipFMC.Finapp.Business
                 }
                 if (config.SubTotalRequired == "Y")
                 {
-                    response.Add(
-                        new VarianceAnalysisResponse()
-                        {
-                            RecordType = "GroupTotal",
-                            ProjectNo = "SUBTOTAL " + _GroupingParametersName,
-                            BaseQ1 = GroupBaseQ1,
-                            BaseQ2 = GroupBaseQ2,
-                            BaseQ3 = GroupBaseQ3,
-                            BaseQ4 = GroupBaseQ4,
-                            TotalBase = GroupBaseTotal,
-                            CS1Q1 = GroupCS1Q1,
-                            CS1Q2 = GroupCS1Q2,
-                            CS1Q3 = GroupCS1Q3,
-                            CS1Q4 = GroupCS1Q4,
-                            TotalCS1 = GroupCS1Total,
-                            CS2Q1 = GroupCS2Q1,
-                            CS2Q2 = GroupCS2Q2,
-                            CS2Q3 = GroupCS2Q3,
-                            CS2Q4 = GroupCS2Q4,
-                            TotalCS2 = GroupCS2Total,
-                            Var1 = var11,
-                            Var2 = var22,
-                            OriginalProjectNo = _LastGroupingParametersCode,
-                            GroupingParametersCode = _LastGroupingParametersCode,
-                            OriginalProjectName = $"{_ProjectNo} - {_ProjectName}"
+                    var varianceResponse = new VarianceAnalysisResponse()
+                    {
+                        RecordType = "GroupTotal",
+                        ProjectNo = "SUBTOTAL " + _GroupingParametersName,
+                        BaseQ1 = GroupBaseQ1,
+                        BaseQ2 = GroupBaseQ2,
+                        BaseQ3 = GroupBaseQ3,
+                        BaseQ4 = GroupBaseQ4,
+                        TotalBase = GroupBaseTotal,
+                        CS1Q1 = GroupCS1Q1,
+                        CS1Q2 = GroupCS1Q2,
+                        CS1Q3 = GroupCS1Q3,
+                        CS1Q4 = GroupCS1Q4,
+                        TotalCS1 = GroupCS1Total,
+                        CS2Q1 = GroupCS2Q1,
+                        CS2Q2 = GroupCS2Q2,
+                        CS2Q3 = GroupCS2Q3,
+                        CS2Q4 = GroupCS2Q4,
+                        TotalCS2 = GroupCS2Total,
+                        Var1 = var11,
+                        Var2 = var22,
+                        OriginalProjectNo = _LastGroupingParametersCode,
+                        GroupingParametersCode = _LastGroupingParametersCode,
+                        OriginalProjectName = $"{_ProjectNo} - {_ProjectName}"
+                    };
 
-                        }
-                        );
+                    if (dataentryinterval == "Monthly")
+                    {
+                        // Adding properties for quarters Q5 to Q12
+                        varianceResponse.BaseQ5 = GroupBaseQ5;
+                        varianceResponse.BaseQ6 = GroupBaseQ6;
+                        varianceResponse.BaseQ7 = GroupBaseQ7;
+                        varianceResponse.BaseQ8 = GroupBaseQ8;
+                        varianceResponse.BaseQ9 = GroupBaseQ9;
+                        varianceResponse.BaseQ10 = GroupBaseQ10;
+                        varianceResponse.BaseQ11 = GroupBaseQ11;
+                        varianceResponse.BaseQ12 = GroupBaseQ12;
+
+                        varianceResponse.CS1Q5 = GroupCS1Q5;
+                        varianceResponse.CS1Q6 = GroupCS1Q6;
+                        varianceResponse.CS1Q7 = GroupCS1Q7;
+                        varianceResponse.CS1Q8 = GroupCS1Q8;
+                        varianceResponse.CS1Q9 = GroupCS1Q9;
+                        varianceResponse.CS1Q10 = GroupCS1Q10;
+                        varianceResponse.CS1Q11 = GroupCS1Q11;
+                        varianceResponse.CS1Q12 = GroupCS1Q12;
+
+                        varianceResponse.CS2Q5 = GroupCS2Q5;
+                        varianceResponse.CS2Q6 = GroupCS2Q6;
+                        varianceResponse.CS2Q7 = GroupCS2Q7;
+                        varianceResponse.CS2Q8 = GroupCS2Q8;
+                        varianceResponse.CS2Q9 = GroupCS2Q9;
+                        varianceResponse.CS2Q10 = GroupCS2Q10;
+                        varianceResponse.CS2Q11 = GroupCS2Q11;
+                        varianceResponse.CS2Q12 = GroupCS2Q12;
+                    }
+
+                    response.Add(varianceResponse);
                 }
             }
 
@@ -3170,37 +2450,68 @@ namespace TechnipFMC.Finapp.Business
                         var22 = -1 * GrossCS1Total.Value;
                 }
 
-                responseGrandTotal.Add(
-                    new VarianceAnalysisResponse()
-                    {
-                        RecordType = "GrandTotal",
-                        ProjectNo = "Grand Total ",
-                        BaseQ1 = GrossBaseQ1,
-                        BaseQ2 = GrossBaseQ2,
-                        BaseQ3 = GrossBaseQ3,
-                        BaseQ4 = GrossBaseQ4,
-                        TotalBase = GrossBaseTotal,
-                        CS1Q1 = GrossCS1Q1,
-                        CS1Q2 = GrossCS1Q2,
-                        CS1Q3 = GrossCS1Q3,
-                        CS1Q4 = GrossCS1Q4,
-                        TotalCS1 = GrossCS1Total,
-                        CS2Q1 = GrossCS2Q1,
-                        CS2Q2 = GrossCS2Q2,
-                        CS2Q3 = GrossCS2Q3,
-                        CS2Q4 = GrossCS2Q4,
-                        TotalCS2 = GrossCS2Total,
-                        Var1 = var11,
-                        Var2 = var22,
-                        BaseScenario = baseScenario,
-                        CS1 = cs1,
-                        CS2 = cs2
+                var varianceResponse = new VarianceAnalysisResponse()
+                {
+                    RecordType = "GrandTotal",
+                    ProjectNo = "Grand Total ",
+                    BaseQ1 = GrossBaseQ1,
+                    BaseQ2 = GrossBaseQ2,
+                    BaseQ3 = GrossBaseQ3,
+                    BaseQ4 = GrossBaseQ4,
+                    TotalBase = GrossBaseTotal,
+                    CS1Q1 = GrossCS1Q1,
+                    CS1Q2 = GrossCS1Q2,
+                    CS1Q3 = GrossCS1Q3,
+                    CS1Q4 = GrossCS1Q4,
+                    TotalCS1 = GrossCS1Total,
+                    CS2Q1 = GrossCS2Q1,
+                    CS2Q2 = GrossCS2Q2,
+                    CS2Q3 = GrossCS2Q3,
+                    CS2Q4 = GrossCS2Q4,
+                    TotalCS2 = GrossCS2Total,
+                    Var1 = var11,
+                    Var2 = var22,
+                    BaseScenario = baseScenario,
+                    CS1 = cs1,
+                    CS2 = cs2
+                };
 
-                    }
-                    );
+                if (dataentryinterval == "Monthly")
+                {
+                    // Adding properties for quarters Q5 to Q12
+                    varianceResponse.BaseQ5 = GrossBaseQ5;
+                    varianceResponse.BaseQ6 = GrossBaseQ6;
+                    varianceResponse.BaseQ7 = GrossBaseQ7;
+                    varianceResponse.BaseQ8 = GrossBaseQ8;
+                    varianceResponse.BaseQ9 = GrossBaseQ9;
+                    varianceResponse.BaseQ10 = GrossBaseQ10;
+                    varianceResponse.BaseQ11 = GrossBaseQ11;
+                    varianceResponse.BaseQ12 = GrossBaseQ12;
+
+                    varianceResponse.CS1Q5 = GrossCS1Q5;
+                    varianceResponse.CS1Q6 = GrossCS1Q6;
+                    varianceResponse.CS1Q7 = GrossCS1Q7;
+                    varianceResponse.CS1Q8 = GrossCS1Q8;
+                    varianceResponse.CS1Q9 = GrossCS1Q9;
+                    varianceResponse.CS1Q10 = GrossCS1Q10;
+                    varianceResponse.CS1Q11 = GrossCS1Q11;
+                    varianceResponse.CS1Q12 = GrossCS1Q12;
+
+                    varianceResponse.CS2Q5 = GrossCS2Q5;
+                    varianceResponse.CS2Q6 = GrossCS2Q6;
+                    varianceResponse.CS2Q7 = GrossCS2Q7;
+                    varianceResponse.CS2Q8 = GrossCS2Q8;
+                    varianceResponse.CS2Q9 = GrossCS2Q9;
+                    varianceResponse.CS2Q10 = GrossCS2Q10;
+                    varianceResponse.CS2Q11 = GrossCS2Q11;
+                    varianceResponse.CS2Q12 = GrossCS2Q12;
+                }
+
+                responseGrandTotal.Add(varianceResponse);
 
                 responseGrid.GrandTotal = responseGrandTotal;
             }
+
             return responseGrid;
 
         }
@@ -3358,6 +2669,445 @@ namespace TechnipFMC.Finapp.Business
             workSheet.Cells["T7"].Style.Fill.BackgroundColor.SetColor(Color.Cyan);
             workSheet.Cells["U7"].Style.Fill.BackgroundColor.SetColor(Color.Cyan);
             workSheet.Cells["V7"].Style.Fill.BackgroundColor.SetColor(Color.Cyan);
+
+            //REVENUE VARIANCE
+            workSheet.Cells["W6"].Value = $"Diff Curr to Budget";
+            workSheet.Cells["W6:W7"].Merge = true;
+            workSheet.Cells["W6:W7"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+            workSheet.Cells["W6"].Style.Fill.BackgroundColor.SetColor(Color.Orange);
+            workSheet.Cells["W6"].Style.WrapText = true;
+
+            workSheet.Cells["X6"].Value = $"Diff Curr to Prev ForeCast";
+            workSheet.Cells["X6:X7"].Merge = true;
+            workSheet.Cells["X6:X7"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+            workSheet.Cells["X6"].Style.Fill.BackgroundColor.SetColor(Color.Orange);
+            workSheet.Cells["X6"].Style.WrapText = true;
+
+            //GrossMargin Headers - Quarters
+            workSheet.Cells["AA7"].Value = $"Q1 - {config.Year}";
+            workSheet.Cells["AB7"].Value = $"Q2 - {config.Year}";
+            workSheet.Cells["AC7"].Value = $"Q3 - {config.Year}";
+            workSheet.Cells["AD7"].Value = $"Q4 - {config.Year}";
+            workSheet.Cells["AE7"].Value = $"Total Cummulative";
+
+            workSheet.Cells["AA7"].Style.Fill.BackgroundColor.SetColor(Color.Orange);
+            workSheet.Cells["AB7"].Style.Fill.BackgroundColor.SetColor(Color.Orange);
+            workSheet.Cells["AC7"].Style.Fill.BackgroundColor.SetColor(Color.Orange);
+            workSheet.Cells["AD7"].Style.Fill.BackgroundColor.SetColor(Color.Orange);
+            workSheet.Cells["AE7"].Style.Fill.BackgroundColor.SetColor(Color.Orange);
+
+            workSheet.Cells["AF7"].Value = $"Q1 - {config.Year}";
+            workSheet.Cells["AG7"].Value = $"Q2 - {config.Year}";
+            workSheet.Cells["AH7"].Value = $"Q3 - {config.Year}";
+            workSheet.Cells["AI7"].Value = $"Q4 - {config.Year}";
+            workSheet.Cells["AJ7"].Value = $"Total Cummulative";
+
+            workSheet.Cells["AF7"].Style.Fill.BackgroundColor.SetColor(Color.Yellow);
+            workSheet.Cells["AG7"].Style.Fill.BackgroundColor.SetColor(Color.Yellow);
+            workSheet.Cells["AH7"].Style.Fill.BackgroundColor.SetColor(Color.Yellow);
+            workSheet.Cells["AI7"].Style.Fill.BackgroundColor.SetColor(Color.Yellow);
+            workSheet.Cells["AJ7"].Style.Fill.BackgroundColor.SetColor(Color.Yellow);
+
+            workSheet.Cells["AK7"].Value = $"Q1 - {config.Year}";
+            workSheet.Cells["AL7"].Value = $"Q2 - {config.Year}";
+            workSheet.Cells["AM7"].Value = $"Q3 - {config.Year}";
+            workSheet.Cells["AN7"].Value = $"Q4 - {config.Year}";
+            workSheet.Cells["AO7"].Value = $"Total Cummulative";
+
+            workSheet.Cells["AK7"].Style.Fill.BackgroundColor.SetColor(Color.Cyan);
+            workSheet.Cells["AL7"].Style.Fill.BackgroundColor.SetColor(Color.Cyan);
+            workSheet.Cells["AM7"].Style.Fill.BackgroundColor.SetColor(Color.Cyan);
+            workSheet.Cells["AN7"].Style.Fill.BackgroundColor.SetColor(Color.Cyan);
+            workSheet.Cells["AO7"].Style.Fill.BackgroundColor.SetColor(Color.Cyan);
+
+            //GROSSMARGIN VARIANCE
+            workSheet.Cells["AP6"].Value = $"Diff Curr to Budget";
+            workSheet.Cells["AP6:AP7"].Merge = true;
+            workSheet.Cells["AP6:AP7"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+            workSheet.Cells["AP6"].Style.Fill.BackgroundColor.SetColor(Color.Orange);
+            workSheet.Cells["AP6"].Style.WrapText = true;
+
+            workSheet.Cells["AQ6"].Value = $"Diff Curr to Prev ForeCast";
+            workSheet.Cells["AQ6:AQ7"].Merge = true;
+            workSheet.Cells["AQ6:AQ7"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+            workSheet.Cells["AQ6"].Style.Fill.BackgroundColor.SetColor(Color.Orange);
+            workSheet.Cells["AQ6"].Style.WrapText = true;
+
+            workSheet.Cells["A5:X7"].Style.Border.Top.Style = ExcelBorderStyle.Thick;
+            workSheet.Cells["A5:X7"].Style.Border.Bottom.Style = ExcelBorderStyle.Thick;
+            workSheet.Cells["A5:X7"].Style.Border.Left.Style = ExcelBorderStyle.Thick;
+            workSheet.Cells["A5:X7"].Style.Border.Right.Style = ExcelBorderStyle.Thick;
+
+            workSheet.Cells["AA5:AQ7"].Style.Border.Top.Style = ExcelBorderStyle.Thick;
+            workSheet.Cells["AA5:AQ7"].Style.Border.Bottom.Style = ExcelBorderStyle.Thick;
+            workSheet.Cells["AA5:AQ7"].Style.Border.Left.Style = ExcelBorderStyle.Thick;
+            workSheet.Cells["AA5:AQ7"].Style.Border.Right.Style = ExcelBorderStyle.Thick;
+
+            workSheet.Column(25).Width = 3;
+            workSheet.Column(26).Width = 3;
+            workSheet.Column(12).AutoFit();
+            workSheet.Column(17).AutoFit();
+            workSheet.Column(22).AutoFit();
+            workSheet.Column(31).AutoFit();
+            workSheet.Column(36).AutoFit();
+            workSheet.Column(41).AutoFit();
+
+            var row = 8;
+            var segment = "";
+            var entity = "";
+            var buCategory = "";
+
+            foreach (var data in reportData.VarianceAnalysisReportDatas)
+            {
+                if (segment == data.ProjectSegmentName && entity == data.ProjectEntityName && buCategory == data.BUCategoryName)
+                {
+                    continue;
+                }
+
+                segment = data.ProjectSegmentName;
+                entity = data.ProjectEntityName;
+                buCategory = data.BUCategoryName;
+
+                var dataList = reportData.VarianceAnalysisReportDatas
+                    .Where(d => d.BUCategoryName == buCategory && d.ProjectEntityName == entity && d.ProjectSegmentName == segment)
+                    .ToList();
+
+                var secRow = row;
+                if (dataList.Count == 0)
+                    continue;
+
+                foreach (var entry in dataList)
+                {
+                    workSheet.Cells[$"A{row}"].Value = data.IFSProjectCode;
+                    workSheet.Cells[$"A{row}"].Style.WrapText = true;
+
+                    workSheet.Cells[$"B{row}"].Value = data.ProjectName;
+                    workSheet.Cells[$"B{row}"].Style.WrapText = true;
+
+                    workSheet.Cells[$"C{row}"].Value = data.ContractStatusName;
+                    workSheet.Cells[$"C{row}"].Style.WrapText = true;
+
+                    workSheet.Cells[$"D{row}"].Value = data.ProjectEntityName;
+                    workSheet.Cells[$"D{row}"].Style.WrapText = true;
+
+                    workSheet.Cells[$"E{row}"].Value = data.BUCategoryName;
+                    workSheet.Cells[$"E{row}"].Style.WrapText = true;
+
+                    workSheet.Cells[$"F{row}"].Value = data.BUCategoryName;
+                    workSheet.Cells[$"F{row}"].Style.WrapText = true;
+
+                    workSheet.Cells[$"G{row}"].Value = data.ContractTypeName;
+                    workSheet.Cells[$"G{row}"].Style.WrapText = true;
+
+
+                    if (config.Quarters.Contains("Q1"))
+                    {
+                        workSheet.Cells[$"H{row}"].Value = entry.RV_S3Q1;
+                        workSheet.Cells[$"M{row}"].Value = entry.RV_S2Q1;
+                        workSheet.Cells[$"R{row}"].Value = entry.RV_S1Q1;
+
+                        workSheet.Cells[$"AA{row}"].Value = entry.GM_S3Q1;
+                        workSheet.Cells[$"AF{row}"].Value = entry.GM_S2Q1;
+                        workSheet.Cells[$"AK{row}"].Value = entry.GM_S1Q1;
+                    }
+                    if (config.Quarters.Contains("Q2"))
+                    {
+                        workSheet.Cells[$"I{row}"].Value = entry.RV_S3Q2;
+                        workSheet.Cells[$"N{row}"].Value = entry.RV_S2Q2;
+                        workSheet.Cells[$"S{row}"].Value = entry.RV_S1Q2;
+
+                        workSheet.Cells[$"AB{row}"].Value = entry.GM_S3Q2;
+                        workSheet.Cells[$"AG{row}"].Value = entry.GM_S2Q2;
+                        workSheet.Cells[$"AL{row}"].Value = entry.GM_S1Q2;
+                    }
+                    if (config.Quarters.Contains("Q3"))
+                    {
+                        workSheet.Cells[$"J{row}"].Value = entry.RV_S3Q3;
+                        workSheet.Cells[$"O{row}"].Value = entry.RV_S2Q3;
+                        workSheet.Cells[$"T{row}"].Value = entry.RV_S1Q3;
+
+                        workSheet.Cells[$"AC{row}"].Value = entry.GM_S3Q3;
+                        workSheet.Cells[$"AH{row}"].Value = entry.GM_S2Q3;
+                        workSheet.Cells[$"AM{row}"].Value = entry.GM_S1Q3;
+                    }
+                    if (config.Quarters.Contains("Q4"))
+                    {
+                        workSheet.Cells[$"K{row}"].Value = entry.RV_S3Q4;
+                        workSheet.Cells[$"P{row}"].Value = entry.RV_S2Q4;
+                        workSheet.Cells[$"U{row}"].Value = entry.RV_S1Q4;
+
+                        workSheet.Cells[$"AD{row}"].Value = entry.GM_S3Q4;
+                        workSheet.Cells[$"AI{row}"].Value = entry.GM_S2Q4;
+                        workSheet.Cells[$"AN{row}"].Value = entry.GM_S1Q4;
+                    }
+
+                    //Revenue - Total Cummulatives
+                    workSheet.Cells[$"L{row}"].Formula = $"=SUM(H{row}:K{row})";
+                    workSheet.Cells[$"Q{row}"].Formula = $"=SUM(M{row}:P{row})";
+                    workSheet.Cells[$"V{row}"].Formula = $"=SUM(R{row}:U{row})";
+                    //Gross Margin - Total Cummulatives
+                    workSheet.Cells[$"AE{row}"].Formula = $"=SUM(AA{row}:AD{row})";
+                    workSheet.Cells[$"AJ{row}"].Formula = $"=SUM(AF{row}:AI{row})";
+                    workSheet.Cells[$"AO{row}"].Formula = $"=SUM(AK{row}:AN{row})";
+
+                    //Revenue - Variance
+                    workSheet.Cells[$"W{row}"].Formula = $"=V{row}-Q{row}";
+                    workSheet.Cells[$"X{row}"].Formula = $"=V{row}-L{row}";
+                    //GrossMargin - Variance
+                    workSheet.Cells[$"AP{row}"].Formula = $"=AO{row}-AJ{row}";
+                    workSheet.Cells[$"AQ{row}"].Formula = $"=AO{row}-AE{row}";
+
+                    row++;
+                }
+
+                workSheet.Cells[$"A{row}"].Value = $"Sub Total";
+                workSheet.Cells[$"A{row}:G{row}"].Merge = true;
+                workSheet.Cells[$"A{row}:G{row}"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+
+                workSheet.Cells[$"H{row}"].Formula = $"=SUM(H{secRow}:H{row - 1})";
+                workSheet.Cells[$"I{row}"].Formula = $"=SUM(I{secRow}:I{row - 1})";
+                workSheet.Cells[$"J{row}"].Formula = $"=SUM(J{secRow}:J{row - 1})";
+                workSheet.Cells[$"K{row}"].Formula = $"=SUM(K{secRow}:K{row - 1})";
+                workSheet.Cells[$"L{row}"].Formula = $"=SUM(L{secRow}:L{row - 1})";
+                workSheet.Cells[$"M{row}"].Formula = $"=SUM(M{secRow}:M{row - 1})";
+                workSheet.Cells[$"N{row}"].Formula = $"=SUM(N{secRow}:N{row - 1})";
+                workSheet.Cells[$"O{row}"].Formula = $"=SUM(O{secRow}:O{row - 1})";
+                workSheet.Cells[$"P{row}"].Formula = $"=SUM(P{secRow}:P{row - 1})";
+                workSheet.Cells[$"Q{row}"].Formula = $"=SUM(Q{secRow}:Q{row - 1})";
+                workSheet.Cells[$"R{row}"].Formula = $"=SUM(R{secRow}:R{row - 1})";
+                workSheet.Cells[$"S{row}"].Formula = $"=SUM(S{secRow}:S{row - 1})";
+                workSheet.Cells[$"T{row}"].Formula = $"=SUM(T{secRow}:T{row - 1})";
+                workSheet.Cells[$"U{row}"].Formula = $"=SUM(U{secRow}:U{row - 1})";
+                workSheet.Cells[$"V{row}"].Formula = $"=SUM(V{secRow}:V{row - 1})";
+                workSheet.Cells[$"W{row}"].Formula = $"=SUM(W{secRow}:W{row - 1})";
+                workSheet.Cells[$"X{row}"].Formula = $"=SUM(X{secRow}:X{row - 1})";
+
+                workSheet.Cells[$"AA{row}"].Formula = $"=SUM(AA{secRow}:AA{row - 1})";
+                workSheet.Cells[$"AB{row}"].Formula = $"=SUM(AB{secRow}:AB{row - 1})";
+                workSheet.Cells[$"AC{row}"].Formula = $"=SUM(AC{secRow}:AC{row - 1})";
+                workSheet.Cells[$"AD{row}"].Formula = $"=SUM(AD{secRow}:AD{row - 1})";
+                workSheet.Cells[$"AE{row}"].Formula = $"=SUM(AE{secRow}:AE{row - 1})";
+                workSheet.Cells[$"AF{row}"].Formula = $"=SUM(AF{secRow}:AF{row - 1})";
+                workSheet.Cells[$"AG{row}"].Formula = $"=SUM(AG{secRow}:AG{row - 1})";
+                workSheet.Cells[$"AH{row}"].Formula = $"=SUM(AH{secRow}:AH{row - 1})";
+                workSheet.Cells[$"AI{row}"].Formula = $"=SUM(AI{secRow}:AI{row - 1})";
+                workSheet.Cells[$"AJ{row}"].Formula = $"=SUM(AJ{secRow}:AJ{row - 1})";
+                workSheet.Cells[$"AK{row}"].Formula = $"=SUM(AK{secRow}:AK{row - 1})";
+                workSheet.Cells[$"AL{row}"].Formula = $"=SUM(AL{secRow}:AL{row - 1})";
+                workSheet.Cells[$"AM{row}"].Formula = $"=SUM(AM{secRow}:AM{row - 1})";
+                workSheet.Cells[$"AN{row}"].Formula = $"=SUM(AN{secRow}:AN{row - 1})";
+                workSheet.Cells[$"AO{row}"].Formula = $"=SUM(AO{secRow}:AO{row - 1})";
+                workSheet.Cells[$"AP{row}"].Formula = $"=SUM(AP{secRow}:AP{row - 1})";
+                workSheet.Cells[$"AQ{row}"].Formula = $"=SUM(AQ{secRow}:AQ{row - 1})";
+
+                row += 2;
+            }
+
+            return excelPkg.GetAsByteArray(); ;
+        }
+        public byte[] GetVarianceAnalysisReportExcelMonthly(VarianceAnalysisConfig config)
+        {
+            var quarters = config.Quarters.Split(',').OrderBy(c => c).ToList();
+            var noOfQuarters = quarters.Count;
+
+            var groupLevels = config.GroupLevels.Split(',');
+
+            foreach (var level in groupLevels)
+            {
+                if (level == "Segment")
+                {
+                    config.GroupLevels = config.GroupLevels.Replace("Segment", "PS.ProjectSegmentName");
+                }
+                if (level == "BUCategory")
+                {
+                    config.GroupLevels = config.GroupLevels.Replace("BUCategory", "BU.BUCategoryName");
+                }
+                if (level == "Entity")
+                {
+                    config.GroupLevels = config.GroupLevels.Replace("Entity", "PE.ProjectEntityName");
+                }
+            }
+            var reportData = _reportRepository.GetVarianceAnalysisReportData(config);
+
+            if (reportData.VarianceAnalysisReportDatas.Count == 0)
+            {
+                throw new Exception("No ScenarioData Found.");
+            }
+
+            var baseScenario = reportData.Scenarios.FirstOrDefault(s => s.ScenarioID == config.BaseScenarioId);
+            var compareScenarioA = reportData.Scenarios.FirstOrDefault(s => s.ScenarioID == config.CompareScenarioAId);
+            var compareScenarioB = reportData.Scenarios.FirstOrDefault(s => s.ScenarioID == config.CompareScenarioBId);
+
+            ExcelPackage excelPkg = new ExcelPackage();
+            ExcelWorksheet workSheet = excelPkg.Workbook.Worksheets.Add("Variance Analysis Report");
+            workSheet.Row(5).Style.Fill.PatternType = ExcelFillStyle.Solid;
+            workSheet.Row(6).Style.Fill.PatternType = ExcelFillStyle.Solid;
+            workSheet.Row(7).Style.Fill.PatternType = ExcelFillStyle.Solid;
+            workSheet.Row(5).Style.Fill.BackgroundColor.SetColor(Color.White);
+            workSheet.Row(6).Style.Fill.BackgroundColor.SetColor(Color.White);
+            workSheet.Row(7).Style.Fill.BackgroundColor.SetColor(Color.White);
+
+            workSheet.Cells["A5"].Value = "Project No";
+            workSheet.Cells["A5:A7"].Merge = true;
+            workSheet.Cells["A5"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+            workSheet.Cells["A5"].Style.WrapText = true;
+
+            workSheet.Cells["B5"].Value = "Project Name";
+            workSheet.Cells["B5:B7"].Merge = true;
+            workSheet.Cells["B5"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+            workSheet.Cells["B5"].Style.WrapText = true;
+
+            workSheet.Cells["C5"].Value = "Contract Status";
+            workSheet.Cells["C5:C7"].Merge = true;
+            workSheet.Cells["C5"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+            workSheet.Cells["C5"].Style.WrapText = true;
+
+            workSheet.Cells["D5"].Value = "Entity";
+            workSheet.Cells["D5:D7"].Merge = true;
+            workSheet.Cells["D5"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+            workSheet.Cells["D5"].Style.WrapText = true;
+
+            workSheet.Cells["E5"].Value = "ContractNature/Category";
+            workSheet.Cells["E5:E7"].Merge = true;
+            workSheet.Cells["E5"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+            workSheet.Cells["E5"].Style.WrapText = true;
+
+            workSheet.Cells["F5"].Value = "Segment";
+            workSheet.Cells["F5:F7"].Merge = true;
+            workSheet.Cells["F5"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+            workSheet.Cells["F5"].Style.WrapText = true;
+
+            workSheet.Cells["G5"].Value = "Sponsored/Non-Sponsored";
+            workSheet.Cells["G5:G7"].Merge = true;
+            workSheet.Cells["G5"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+            workSheet.Cells["G5"].Style.WrapText = true;
+
+            workSheet.Cells["H5"].Value = "Revenue";
+            workSheet.Cells["H5:X5"].Merge = true;
+            workSheet.Cells["H5:X5"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+            workSheet.Cells["H5"].Style.Fill.BackgroundColor.SetColor(Color.Beige);
+
+            workSheet.Cells["AA5"].Value = "Gross Margin";
+            workSheet.Cells["AA5:AQ5"].Merge = true;
+            workSheet.Cells["AA5:AQ5"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+            workSheet.Cells["AA5"].Style.Fill.BackgroundColor.SetColor(Color.Beige);
+
+            workSheet.Cells["H6"].Value = $"{compareScenarioB.ScenarioTypeName}";
+            workSheet.Cells["H6:L6"].Merge = true;
+            workSheet.Cells["H6:L6"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+            workSheet.Cells["H6"].Style.Fill.BackgroundColor.SetColor(Color.Orange);
+
+            workSheet.Cells["M6"].Value = $"{compareScenarioA.ScenarioTypeName}";
+            workSheet.Cells["M6:Q6"].Merge = true;
+            workSheet.Cells["M6:Q6"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+            workSheet.Cells["M6"].Style.Fill.BackgroundColor.SetColor(Color.Yellow);
+
+            workSheet.Cells["R6"].Value = $"{baseScenario.ScenarioTypeName}";
+            workSheet.Cells["R6:V6"].Merge = true;
+            workSheet.Cells["R6:V6"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+            workSheet.Cells["R6"].Style.Fill.BackgroundColor.SetColor(Color.Cyan);
+
+            workSheet.Cells["AA6"].Value = $"{compareScenarioB.ScenarioTypeName}";
+            workSheet.Cells["AA6:AE6"].Merge = true;
+            workSheet.Cells["AA6:AE6"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+            workSheet.Cells["AA6"].Style.Fill.BackgroundColor.SetColor(Color.Orange);
+
+            workSheet.Cells["AF6"].Value = $"{compareScenarioA.ScenarioTypeName}";
+            workSheet.Cells["AF6:AJ6"].Merge = true;
+            workSheet.Cells["AF6:AJ6"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+            workSheet.Cells["AF6"].Style.Fill.BackgroundColor.SetColor(Color.Yellow);
+
+            workSheet.Cells["AK6"].Value = $"{baseScenario.ScenarioTypeName}";
+            workSheet.Cells["AK6:AO6"].Merge = true;
+            workSheet.Cells["AK6:AO6"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+            workSheet.Cells["AK6"].Style.Fill.BackgroundColor.SetColor(Color.Cyan);
+
+            //Revenue Headers - Quarters
+            workSheet.Cells["H7"].Value = $"JAN - {config.Year}";
+            workSheet.Cells["I7"].Value = $"FEB - {config.Year}";
+            workSheet.Cells["J7"].Value = $"MAR - {config.Year}";
+            workSheet.Cells["K7"].Value = $"APR - {config.Year}";
+            workSheet.Cells["L7"].Value = $"MAY - {config.Year}";
+            workSheet.Cells["M7"].Value = $"JUN - {config.Year}";
+            workSheet.Cells["N7"].Value = $"JUL - {config.Year}";
+            workSheet.Cells["O7"].Value = $"AUG - {config.Year}";
+            workSheet.Cells["P7"].Value = $"SEP - {config.Year}";
+            workSheet.Cells["Q7"].Value = $"OCT - {config.Year}";
+            workSheet.Cells["R7"].Value = $"NOV - {config.Year}";
+            workSheet.Cells["S7"].Value = $"DEC - {config.Year}";
+            workSheet.Cells["T7"].Value = $"Total Cummulative";
+
+            workSheet.Cells["H7"].Style.Fill.BackgroundColor.SetColor(Color.Orange);
+            workSheet.Cells["I7"].Style.Fill.BackgroundColor.SetColor(Color.Orange);
+            workSheet.Cells["J7"].Style.Fill.BackgroundColor.SetColor(Color.Orange);
+            workSheet.Cells["K7"].Style.Fill.BackgroundColor.SetColor(Color.Orange);
+            workSheet.Cells["L7"].Style.Fill.BackgroundColor.SetColor(Color.Orange);
+            workSheet.Cells["M7"].Style.Fill.BackgroundColor.SetColor(Color.Orange);
+            workSheet.Cells["N7"].Style.Fill.BackgroundColor.SetColor(Color.Orange);
+            workSheet.Cells["O7"].Style.Fill.BackgroundColor.SetColor(Color.Orange);
+            workSheet.Cells["P7"].Style.Fill.BackgroundColor.SetColor(Color.Orange);
+            workSheet.Cells["Q7"].Style.Fill.BackgroundColor.SetColor(Color.Orange);
+            workSheet.Cells["R7"].Style.Fill.BackgroundColor.SetColor(Color.Orange);
+            workSheet.Cells["S7"].Style.Fill.BackgroundColor.SetColor(Color.Orange);
+            workSheet.Cells["T7"].Style.Fill.BackgroundColor.SetColor(Color.Orange);
+            workSheet.Cells["U7"].Style.Fill.BackgroundColor.SetColor(Color.Orange);
+            workSheet.Cells["V7"].Style.Fill.BackgroundColor.SetColor(Color.Orange);
+
+            workSheet.Cells["W7"].Value = $"JAN - {config.Year}";
+            workSheet.Cells["X7"].Value = $"FEB - {config.Year}";
+            workSheet.Cells["Y7"].Value = $"MAR - {config.Year}";
+            workSheet.Cells["Z7"].Value = $"APR - {config.Year}";
+            workSheet.Cells["AA7"].Value = $"MAY - {config.Year}";
+            workSheet.Cells["AB7"].Value = $"JUN - {config.Year}";
+            workSheet.Cells["AC7"].Value = $"JUL - {config.Year}";
+            workSheet.Cells["AD7"].Value = $"AUG - {config.Year}";
+            workSheet.Cells["AE7"].Value = $"SEP - {config.Year}";
+            workSheet.Cells["AF7"].Value = $"OCT - {config.Year}";
+            workSheet.Cells["AG7"].Value = $"NOV - {config.Year}";
+            workSheet.Cells["AH7"].Value = $"DEC - {config.Year}";
+            workSheet.Cells["AI7"].Value = $"Total Cummulative";
+
+            workSheet.Cells["W7"].Style.Fill.BackgroundColor.SetColor(Color.Yellow);
+            workSheet.Cells["X7"].Style.Fill.BackgroundColor.SetColor(Color.Yellow);
+            workSheet.Cells["Y7"].Style.Fill.BackgroundColor.SetColor(Color.Yellow);
+            workSheet.Cells["Z7"].Style.Fill.BackgroundColor.SetColor(Color.Yellow);
+            workSheet.Cells["AA7"].Style.Fill.BackgroundColor.SetColor(Color.Yellow);
+            workSheet.Cells["AB7"].Style.Fill.BackgroundColor.SetColor(Color.Yellow);
+            workSheet.Cells["AC7"].Style.Fill.BackgroundColor.SetColor(Color.Yellow);
+            workSheet.Cells["AD7"].Style.Fill.BackgroundColor.SetColor(Color.Yellow);
+            workSheet.Cells["AE7"].Style.Fill.BackgroundColor.SetColor(Color.Yellow);
+            workSheet.Cells["AF7"].Style.Fill.BackgroundColor.SetColor(Color.Yellow);
+            workSheet.Cells["AG7"].Style.Fill.BackgroundColor.SetColor(Color.Yellow);
+            workSheet.Cells["AH7"].Style.Fill.BackgroundColor.SetColor(Color.Yellow);
+            workSheet.Cells["AI7"].Style.Fill.BackgroundColor.SetColor(Color.Yellow);
+
+            workSheet.Cells["AJ7"].Value = $"JAN - {config.Year}";
+            workSheet.Cells["AK7"].Value = $"FEB - {config.Year}";
+            workSheet.Cells["AL7"].Value = $"MAR - {config.Year}";
+            workSheet.Cells["AM7"].Value = $"APR - {config.Year}";
+            workSheet.Cells["AN7"].Value = $"MAY - {config.Year}";
+            workSheet.Cells["AO7"].Value = $"JUN - {config.Year}";
+            workSheet.Cells["AP7"].Value = $"JUL - {config.Year}";
+            workSheet.Cells["AQ7"].Value = $"AUG - {config.Year}";
+            workSheet.Cells["AR7"].Value = $"SEP - {config.Year}";
+            workSheet.Cells["AS7"].Value = $"OCT - {config.Year}";
+            workSheet.Cells["AT7"].Value = $"NOV - {config.Year}";
+            workSheet.Cells["AU7"].Value = $"DEC - {config.Year}";
+            workSheet.Cells["AV7"].Value = $"Total Cummulative";
+
+            workSheet.Cells["AJ7"].Style.Fill.BackgroundColor.SetColor(Color.Cyan);
+            workSheet.Cells["AK7"].Style.Fill.BackgroundColor.SetColor(Color.Cyan);
+            workSheet.Cells["AL7"].Style.Fill.BackgroundColor.SetColor(Color.Cyan);
+            workSheet.Cells["AM7"].Style.Fill.BackgroundColor.SetColor(Color.Cyan);
+            workSheet.Cells["AN7"].Style.Fill.BackgroundColor.SetColor(Color.Cyan);
+            workSheet.Cells["AO7"].Style.Fill.BackgroundColor.SetColor(Color.Cyan);
+            workSheet.Cells["AP7"].Style.Fill.BackgroundColor.SetColor(Color.Cyan);
+            workSheet.Cells["AQ7"].Style.Fill.BackgroundColor.SetColor(Color.Cyan);
+            workSheet.Cells["AR7"].Style.Fill.BackgroundColor.SetColor(Color.Cyan);
+            workSheet.Cells["AS7"].Style.Fill.BackgroundColor.SetColor(Color.Cyan);
+            workSheet.Cells["AT7"].Style.Fill.BackgroundColor.SetColor(Color.Cyan);
+            workSheet.Cells["AU7"].Style.Fill.BackgroundColor.SetColor(Color.Cyan);
+            workSheet.Cells["AV7"].Style.Fill.BackgroundColor.SetColor(Color.Cyan);
 
             //REVENUE VARIANCE
             workSheet.Cells["W6"].Value = $"Diff Curr to Budget";

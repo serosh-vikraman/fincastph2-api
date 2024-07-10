@@ -6,9 +6,13 @@ using System.Data;
 using System.Data.SqlClient;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Net.Http;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
+using TechnipFMC.Finapp.Models;
+using Newtonsoft.Json;
 
 namespace TechnipFMC.Finapp.Data
 {
@@ -59,6 +63,49 @@ namespace TechnipFMC.Finapp.Data
             if (MasterDBConnection.State != ConnectionState.Closed)
                 MasterDBConnection.Close();
             MasterDBConnection.Dispose();
+        }
+        public async Task<int> SendEmail(string email, string sb, string subject)
+        {
+            try
+            {
+                using (var client = new HttpClient())
+                {
+                    var request = new HttpRequestMessage(HttpMethod.Post, "http://mail.raintels.in/api/send-mail");
+                    request.Headers.Add("X-Authorization-Token", "HBcv0ehXARdCUuLpyoUuVV4hMI0rzAtlX8uM1QC5PKTZqK9tRfOEuvckESAK8cYQ");
+
+                    var payload = new
+                    {
+                        gateway = "mailjet",
+                        to = email,
+                        subject = subject,
+                        html = sb,
+                        from_name = "Fincast <fincast@raintels.com>"
+                    };
+
+                    var jsonPayload = JsonConvert.SerializeObject(payload);
+                    var content = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
+                    request.Content = content;
+
+                    HttpResponseMessage response = await client.SendAsync(request);
+                    response.EnsureSuccessStatusCode();
+
+                    if (response.StatusCode == HttpStatusCode.OK)
+                    {
+                        Console.WriteLine("Email sent successfully!");
+                        return 1;
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Error sending email: {response.StatusCode}");
+                        return 0;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Exception occurred: {ex.Message}");
+                return 0;
+            }
         }
     }
 

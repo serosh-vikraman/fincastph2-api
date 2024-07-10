@@ -13,11 +13,14 @@ namespace TechnipFMC.Finapp.Models
         public string Quarter { get; set; }
         public bool Lock { get; set; }
         public string Message { get; set; }
+        public string Header { get; set; }
     }
 
     public class QuartersLayOut
     {
         public string qName { get; set; }
         public bool qLock { get; set; }
+        public string qHeader { get; set; }
+        
     }
 }

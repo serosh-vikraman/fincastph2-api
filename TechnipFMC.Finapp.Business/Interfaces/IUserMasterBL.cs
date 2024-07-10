@@ -19,7 +19,7 @@ namespace TechnipFMC.Finapp.Business
 
         string Delete(int Id, int Deletedby);
         UserMaster ValidateUser(string loginId, string password);
-        UserMaster ValidateEmail(string loginId);
+        Task<UserMaster> ValidateEmail(string loginId);
         int UpdateLicense(int CustomerId, DateTime licenseEndDate);
         void ChangetoFree(int CustomerId);
 

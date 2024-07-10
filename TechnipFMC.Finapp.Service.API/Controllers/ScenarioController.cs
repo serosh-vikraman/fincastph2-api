@@ -210,7 +210,7 @@ namespace TechnipFMC.Finapp.Service.API.Controllers
                 Mapper.Map(scenarioView, scenariodatamodel);
                 var scenario = _scenarioBL.Save(scenariodatamodel);
                 var message = "";
-                if (scenario != null && scenario.message == "Success")
+                if (scenario != null && scenario.message == "SSS")
                 {
                     scenarioView.ScenarioID = scenario.ScenarioID;
                     scenarioView.ScenarioName = scenario.ScenarioName;
@@ -245,8 +245,9 @@ namespace TechnipFMC.Finapp.Service.API.Controllers
                 }
                 else
                 {
+                    message = new CommonBL().GetMessage(scenario.message);
                     return Request.CreateResponse(HttpStatusCode.BadRequest,
-                    new APIResponse<string>(HttpStatusCode.BadRequest, "Failure", null, scenario.message, "", ""));
+                    new APIResponse<string>(HttpStatusCode.BadRequest, "Failure", null, message, "", ""));
                 }
             }
             catch (Exception ex)

@@ -14,7 +14,7 @@ namespace TechnipFMC.Finapp.Business
         List<FinancialDataType> GetAllFinancialDataTypesOfScenario(int id);
         FinancialDataType Save(FinancialDataType financialDataType);
         bool Map(FinancialDataTypeMapping financialDataType);
-        bool MapReportDatatypes(int reportId, int[] ids);
+        bool MapReportDatatypes(int reportId, string[] ids);
         FinancialDataType GetById(int Id);
         List<FinancialDataType> GetAllFinancialDataTypesofReport(int id);
         FinancialDataType Update(FinancialDataType financialDataType);

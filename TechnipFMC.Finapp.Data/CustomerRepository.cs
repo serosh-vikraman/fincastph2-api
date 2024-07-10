@@ -20,6 +20,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using Newtonsoft.Json;
 using Mailjet.Client.TransactionalEmails.Response;
+using static HttpFs.Client;
 
 namespace TechnipFMC.Finapp.Data
 {
@@ -205,6 +206,7 @@ namespace TechnipFMC.Finapp.Data
                 cmd.Parameters.AddWithValue("@P_Plan", customer.PlanName);
                 cmd.Parameters.AddWithValue("@P_PlanType", customer.PlanType);
                 cmd.Parameters.AddWithValue("@P_CountryName", customer.CountryID);
+                cmd.Parameters.AddWithValue("@P_Interval", customer.DataEntryInterval);
                 SqlDataReader reader = cmd.ExecuteReader();
                 if (reader.HasRows)
                 {
@@ -226,7 +228,7 @@ namespace TechnipFMC.Finapp.Data
                 base.Dispose();
             }
         }
-        public int InitialSignup(Customer customer)
+        public async Task<int> InitialSignup(Customer customer)
         {
             try
             {
@@ -261,9 +263,15 @@ namespace TechnipFMC.Finapp.Data
 
                     }
                 }
-                if  (val > 0)  //(val > 0)
+                //val = 2;
+                if (val > 0)  //(val > 0)
                 {
-                    SendEmail(customer, authToken, encodedloginId);
+                    StringBuilder sb = new StringBuilder();
+                    sb.Append($"Hi {customer.Admin.Decrypt()},<br/> Please use the provided link below to confirm your email.<br/><br/>");
+                    //  sb.Append("<b><a href=http://localhost:4200/emailconfirmed?username=" + encodedloginId + "&code=" + token + ">Click here</a><br/></b>");
+                    sb.Append("<b><a href=https://fincast.app/emailconfirmed?username=" + encodedloginId + "&code=" + authToken + ">Click here</a><br/></b>");
+                    sb.Append("Thanks,<br> Fincast Team <br/>");
+                    int ret = await SendEmail(customer.Email.Decrypt(), sb.ToString(), "Welcome to Fincast");
                 }  
 
                 return val;
@@ -277,7 +285,7 @@ namespace TechnipFMC.Finapp.Data
                 base.Dispose();
             }
         }
-        public Customer ResendEmail(string email)
+        public async Task<Customer> ResendEmail(string email)
         {
             try
             {
@@ -304,10 +312,19 @@ namespace TechnipFMC.Finapp.Data
                     {
                         customer.Admin = (string)reader["Admin"].ToString();
                         customer.Email = (string)reader["Email"].ToString();
+                        StringBuilder sb = new StringBuilder();
+                        sb.Append($"Hi {customer.Admin.Decrypt()},<br/> Please use the provided link below to confirm your email.<br/><br/>");
+                        //  sb.Append("<b><a href=http://localhost:4200/emailconfirmed?username=" + encodedloginId + "&code=" + token + ">Click here</a><br/></b>");
+                        sb.Append("<b><a href=https://fincast.app/emailconfirmed?username=" + encodedloginId + "&code=" + authToken + ">Click here</a><br/></b>");
+                        sb.Append("Thanks,<br> Fincast Team <br/>");
+
+                        int ret = await SendEmail(customer.Email.Decrypt(), sb.ToString(), "Welcome to Fincast");
+                        if(ret == 0)
+                        {
+                            customer.CustomerID = -1;
+                        }
                     }
-                }
-                
-                    SendEmail(customer, authToken, encodedloginId);
+                }     
                 
 
                 return customer;
@@ -321,49 +338,7 @@ namespace TechnipFMC.Finapp.Data
                 base.Dispose();
             }
         }
-        public async void   SendEmail(Customer customer,string token,string encodedloginId)
-        {
-            try
-            {
-                StringBuilder sb = new StringBuilder();
-                sb.Append($"Hi {customer.Admin.Decrypt()},<br/> Please use the provided link below to confirm your email.<br/><br/>");
-                //  sb.Append("<b><a href=http://localhost:4200/emailconfirmed?username=" + encodedloginId + "&code=" + token + ">Click here</a><br/></b>");
-                sb.Append("<b><a href=https://fincast.app/emailconfirmed?username=" + encodedloginId + "&code=" + token + ">Click here</a><br/></b>");
-                sb.Append("Thanks,<br> Fincast Team <br/>");
-
-                var client = new HttpClient();
-                var request = new HttpRequestMessage(HttpMethod.Post, "http://mail.raintels.in/api/send-mail");
-                request.Headers.Add("X-Authorization-Token", "HBcv0ehXARdCUuLpyoUuVV4hMI0rzAtlX8uM1QC5PKTZqK9tRfOEuvckESAK8cYQ");
-                request.Headers.Add("Authorization", "Bearer HBcv0ehXARdCUuLpyoUuVV4hMI0rzAtlX8uM1QC5PKTZqK9tRfOEuvckESAK8cYQ");
-                var content = new MultipartFormDataContent();
-                content.Add(new StringContent("mailjet"), "gateway");
-                content.Add(new StringContent($"{customer.Admin.Decrypt().ToUpper()} <{customer.Email.Decrypt()}>"), "to");
-                content.Add(new StringContent("Welcome to Fincast"), "subject");
-                content.Add(new StringContent(sb.ToString()), "html");
-                content.Add(new StringContent("Fincast <fincast@raintels.com>"), "from_name");
-                request.Content = content;
-                HttpResponseMessage response = await client.SendAsync(request);
-                response.EnsureSuccessStatusCode();
-
-
-                if (response.StatusCode == HttpStatusCode.OK)
-                {
-                    Console.WriteLine("Email sent successfully!");
-                }
-                else
-                {
-                    //Console.WriteLine($"Error sending email: {response.ErrorMessage}");
-
-                }
-            }
-            catch (Exception ex)
-            {
-            }
-            finally
-            {
-                base.Dispose();
-            }
-        }
+        
         public Customer Update(Customer customer)
         {
             try

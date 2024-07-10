@@ -60,7 +60,7 @@ namespace TechnipFMC.Finapp.Business
             FinancialDataTypeRepository _financialDataTypeRepo = new FinancialDataTypeRepository();
             return _financialDataTypeRepo.Map(financialDataType);
         }
-        public bool MapReportDatatypes(int reportId,int[] ids)
+        public bool MapReportDatatypes(int reportId,string[] ids)
         {
             FinancialDataTypeRepository _financialDataTypeRepo = new FinancialDataTypeRepository();
             return _financialDataTypeRepo.MapReportDatatypes(reportId,ids);

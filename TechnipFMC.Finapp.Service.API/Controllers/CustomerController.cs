@@ -237,7 +237,7 @@ namespace TechnipFMC.Finapp.Service.API.Controllers
         }
         [HttpPost]
         [Route("api/customers/initialsignup")]
-        public HttpResponseMessage InitialSignup(CustomerViewModel customerViewModel)
+        public async Task<HttpResponseMessage> InitialSignup(CustomerViewModel customerViewModel)
         {
             try
             {
@@ -245,7 +245,7 @@ namespace TechnipFMC.Finapp.Service.API.Controllers
                 Customer customerDatamodel = new Customer();
                 //customerViewModel.CreatedBy = User.Identity.Name.GetUserName();
                 Mapper.Map(customerViewModel, customerDatamodel);
-                int Customer = _customerBL.InitialSignup(customerDatamodel);
+                int Customer = await _customerBL.InitialSignup(customerDatamodel);
                 var message = "";
                 if (Customer > 0)
                 {
@@ -276,14 +276,14 @@ namespace TechnipFMC.Finapp.Service.API.Controllers
                             new APIResponse<string>(HttpStatusCode.BadRequest, "", null, "Email already exist. Please login.", "", ""));
                 }
                 else
-                    RaintelsLogManager.Error(ex, "TechnipFMC.Finapp.Service.API.CustomerController", "SaveCustomer", "");
+                    RaintelsLogManager.Error(ex, "TechnipFMC.Finapp.Service.API.CustomerController", "InitialSignup", "");
                 return Request.CreateResponse(HttpStatusCode.InternalServerError,
                     new APIResponse<string>(HttpStatusCode.InternalServerError, "", "Exception occured.", "", " ", " "));
 
             }
             catch (Exception ex)
             {
-                RaintelsLogManager.Error(ex, "TechnipFMC.Finapp.Service.API.CustomerController", "SaveCustomer", "");
+                RaintelsLogManager.Error(ex, "TechnipFMC.Finapp.Service.API.CustomerController", "InitialSignup", "");
 
                 return Request.CreateResponse(HttpStatusCode.InternalServerError,
                     new APIResponse<string>(HttpStatusCode.InternalServerError, "", "Exception occured.", "", " ", " "));
@@ -423,7 +423,7 @@ namespace TechnipFMC.Finapp.Service.API.Controllers
                 var message = "";
                 if (customer.CustomerID > 0)
                 {
-                    RaintelsLogManager.Info("TechnipFMC.Finapp.Service.API.CustomerController", "VerifyEmail", "Verified Customer Id=" + customer.CustomerID  );
+                    RaintelsLogManager.Info("Service.API.CustomerController", "VerifyEmail", "Verified Customer Id=" + customer.CustomerID  );
                     message = "Email Verified Successfully";
                     return Request.CreateResponse(HttpStatusCode.OK,
                    new APIResponse<VerifyCustomer>(HttpStatusCode.OK, customer, null, message, "", ""));
@@ -1091,14 +1091,22 @@ namespace TechnipFMC.Finapp.Service.API.Controllers
         }
         [HttpPost]
         [Route("api/customers/resendemail")]
-        public HttpResponseMessage ResendEmail(VerifyEmailModel body)
+        public async Task<HttpResponseMessage> ResendEmail(VerifyEmailModel body)
         {
             try
             {
-                var customer  = _customerBL.ResendEmail(body.loginId);
+                Customer customer  = await _customerBL.ResendEmail(body.loginId);
                 var message = "";
-                return Request.CreateResponse(HttpStatusCode.OK,
+                if(customer.CustomerID == -1)
+                {
+                    return Request.CreateResponse(HttpStatusCode.InternalServerError,
+                    new APIResponse<Customer>(HttpStatusCode.InternalServerError, customer, null, "Email could not be sent", "", ""));
+                }
+                else{
+                    return Request.CreateResponse(HttpStatusCode.OK,
                     new APIResponse<Customer>(HttpStatusCode.OK, customer, null, "", "", ""));
+                }
+                
 
 
             }

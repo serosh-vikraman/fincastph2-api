@@ -50,10 +50,10 @@ namespace TechnipFMC.Finapp.Business
             CustomerRepository _customerRepo = new CustomerRepository();
             return _customerRepo.Signup(customer);
         }
-        public int InitialSignup(Customer customer)
+        public Task<int> InitialSignup(Customer customer)
         {
             CustomerRepository _customerRepo = new CustomerRepository();
-            return _customerRepo.InitialSignup(customer);
+            return  _customerRepo.InitialSignup(customer);
         }
         public VerifyCustomer VerifyEmail(string loginId, string token)
         {
@@ -91,7 +91,7 @@ namespace TechnipFMC.Finapp.Business
             CustomerRepository _customerRepo = new CustomerRepository();
             return _customerRepo.Getrenewlink(loginId);
         }
-        public Customer ResendEmail(string email)
+        public Task<Customer> ResendEmail(string email)
         {
             CustomerRepository _customerRepo = new CustomerRepository();
             return _customerRepo.ResendEmail(email);

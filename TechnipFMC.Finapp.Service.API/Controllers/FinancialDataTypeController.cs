@@ -397,7 +397,7 @@ namespace TechnipFMC.Finapp.Service.API.Controllers
         public class MapReportDatatypesRequest
         {
             public int ReportId { get; set; }
-            public int[] SelectedIds { get; set; }
+            public string[] SelectedIds { get; set; }
         }
     }
 }
