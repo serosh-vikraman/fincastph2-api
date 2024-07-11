@@ -58,6 +58,14 @@ namespace TechnipFMC.Finapp.Service.API.ViewModel
         public Decimal? Q2 { get; set; }
         public Decimal? Q3 { get; set; }
         public Decimal? Q4 { get; set; }
+        public Decimal? Q5 { get; set; }
+        public Decimal? Q6 { get; set; }
+        public Decimal? Q7 { get; set; }
+        public Decimal? Q8 { get; set; }
+        public Decimal? Q9 { get; set; }
+        public Decimal? Q10 { get; set; }
+        public Decimal? Q11 { get; set; }
+        public Decimal? Q12 { get; set; }
         public Decimal? Total { get; set; }
         public string EntityName { get; set; }
         public bool IsBold { get; set; }
@@ -94,6 +102,14 @@ namespace TechnipFMC.Finapp.Service.API.ViewModel
         public Decimal? Q2 { get; set; }
         public Decimal? Q3 { get; set; }
         public Decimal? Q4 { get; set; }
+        public Decimal? Q5 { get; set; }
+        public Decimal? Q6 { get; set; }
+        public Decimal? Q7 { get; set; }
+        public Decimal? Q8 { get; set; }
+        public Decimal? Q9 { get; set; }
+        public Decimal? Q10 { get; set; }
+        public Decimal? Q11 { get; set; }
+        public Decimal? Q12 { get; set; }
         public string ScenarioName { get; set; }
 
     }
@@ -103,6 +119,14 @@ namespace TechnipFMC.Finapp.Service.API.ViewModel
         public Decimal? Q2 { get; set; }
         public Decimal? Q3 { get; set; }
         public Decimal? Q4 { get; set; }
+        public Decimal? Q5 { get; set; }
+        public Decimal? Q6 { get; set; }
+        public Decimal? Q7 { get; set; }
+        public Decimal? Q8 { get; set; }
+        public Decimal? Q9 { get; set; }
+        public Decimal? Q10 { get; set; }
+        public Decimal? Q11 { get; set; }
+        public Decimal? Q12 { get; set; }
         public string ProjectName { get; set; }
     }
     public class BudgetDeviationDataViewModel
@@ -111,6 +135,14 @@ namespace TechnipFMC.Finapp.Service.API.ViewModel
         public Decimal? Q2 { get; set; }
         public Decimal? Q3 { get; set; }
         public Decimal? Q4 { get; set; }
+        public Decimal? Q5 { get; set; }
+        public Decimal? Q6 { get; set; }
+        public Decimal? Q7 { get; set; }
+        public Decimal? Q8 { get; set; }
+        public Decimal? Q9 { get; set; }
+        public Decimal? Q10 { get; set; }
+        public Decimal? Q11 { get; set; }
+        public Decimal? Q12 { get; set; }
         public string ScenarioType { get; set; }
         
              public string ScenarioName { get; set; }
@@ -130,6 +162,14 @@ namespace TechnipFMC.Finapp.Service.API.ViewModel
         public Decimal? Q2 { get; set; }
         public Decimal? Q3 { get; set; }
         public Decimal? Q4 { get; set; }
+        public Decimal? Q5 { get; set; }
+        public Decimal? Q6 { get; set; }
+        public Decimal? Q7 { get; set; }
+        public Decimal? Q8 { get; set; }
+        public Decimal? Q9 { get; set; }
+        public Decimal? Q10 { get; set; }
+        public Decimal? Q11 { get; set; }
+        public Decimal? Q12 { get; set; }
         public int Year { get; set; }
     }
     public class DashboardDataViewModel

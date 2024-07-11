@@ -44,6 +44,14 @@ namespace TechnipFMC.Finapp.Models
         public Decimal? Q2 { get; set; }
         public Decimal? Q3 { get; set; }
         public Decimal? Q4 { get; set; }
+        public Decimal? Q5 { get; set; }
+        public Decimal? Q6 { get; set; }
+        public Decimal? Q7 { get; set; }
+        public Decimal? Q8 { get; set; }
+        public Decimal? Q9 { get; set; }
+        public Decimal? Q10 { get; set; }
+        public Decimal? Q11 { get; set; }
+        public Decimal? Q12 { get; set; }
         public Decimal? Total { get; set; }
         public string EntityName { get; set; }
         public bool IsBold { get; set; }
@@ -56,6 +64,14 @@ namespace TechnipFMC.Finapp.Models
         public Decimal? OrgQ2 { get; set; }
         public Decimal? OrgQ3 { get; set; }
         public Decimal? OrgQ4 { get; set; }
+        public Decimal? OrgQ5 { get; set; }
+        public Decimal? OrgQ6 { get; set; }
+        public Decimal? OrgQ7 { get; set; }
+        public Decimal? OrgQ8 { get; set; }
+        public Decimal? OrgQ9 { get; set; }
+        public Decimal? OrgQ10 { get; set; }
+        public Decimal? OrgQ11 { get; set; }
+        public Decimal? OrgQ12 { get; set; }
         public Decimal? TotalOrg { get; set; }
         public string OrgScenarioName { get; set; }
         public List<DepartmentData> DData { get; set; }
@@ -69,6 +85,14 @@ namespace TechnipFMC.Finapp.Models
         public Decimal? DQ2 { get; set; }
         public Decimal? DQ3 { get; set; }
         public Decimal? DQ4 { get; set; }
+        public Decimal? DQ5 { get; set; }
+        public Decimal? DQ6 { get; set; }
+        public Decimal? DQ7 { get; set; }
+        public Decimal? DQ8 { get; set; }
+        public Decimal? DQ9 { get; set; }
+        public Decimal? DQ10 { get; set; }
+        public Decimal? DQ11 { get; set; }
+        public Decimal? DQ12 { get; set; }
         public Decimal? TotalDep { get; set; }
 
     }
@@ -80,6 +104,14 @@ namespace TechnipFMC.Finapp.Models
         public Decimal? CQ2 { get; set; }
         public Decimal? CQ3 { get; set; }
         public Decimal? CQ4 { get; set; }
+        public Decimal? CQ5 { get; set; }
+        public Decimal? CQ6 { get; set; }
+        public Decimal? CQ7 { get; set; }
+        public Decimal? CQ8 { get; set; }
+        public Decimal? CQ9 { get; set; }
+        public Decimal? CQ10 { get; set; }
+        public Decimal? CQ11 { get; set; }
+        public Decimal? CQ12 { get; set; }
         public Decimal? TotalClient { get; set; }
 
     }
@@ -107,6 +139,14 @@ namespace TechnipFMC.Finapp.Models
         public Decimal? Q2 { get; set; }
         public Decimal? Q3 { get; set; }
         public Decimal? Q4 { get; set; }
+        public Decimal? Q5 { get; set; }
+        public Decimal? Q6 { get; set; }
+        public Decimal? Q7 { get; set; }
+        public Decimal? Q8 { get; set; }
+        public Decimal? Q9 { get; set; }
+        public Decimal? Q10 { get; set; }
+        public Decimal? Q11 { get; set; }
+        public Decimal? Q12 { get; set; }
         public string DepartmentName { get; set; }
         public string ScenarioName { get; set; }
     }
@@ -116,6 +156,14 @@ namespace TechnipFMC.Finapp.Models
         public Decimal? Q2 { get; set; }
         public Decimal? Q3 { get; set; }
         public Decimal? Q4 { get; set; }
+        public Decimal? Q5 { get; set; }
+        public Decimal? Q6 { get; set; }
+        public Decimal? Q7 { get; set; }
+        public Decimal? Q8 { get; set; }
+        public Decimal? Q9 { get; set; }
+        public Decimal? Q10 { get; set; }
+        public Decimal? Q11 { get; set; }
+        public Decimal? Q12 { get; set; }
         public int Year { get; set; }
         public string ProjectName { get; set; }
         public string ScenarioName { get; set; }
@@ -127,6 +175,15 @@ namespace TechnipFMC.Finapp.Models
         public Decimal? Q2 { get; set; }
         public Decimal? Q3 { get; set; }
         public Decimal? Q4 { get; set; }
+        public Decimal? Q5 { get; set; }
+        public Decimal? Q6 { get; set; }
+        public Decimal? Q7 { get; set; }
+        public Decimal? Q8 { get; set; }
+        public Decimal? Q9 { get; set; }
+        public Decimal? Q10 { get; set; }
+        public Decimal? Q11 { get; set; }
+        public Decimal? Q12 { get; set; }
+
         public string ScenarioType { get; set; }
         public string ScenarioName { get; set; }
     }
@@ -155,6 +212,14 @@ namespace TechnipFMC.Finapp.Models
         public Decimal? OrgQ2 { get; set; }
         public Decimal? OrgQ3 { get; set; }
         public Decimal? OrgQ4 { get; set; }
+        public Decimal? OrgQ5 { get; set; }
+        public Decimal? OrgQ6 { get; set; }
+        public Decimal? OrgQ7 { get; set; }
+        public Decimal? OrgQ8 { get; set; }
+        public Decimal? OrgQ9 { get; set; }
+        public Decimal? OrgQ10 { get; set; }
+        public Decimal? OrgQ11 { get; set; }
+        public Decimal? OrgQ12 { get; set; }
         public int Year { get; set; }
     }
     public class NonOrgScenarioDataModel
@@ -163,6 +228,14 @@ namespace TechnipFMC.Finapp.Models
         public Decimal? Q2 { get; set; }
         public Decimal? Q3 { get; set; }
         public Decimal? Q4 { get; set; }
+        public Decimal? Q5 { get; set; }
+        public Decimal? Q6 { get; set; }
+        public Decimal? Q7 { get; set; }
+        public Decimal? Q8 { get; set; }
+        public Decimal? Q9 { get; set; }
+        public Decimal? Q10 { get; set; }
+        public Decimal? Q11 { get; set; }
+        public Decimal? Q12 { get; set; }
         public int Year { get; set; }
     }
 
