@@ -203,7 +203,7 @@ namespace TechnipFMC.Finapp.Service.API.Controllers
 
         [HttpPost]
         [Route("api/scenariodata/clear/{ScenarioId}/{DeletedBy}")]
-        public HttpResponseMessage ClearScenarioData(int ScenarioId, string DeletedBy)
+        public HttpResponseMessage ClearScenarioData(int ScenarioId, int DeletedBy)
         {
             try
             {
@@ -212,7 +212,7 @@ namespace TechnipFMC.Finapp.Service.API.Controllers
                 var message = "";
                 if (deleteSuccess > 0)
                 {
-                    RaintelsLogManager.Info("TechnipFMC.Finapp.Service.API.ScenarioDataController", "ClearScenarioData", "Cleared ScenarioData from SCenario =" + ScenarioId + " by " + DeletedBy);
+                    RaintelsLogManager.Info("ScenarioDataController", "ClearScenarioData", "Cleared ScenarioData from SCenario =" + ScenarioId + " by " + DeletedBy);
                     message = new CommonBL().GetMessage("SDCS");
                     return Request.CreateResponse(HttpStatusCode.OK,
                    new APIResponse<bool>(HttpStatusCode.OK, true, null, message, "", ""));

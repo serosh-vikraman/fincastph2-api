@@ -12,7 +12,7 @@ namespace TechnipFMC.Finapp.Models
         public string Status { get; set; }
         public int CreatedBy { get; set; }
         public DateTime CreatedDate { get; set; }
-        public string UpdatedBy { get; set; }
+        public int UpdatedBy { get; set; }
         public DateTime UpdatedDate { get; set; }
         public DateTime DeletedDate { get; set; }
         public int CustomerID { get; set; }

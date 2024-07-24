@@ -5575,14 +5575,14 @@ namespace TechnipFMC.Finapp.Business
                 GrossQ3D = item.DQ3 + GrossQ3D;
                 GrossQ4D= item.DQ4 + GrossQ4D;
                 GrossQ5D = item.DQ5 + GrossQ5D;
-                GrossQ6D = item.DQ4 + GrossQ6D;
-                GrossQ7D = item.DQ4 + GrossQ7D;
-                GrossQ8D = item.DQ4 + GrossQ8D;
-                GrossQ9D = item.DQ4 + GrossQ9D;
+                GrossQ6D = item.DQ6 + GrossQ6D;
+                GrossQ7D = item.DQ7 + GrossQ7D;
+                GrossQ8D = item.DQ8 + GrossQ8D;
+                GrossQ9D = item.DQ9 + GrossQ9D;
 
-                GrossQ10D = item.DQ4 + GrossQ10D;
-                GrossQ11D = item.DQ4 + GrossQ11D;
-                GrossQ12D = item.DQ4 + GrossQ12D;
+                GrossQ10D = item.DQ10 + GrossQ10D;
+                GrossQ11D = item.DQ11 + GrossQ11D;
+                GrossQ12D = item.DQ12 + GrossQ12D;
                 GrossTotalDep = item.TotalDep + GrossTotalDep;
             }
             grid.Add(new DevianceGridResponse()
@@ -5669,9 +5669,9 @@ namespace TechnipFMC.Finapp.Business
                 Q4 = returnList.OrgQ4 - (GrossQ4C + GrossQ4D),
                 Q5 = returnList.OrgQ5 - (GrossQ5C + GrossQ5D),
                 Q6 = returnList.OrgQ6 - (GrossQ6C + GrossQ6D),
-                Q7 = returnList.OrgQ3 - (GrossQ7C + GrossQ7D),
+                Q7 = returnList.OrgQ7 - (GrossQ7C + GrossQ7D),
                 Q8 = returnList.OrgQ8 - (GrossQ8C + GrossQ8D),
-                Q9 = returnList.OrgQ1 - (GrossQ9C + GrossQ9D),
+                Q9 = returnList.OrgQ9 - (GrossQ9C + GrossQ9D),
                 Q10 = returnList.OrgQ10 - (GrossQ10C + GrossQ10D),
                 Q11 = returnList.OrgQ11 - (GrossQ11C + GrossQ11D),
                 Q12 = returnList.OrgQ12 - (GrossQ12C + GrossQ12D),

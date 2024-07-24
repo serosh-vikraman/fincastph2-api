@@ -19,7 +19,7 @@ namespace TechnipFMC.Finapp.Business
 
         bool Delete(int Id, string Deletedby);
 
-        int ClearScenarioData(int ScenarioId, string Deletedby);
+        int ClearScenarioData(int ScenarioId, int Deletedby);
         bool ClearProjectScenarioData(ScenarioProjectMapper scenarioProject);
         List<ScenarioLayout> GetScenarioLayout(int scenarioId);
     }

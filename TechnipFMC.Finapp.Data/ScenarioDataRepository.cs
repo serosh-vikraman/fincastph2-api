@@ -40,7 +40,7 @@ namespace TechnipFMC.Finapp.Data
 
             //return true;
         }
-        public int ClearScenarioData(int ScenarioId, string DeletedBy)
+        public int ClearScenarioData(int ScenarioId, int DeletedBy)
         {
             SqlCommand cmd = base.DBConnection.CreateCommand();
             cmd.CommandType = CommandType.StoredProcedure;

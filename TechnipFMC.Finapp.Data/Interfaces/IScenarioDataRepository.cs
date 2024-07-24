@@ -18,7 +18,7 @@ namespace TechnipFMC.Finapp.Data.Interfaces
 
         bool Delete(int Id, string DeletedBy);
 
-        int ClearScenarioData(int ScenarioId, string DeletedBy);
+        int ClearScenarioData(int ScenarioId, int DeletedBy);
         bool ClearProjectScenarioData(ScenarioProjectMapper scenarioProject);
         List<ScenarioLayout> GetScenarioLayout(int scenarioId);
     }

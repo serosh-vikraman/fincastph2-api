@@ -23,7 +23,7 @@ namespace TechnipFMC.Finapp.Business
             ScenarioDataRepository _scenarioDataRepo = new ScenarioDataRepository();
             return _scenarioDataRepo.Delete(Id, Deletedby);
         }
-        public int ClearScenarioData(int ScenarioId, string Deletedby)
+        public int ClearScenarioData(int ScenarioId, int Deletedby)
         {
             ScenarioDataRepository _scenarioDataRepo = new ScenarioDataRepository();
             return _scenarioDataRepo.ClearScenarioData(ScenarioId, Deletedby);

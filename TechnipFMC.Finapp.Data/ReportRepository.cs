@@ -1362,6 +1362,14 @@ namespace TechnipFMC.Finapp.Data
                         client.Q2 = ds.Tables[0].Rows[i]["Q2"] == DBNull.Value ? 0 : Convert.ToDecimal(ds.Tables[0].Rows[i]["Q2"]);
                         client.Q3 = ds.Tables[0].Rows[i]["Q3"] == DBNull.Value ? 0 : Convert.ToDecimal(ds.Tables[0].Rows[i]["Q3"]);
                         client.Q4 = ds.Tables[0].Rows[i]["Q4"] == DBNull.Value ? 0 : Convert.ToDecimal(ds.Tables[0].Rows[i]["Q4"]);
+                        client.Q5 = ds.Tables[0].Rows[i]["Q5"] == DBNull.Value ? 0 : Convert.ToDecimal(ds.Tables[0].Rows[i]["Q5"]);
+                        client.Q6 = ds.Tables[0].Rows[i]["Q6"] == DBNull.Value ? 0 : Convert.ToDecimal(ds.Tables[0].Rows[i]["Q6"]);
+                        client.Q7 = ds.Tables[0].Rows[i]["Q7"] == DBNull.Value ? 0 : Convert.ToDecimal(ds.Tables[0].Rows[i]["Q7"]);
+                        client.Q8 = ds.Tables[0].Rows[i]["Q8"] == DBNull.Value ? 0 : Convert.ToDecimal(ds.Tables[0].Rows[i]["Q8"]);
+                        client.Q9 = ds.Tables[0].Rows[i]["Q9"] == DBNull.Value ? 0 : Convert.ToDecimal(ds.Tables[0].Rows[i]["Q9"]);
+                        client.Q10 = ds.Tables[0].Rows[i]["Q10"] == DBNull.Value ? 0 : Convert.ToDecimal(ds.Tables[0].Rows[i]["Q10"]);
+                        client.Q11 = ds.Tables[0].Rows[i]["Q11"] == DBNull.Value ? 0 : Convert.ToDecimal(ds.Tables[0].Rows[i]["Q11"]);
+                        client.Q12 = ds.Tables[0].Rows[i]["Q12"] == DBNull.Value ? 0 : Convert.ToDecimal(ds.Tables[0].Rows[i]["Q12"]);
                         budgetDataModel.Add(client);
                     }
 
@@ -1377,6 +1385,14 @@ namespace TechnipFMC.Finapp.Data
                         client.Q2 = ds.Tables[1].Rows[i]["Q2"] == DBNull.Value ? 0 : Convert.ToDecimal(ds.Tables[1].Rows[i]["Q2"]);
                         client.Q3 = ds.Tables[1].Rows[i]["Q3"] == DBNull.Value ? 0 : Convert.ToDecimal(ds.Tables[1].Rows[i]["Q3"]);
                         client.Q4 = ds.Tables[1].Rows[i]["Q4"] == DBNull.Value ? 0 : Convert.ToDecimal(ds.Tables[1].Rows[i]["Q4"]);
+                        client.Q5 = ds.Tables[0].Rows[i]["Q5"] == DBNull.Value ? 0 : Convert.ToDecimal(ds.Tables[1].Rows[i]["Q5"]);
+                        client.Q6 = ds.Tables[0].Rows[i]["Q6"] == DBNull.Value ? 0 : Convert.ToDecimal(ds.Tables[1].Rows[i]["Q6"]);
+                        client.Q7 = ds.Tables[0].Rows[i]["Q7"] == DBNull.Value ? 0 : Convert.ToDecimal(ds.Tables[1].Rows[i]["Q7"]);
+                        client.Q8 = ds.Tables[0].Rows[i]["Q8"] == DBNull.Value ? 0 : Convert.ToDecimal(ds.Tables[1].Rows[i]["Q8"]);
+                        client.Q9 = ds.Tables[0].Rows[i]["Q9"] == DBNull.Value ? 0 : Convert.ToDecimal(ds.Tables[1].Rows[i]["Q9"]);
+                        client.Q10 = ds.Tables[0].Rows[i]["Q10"] == DBNull.Value ? 0 : Convert.ToDecimal(ds.Tables[1].Rows[i]["Q10"]);
+                        client.Q11 = ds.Tables[0].Rows[i]["Q11"] == DBNull.Value ? 0 : Convert.ToDecimal(ds.Tables[1].Rows[i]["Q11"]);
+                        client.Q12 = ds.Tables[0].Rows[i]["Q12"] == DBNull.Value ? 0 : Convert.ToDecimal(ds.Tables[1].Rows[i]["Q12"]);
                         forecastDataModel.Add(client);
                     }
 
@@ -1694,6 +1710,14 @@ namespace TechnipFMC.Finapp.Data
                         data.Q2 = Convert.ToDecimal(ds.Tables[0].Rows[i]["Q2"]);
                         data.Q3 = Convert.ToDecimal(ds.Tables[0].Rows[i]["Q3"]);
                         data.Q4 = Convert.ToDecimal(ds.Tables[0].Rows[i]["Q4"]);
+                        data.Q5 = Convert.ToDecimal(ds.Tables[0].Rows[i]["Q5"]);
+                        data.Q6 = Convert.ToDecimal(ds.Tables[0].Rows[i]["Q6"]);
+                        data.Q7 = Convert.ToDecimal(ds.Tables[0].Rows[i]["Q7"]);
+                        data.Q8 = Convert.ToDecimal(ds.Tables[0].Rows[i]["Q8"]);
+                        data.Q9 = Convert.ToDecimal(ds.Tables[0].Rows[i]["Q9"]);
+                        data.Q10 = Convert.ToDecimal(ds.Tables[0].Rows[i]["Q10"]);
+                        data.Q11 = Convert.ToDecimal(ds.Tables[0].Rows[i]["Q11"]);
+                        data.Q12 = Convert.ToDecimal(ds.Tables[0].Rows[i]["Q12"]);
                         data.Year = Convert.ToInt32(ds.Tables[0].Rows[i]["Year"]);
                         data.ProjectName = ds.Tables[0].Rows[i]["ScenarioName"].ToString();
                         scenariodatalist.Add(data);
