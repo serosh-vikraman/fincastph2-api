@@ -120,7 +120,9 @@ namespace TechnipFMC.Finapp.Data
                             Admin = (string)reader["Admin"].ToString().Decrypt(),
                             Designation = (string)reader["Designation"],
                             Email = (string)reader["Email"].ToString().Decrypt(),
-                          //  CreatedBy = (int)reader["CreatedBy"],
+                            //  CreatedBy = (int)reader["CreatedBy"],
+                            CurrencyID = (int)reader["CurrencyID"],
+                            Unit = (int)reader["Unit"],
                             Active = (bool)reader["Active"],
                             Status = (string)reader["Status"],
                         };
@@ -207,6 +209,8 @@ namespace TechnipFMC.Finapp.Data
                 cmd.Parameters.AddWithValue("@P_PlanType", customer.PlanType);
                 cmd.Parameters.AddWithValue("@P_CountryName", customer.CountryID);
                 cmd.Parameters.AddWithValue("@P_Interval", customer.DataEntryInterval);
+                cmd.Parameters.AddWithValue("@P_CurrencyId", customer.CurrencyID);
+                cmd.Parameters.AddWithValue("@P_Unit", customer.Unit);
                 SqlDataReader reader = cmd.ExecuteReader();
                 if (reader.HasRows)
                 {
@@ -344,13 +348,13 @@ namespace TechnipFMC.Finapp.Data
             try
             {
                 customer.CustomerName = customer.CustomerName.Encrypt();
-                SqlCommand cmd = base.DBConnection.CreateCommand();
+                SqlCommand cmd = base.MasterDBConnection.CreateCommand();
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.CommandText = "UpdateCustomer";
                 cmd.Parameters.AddWithValue("@P_Id", customer.CustomerID);
-                cmd.Parameters.AddWithValue("@P_CustomerName", customer.CustomerName);
-                cmd.Parameters.AddWithValue("@P_CountryName", customer.CountryName);
-                cmd.Parameters.AddWithValue("@P_CreatedBy", customer.CreatedBy);
+                cmd.Parameters.AddWithValue("@P_CurrencyId", customer.CurrencyID);
+                cmd.Parameters.AddWithValue("@P_Unit", customer.Unit.ToString());
+                //cmd.Parameters.AddWithValue("@P_CreatedBy", customer.CreatedBy);
                 SqlDataReader reader = cmd.ExecuteReader();
                 if (reader.HasRows)
                 {

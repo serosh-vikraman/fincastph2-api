@@ -29,12 +29,12 @@ namespace TechnipFMC.Finapp.Service.API.Controllers
 
         #region Old Code
         [HttpPost]
-        [Route("api/getvarianceanalysisreportfile_Old")]
-        public IHttpActionResult GetVarianceAnalysisReportExcel(VarianceAnalysisConfigViewModel config)
+        [Route("api/getvarianceanalysisreportfile_Old/{cid}")]
+        public IHttpActionResult GetVarianceAnalysisReportExcel(VarianceAnalysisConfigViewModel config,int cid)
         {
             VarianceAnalysisConfig varianceAnalysisConfig = new VarianceAnalysisConfig();
             Mapper.Map(config, varianceAnalysisConfig);
-            byte[] byteinfo = _reportBL.GetVarianceAnalysisReportExcel(varianceAnalysisConfig);
+            byte[] byteinfo = _reportBL.GetVarianceAnalysisReportExcel(varianceAnalysisConfig,cid);
             var dataStream = new MemoryStream(byteinfo);
             return new eBookResult(dataStream, Request, $"VarianceAnalysisReport-{DateTime.Now.Date.ToString("dd-mm-yyyy")}.xlsx");
         }
@@ -123,9 +123,9 @@ namespace TechnipFMC.Finapp.Service.API.Controllers
         }
 
         [HttpPost]
-        [Route("api/projectlifecyclereportdownload/{projectid}/{scenarioscope}")]
+        [Route("api/projectlifecyclereportdownload/{projectid}/{scenarioscope}/{cid}")]
         // [Authorize]
-        public HttpResponseMessage ProjectLifeCycleReportDownload(int projectid, string scenarioscope)
+        public HttpResponseMessage ProjectLifeCycleReportDownload(int projectid, string scenarioscope,int cid)
         {
             try
             {
@@ -141,7 +141,7 @@ namespace TechnipFMC.Finapp.Service.API.Controllers
                 string excelFolderName = Path.GetFileName(Path.GetDirectoryName(reportPath));
 
                 var response = _reportBL.ProjectLifeCycleReport(projectid, scenarioscope);
-                byte[] byteinfo = _reportBL.ProjectLifeCycleReportDownload(response, scenarioscope);
+                byte[] byteinfo = _reportBL.ProjectLifeCycleReportDownload(response, scenarioscope, cid);
                 var fileName = $"ProjectLifeCycleReport_{response.ProjectName}.xlsx";
                 var sourceFile = reportPath + fileName;
                 File.WriteAllBytes(sourceFile, byteinfo.ToArray());
@@ -170,9 +170,9 @@ namespace TechnipFMC.Finapp.Service.API.Controllers
         }
 
         [HttpPost]
-        [Route("api/projectlifecyclereportdownload1/{projectid}/{scenarioscope}")]
+        [Route("api/projectlifecyclereportdownload1/{projectid}/{scenarioscope}/{cid}")]
         // [Authorize]
-        public HttpResponseMessage ProjectLifeCycleReportDownload1(int projectid, string scenarioscope)
+        public HttpResponseMessage ProjectLifeCycleReportDownload1(int projectid, string scenarioscope,int cid)
         {
             try
             {
@@ -188,7 +188,7 @@ namespace TechnipFMC.Finapp.Service.API.Controllers
                 string excelFolderName = Path.GetFileName(Path.GetDirectoryName(reportPath));
 
                 var response = _reportBL.ProjectLifeCycleReport(projectid, scenarioscope);
-                byte[] byteinfo = _reportBL.ProjectLifeCycleReportDownload1(response, scenarioscope);
+                byte[] byteinfo = _reportBL.ProjectLifeCycleReportDownload1(response, scenarioscope,cid);
                 var fileName = $"ProjectLifeCycleReport_{response.ProjectName}.xlsx";
                 var sourceFile = reportPath + fileName;
                 File.WriteAllBytes(sourceFile, byteinfo.ToArray());
@@ -318,9 +318,9 @@ namespace TechnipFMC.Finapp.Service.API.Controllers
             }
         }
         [HttpPost]
-        [Route("api/getvarianceanalysisreportdownload")]
+        [Route("api/getvarianceanalysisreportdownload/{cid}")]
         // [Authorize]
-        public HttpResponseMessage GetVarianceAnalysisReportDownload(VarianceAnalysisConfigViewModel config)
+        public HttpResponseMessage GetVarianceAnalysisReportDownload(VarianceAnalysisConfigViewModel config,int cid)
         {
             try
             {
@@ -342,7 +342,7 @@ namespace TechnipFMC.Finapp.Service.API.Controllers
                 var response = _reportBL.GetVarianceAnalysisReport(varianceAnalysisConfig);
                 varianceAnalysisConfig.ScenarioDataTypeId = "GM";
                 var responseGM = _reportBL.GetVarianceAnalysisReport(varianceAnalysisConfig);
-                byte[] byteinfo = _reportBL.GetVarianceAnalysisExcel(varianceAnalysisConfig, response, responseGM);
+                byte[] byteinfo = _reportBL.GetVarianceAnalysisExcel(varianceAnalysisConfig, response, responseGM, cid);
                 var fileName = $"VarianceAnalysisReport_{DateTime.Now.ToString("ddMMyyyyHHmmss")}.xlsx";
                 var sourceFile = reportPath + fileName;
                 File.WriteAllBytes(sourceFile, byteinfo.ToArray());
@@ -400,9 +400,9 @@ namespace TechnipFMC.Finapp.Service.API.Controllers
             }
         }
         [HttpPost]
-        [Route("api/getdeviancereportdownload")]
+        [Route("api/getdeviancereportdownload/{cid}")]
         // [Authorize]
-        public HttpResponseMessage GetDevianceReportDownload(DevianceReportConfigViewModel config)
+        public HttpResponseMessage GetDevianceReportDownload(DevianceReportConfigViewModel config,int cid)
         {
             try
             {
@@ -433,7 +433,7 @@ namespace TechnipFMC.Finapp.Service.API.Controllers
                         GridResponse = response
                     });
                 }                
-                byte[] byteinfo = _reportBL.GetDevianceReportExcel(varianceAnalysisConfig, data);
+                byte[] byteinfo = _reportBL.GetDevianceReportExcel(varianceAnalysisConfig, data,cid);
                 var fileName = $"DevianceReport_{DateTime.Now.ToString("ddMMyyyyHHmmss")}.xlsx";
                 var sourceFile = reportPath + fileName;
                 File.WriteAllBytes(sourceFile, byteinfo.ToArray());
@@ -459,9 +459,9 @@ namespace TechnipFMC.Finapp.Service.API.Controllers
             }
         }
         [HttpPost]
-        [Route("api/getfinancereportdownload")]
+        [Route("api/getfinancereportdownload/{cid}")]
         // [Authorize]
-        public HttpResponseMessage GetFinanceReportDownload(DashboardConfigViewModel financeconfigviewmodel)
+        public HttpResponseMessage GetFinanceReportDownload(DashboardConfigViewModel financeconfigviewmodel,int cid)
         {
             try
             {
@@ -492,7 +492,7 @@ namespace TechnipFMC.Finapp.Service.API.Controllers
                 //        GridResponse = response
                 //    });
                 //}
-                byte[] byteinfo = _reportBL.GetFinanceReportExcel(financeConfig, data);
+                byte[] byteinfo = _reportBL.GetFinanceReportExcel(financeConfig, data,cid);
                 var fileName = $"FinanceReport_{DateTime.Now.ToString("ddMMyyyyHHmmss")}.xlsx";
                 var sourceFile = reportPath + fileName;
                 File.WriteAllBytes(sourceFile, byteinfo.ToArray());
@@ -518,9 +518,9 @@ namespace TechnipFMC.Finapp.Service.API.Controllers
             }
         }
         [HttpPost]
-        [Route("api/getprojectperformancereportdownload")]
+        [Route("api/getprojectperformancereportdownload/{cid}")]
         // [Authorize]
-        public HttpResponseMessage GetProjectPerformanceReportDownload(DashboardConfigViewModel financeconfigviewmodel)
+        public HttpResponseMessage GetProjectPerformanceReportDownload(DashboardConfigViewModel financeconfigviewmodel,int cid)
         {
             try
             {
@@ -551,7 +551,7 @@ namespace TechnipFMC.Finapp.Service.API.Controllers
                 //        GridResponse = response
                 //    });
                 //}
-                byte[] byteinfo = _reportBL.GetProjectPerformanceReportExcel(financeConfig, data);
+                byte[] byteinfo = _reportBL.GetProjectPerformanceReportExcel(financeConfig, data,cid);
                 var fileName = $"ProjectPerformanceReport_{DateTime.Now.ToString("ddMMyyyyHHmmss")}.xlsx";
                 var sourceFile = reportPath + fileName;
                 File.WriteAllBytes(sourceFile, byteinfo.ToArray());

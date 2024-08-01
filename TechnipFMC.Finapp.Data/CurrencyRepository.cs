@@ -50,7 +50,7 @@ namespace TechnipFMC.Finapp.Data
         {
             try
             {
-                SqlCommand cmd = base.DBConnection.CreateCommand();
+                SqlCommand cmd = base.MasterDBConnection.CreateCommand();
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.CommandText = "GetAllCurrencies";
                 cmd.Parameters.AddWithValue("@P_Id", 0);
@@ -69,14 +69,15 @@ namespace TechnipFMC.Finapp.Data
                     currency.CurrencyID = Convert.ToInt32(results.Rows[i]["CurrencyID"]);
                     currency.CurrencyName = results.Rows[i]["CurrencyName"].ToString();
                     currency.CurrencyCode = results.Rows[i]["CurrencyCode"].ToString();
-                    currency.CreatedBy = Convert.ToInt32(results.Rows[i]["CreatedBy"]);
+                    currency.CurrencySymbol = results.Rows[i]["CurrencySymbol"].ToString();
+                    //currency.CreatedBy = Convert.ToInt32(results.Rows[i]["CreatedBy"]);
                     currency.Active = Convert.ToBoolean(results.Rows[i]["Active"]);
                     currency.Status = results.Rows[i]["Status"].ToString();
                     obj.Add(currency);
                 }
                 return obj;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 throw;
             }

@@ -9,7 +9,7 @@ namespace TechnipFMC.Finapp.Data.Interfaces
 {
     public interface IReportRepository
     {
-        VarianceAnalysisReport GetVarianceAnalysisReportData(VarianceAnalysisConfig config);
+        VarianceAnalysisReport GetVarianceAnalysisReportData(VarianceAnalysisConfig config,int cid);
         ProjectLifeCycleReport GetProjectLifeCycleReportData(string projectIds, int scopeId);
         REPExtractReport GetREPExtractReportData(int year,int reportTypeId, int scenarioId, string groupLevels);
         ProjectLifeCycle ProjectLifeCycleReport(int projectid, string scenarioscope);

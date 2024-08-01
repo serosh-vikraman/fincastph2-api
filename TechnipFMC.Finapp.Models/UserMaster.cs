@@ -32,7 +32,11 @@ namespace TechnipFMC.Finapp.Models
         public string subscription_end { get; set; }
         public string PlanName { get; set; }
         public string DataEntryInterval { get; set; }
-        
+        public string CurrencyName { get; set; }
+        public string CurrencyCode { get; set; }
+        public string CurrencySymbol { get; set; }
+        public string Unit { get; set; }
+
     }
     public class ChangePasswordModel
     {

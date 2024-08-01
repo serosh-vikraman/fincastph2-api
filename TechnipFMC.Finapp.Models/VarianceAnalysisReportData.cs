@@ -11,6 +11,7 @@ namespace TechnipFMC.Finapp.Models
         public List<VarianceAnalysisReportData> VarianceAnalysisReportDatas { get; set; }
         public List<Scenario> Scenarios { get; set; }
         public List<FinancialDataTypeMaster> FinancialDataTypes { get; set; }
+        public Currency Currency { get; set; }
     }
     public class VarianceAnalysisReportData
     {

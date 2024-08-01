@@ -15,6 +15,11 @@ namespace TechnipFMC.Finapp.Service.API.ViewModel
         public string CountryName { get; set; }
         public int CountryID { get; set; }
         public string Admin { get; set; }
+        public int CurrencyID { get; set; }
+        public string CurrencyCode{ get; set; }
+        public string CurrencyName { get; set; }
+        public string CurrencySymbol { get; set; }
+        public int Unit { get; set; }
         public string Designation { get; set; }
         public string Email { get; set; }        
         public bool Active { get; set; }

@@ -129,7 +129,7 @@ namespace TechnipFMC.Finapp.Data
                 base.Dispose();
             }
         }
-        public VarianceAnalysisReport GetVarianceAnalysisReportData(VarianceAnalysisConfig config)
+        public VarianceAnalysisReport GetVarianceAnalysisReportData(VarianceAnalysisConfig config,int cid)
         {
             try
             {
@@ -204,7 +204,7 @@ namespace TechnipFMC.Finapp.Data
                     "SELECT S.ScenarioID,S.ScenarioName,ST.ScenarioTypeName " +
                     "FROM Scenario S INNER JOIN ScenarioTypeMaster ST ON S.ScenarioTypeCode = ST.ScenarioTypeCode " +
                     $"WHERE S.ScenarioID IN({config.BaseScenarioId},{config.CompareScenarioAId},{config.CompareScenarioBId});";
-
+                    
                 SqlCommand cmd = base.DBConnection.CreateCommand();
                 cmd.CommandType = CommandType.Text;
                 cmd.CommandText = command;
@@ -218,7 +218,7 @@ namespace TechnipFMC.Finapp.Data
                     reportData.VarianceAnalysisReportDatas = ds.Tables[0].ToListOfObject<VarianceAnalysisReportData>();
                 }
 
-                if ((ds != null) && (ds.Tables.Count > 0) && (ds.Tables[1] != null))
+                if ((ds != null) && (ds.Tables.Count > 1) && (ds.Tables[1] != null))
                 {
                     reportData.Scenarios = ds.Tables[1].ToListOfObject<Scenario>();
                 }
@@ -1735,6 +1735,39 @@ namespace TechnipFMC.Finapp.Data
                 base.Dispose();
             }
         }
+        public Currency GetCustomerCurrency(int cid)
+        {
+            try
+            {
+                var currency = new Currency();
 
+                DataSet ds = new DataSet();
+
+                SqlCommand cmd = base.MasterDBConnection.CreateCommand();
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.CommandText = "GetCustomerCurrency";
+                cmd.Parameters.AddWithValue("@P_Id", cid);
+
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                adapter.Fill(ds);
+                base.MasterDBConnection.Close();
+
+                if ((ds != null) && (ds.Tables.Count > 0) && (ds.Tables[0].Rows.Count > 0))
+                {
+                    currency = ds.Tables[0].ToObject<Currency>();
+
+                }
+
+                return currency;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+            finally
+            {
+                base.Dispose();
+            }
+        }
     }
 }

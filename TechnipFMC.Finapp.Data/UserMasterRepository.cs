@@ -332,8 +332,12 @@ namespace TechnipFMC.Finapp.Data
                 if ((ds != null) && (ds.Tables.Count > 3) && (ds.Tables[3] != null))
                 {
 
-                    userMaster.subscription_end = ds.Tables[3].Rows[0][0].ToString();
-                    userMaster.PlanName = ds.Tables[3].Rows[0][1].ToString();
+                    userMaster.subscription_end = ds.Tables[3].Rows[0]["subscription_end"].ToString();
+                    userMaster.PlanName = ds.Tables[3].Rows[0]["PlanName"].ToString();
+                    userMaster.CurrencyName = ds.Tables[3].Rows[0]["CurrencyName"].ToString();
+                    userMaster.CurrencyCode = ds.Tables[3].Rows[0]["CurrencyCode"].ToString();
+                    userMaster.CurrencySymbol = ds.Tables[3].Rows[0]["CurrencySymbol"].ToString();
+                    userMaster.Unit = ds.Tables[3].Rows[0]["Unit"].ToString();
 
                 }
                 return userMaster;

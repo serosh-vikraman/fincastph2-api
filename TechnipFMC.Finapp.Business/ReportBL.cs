@@ -1,4 +1,6 @@
 ﻿using OfficeOpenXml;
+using OfficeOpenXml.FormulaParsing.Excel.Functions.RefAndLookup;
+using OfficeOpenXml.FormulaParsing.Excel.Functions.Text;
 using OfficeOpenXml.Style;
 using System;
 using System.Collections.Generic;
@@ -571,8 +573,9 @@ namespace TechnipFMC.Finapp.Business
             return excelPkg.GetAsByteArray();
         }
 
-        public byte[] GetVarianceAnalysisExcel(VarianceAnalysisConfig config, VarianceAnalysisResponseModel data, VarianceAnalysisResponseModel dataGM)
+        public byte[] GetVarianceAnalysisExcel(VarianceAnalysisConfig config, VarianceAnalysisResponseModel data, VarianceAnalysisResponseModel dataGM,int cid)
         {
+            var currency = _reportRepository.GetCustomerCurrency(cid);
             // number formats
             var dataEntryInterval = data.GridResponse[0].DataEntryInterval;
             string positiveFormat = "#,##0.00_)";
@@ -599,12 +602,19 @@ namespace TechnipFMC.Finapp.Business
             #region Header Row
 
             #region blank row
-            worksheet.Cells[rowcount, colcount].Value = "";
+            worksheet.Cells[rowcount, colcount].Value = "Currency";
+            Color colFromHex = System.Drawing.ColorTranslator.FromHtml("#C6EFCE");
+            worksheet.Cells[rowcount, colcount].Style.Fill.PatternType = ExcelFillStyle.Solid;
+            worksheet.Cells[rowcount, colcount].Style.Fill.BackgroundColor.SetColor(colFromHex);
+            worksheet.Cells[rowcount, colcount].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
             worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.None);
             worksheet.Column(colcount).Width = projectCodeWidth;
             colcount++;
 
-            worksheet.Cells[rowcount, colcount].Value = "";
+            worksheet.Cells[rowcount, colcount].Value = currency.CurrencyCode;
+            worksheet.Cells[rowcount, colcount].Style.Fill.PatternType = ExcelFillStyle.Solid;
+            worksheet.Cells[rowcount, colcount].Style.Fill.BackgroundColor.SetColor(colFromHex);
+            worksheet.Cells[rowcount, colcount].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
             worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.None);
             worksheet.Column(colcount).Width = projectCodeElseWidth;
             colcount++;
@@ -664,12 +674,18 @@ namespace TechnipFMC.Finapp.Business
             rowcount++;
             colcount = 1;
             #region blank row
-            worksheet.Cells[rowcount, colcount].Value = "";
+            worksheet.Cells[rowcount, colcount].Value = "Values in";
+            worksheet.Cells[rowcount, colcount].Style.Fill.PatternType = ExcelFillStyle.Solid;
+            worksheet.Cells[rowcount, colcount].Style.Fill.BackgroundColor.SetColor(colFromHex);
+            worksheet.Cells[rowcount, colcount].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
             worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.None);
             worksheet.Column(colcount).Width = projectCodeWidth;
             colcount++;
 
-            worksheet.Cells[rowcount, colcount].Value = "";
+            worksheet.Cells[rowcount, colcount].Value = currency.Unit + "s";
+            worksheet.Cells[rowcount, colcount].Style.Fill.PatternType = ExcelFillStyle.Solid;
+            worksheet.Cells[rowcount, colcount].Style.Fill.BackgroundColor.SetColor(colFromHex);
+            worksheet.Cells[rowcount, colcount].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
             worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.None);
             worksheet.Column(colcount).Width = projectCodeElseWidth;
             colcount++;
@@ -684,7 +700,7 @@ namespace TechnipFMC.Finapp.Business
             //worksheet.Column(colcount).Width = projectCodeElseWidth;
             //colcount++;
 
-            //worksheet.Cells[rowcount, colcount].Value = "";
+            //worksheet.Cells[rowcount, colcount].Value = "";c
             //worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.None);
             //worksheet.Column(colcount).Width = projectCodeElseWidth;
             //colcount++;
@@ -1975,6 +1991,93 @@ namespace TechnipFMC.Finapp.Business
             var _GroupingParametersCode = "";
             var _LastGroupingParametersCode = "";
             var _GroupingParametersName = "";
+            var propertyNames = new[] { "Base", "CS1", "CS2" };
+
+            // Dictionary to hold the total values
+            var totalValues = new Dictionary<string, decimal?>
+        {
+    { "TotalBase", null },
+    { "TotalCS1", null },
+    { "TotalCS2", null },
+    { "GroupBaseQ1", null },
+    { "GroupBaseQ2", null },
+  { "GroupBaseQ3", null },
+  { "GroupBaseQ4", null },
+  { "GroupBaseQ5", null },
+  { "GroupBaseQ6", null },
+  { "GroupBaseQ7", null },
+  { "GroupBaseQ8", null },
+  { "GroupBaseQ9", null },
+  { "GroupBaseQ10", null },
+  { "GroupBaseQ11", null },
+  { "GroupBaseQ12", null },
+    { "GroupCS1Q1", null },
+    { "GroupCS1Q2", null },
+    { "GroupCS1Q3", null },
+    { "GroupCS1Q4", null },
+    { "GroupCS1Q5", null },
+    { "GroupCS1Q6", null },
+    { "GroupCS1Q7", null },
+    { "GroupCS1Q8", null },
+    { "GroupCS1Q9", null },
+    { "GroupCS1Q10", null },
+    { "GroupCS1Q11", null },
+    { "GroupCS1Q12", null },
+    { "GroupCS2Q1", null },
+    { "GroupCS2Q2", null },
+    { "GroupCS2Q3", null },
+    { "GroupCS2Q4", null },
+    { "GroupCS2Q5", null },
+    { "GroupCS2Q6", null },
+    { "GroupCS2Q7", null },
+    { "GroupCS2Q8", null },
+    { "GroupCS2Q9", null },
+    { "GroupCS2Q10", null },
+    { "GroupCS2Q11", null },
+    { "GroupCS2Q12", null },
+    { "GroupBaseTotal", null },
+    { "GroupCS1Total", null },
+    { "GroupCS2Total", null },
+     { "GrossBaseQ1", null },
+    { "GrossBaseQ2", null },
+    { "GrossBaseQ3", null },
+    { "GrossBaseQ4", null },
+    { "GrossBaseQ5", null },
+    { "GrossBaseQ6", null },
+    { "GrossBaseQ7", null },
+    { "GrossBaseQ8", null },
+    { "GrossBaseQ9", null },
+    { "GrossBaseQ10", null },
+    { "GrossBaseQ11", null },
+    { "GrossBaseQ12", null },
+    { "GrossCS1Q1", null },
+    { "GrossCS1Q2", null },
+    { "GrossCS1Q3", null },
+    { "GrossCS1Q4", null },
+    { "GrossCS1Q5", null },
+    { "GrossCS1Q6", null },
+    { "GrossCS1Q7", null },
+    { "GrossCS1Q8", null },
+    { "GrossCS1Q9", null },
+    { "GrossCS1Q10", null },
+    { "GrossCS1Q11", null },
+    { "GrossCS1Q12", null },
+    { "GrossCS2Q1", null },
+    { "GrossCS2Q2", null },
+    { "GrossCS2Q3", null },
+    { "GrossCS2Q4", null },
+    { "GrossCS2Q5", null },
+    { "GrossCS2Q6", null },
+    { "GrossCS2Q7", null },
+    { "GrossCS2Q8", null },
+    { "GrossCS2Q9", null },
+    { "GrossCS2Q10", null },
+    { "GrossCS2Q11", null },
+    { "GrossCS2Q12", null },
+    { "GrossBaseTotal", null },
+    { "GrossCS1Total", null },
+    { "GrossCS2Total", null }
+};
             foreach (var item in returnList)
             {
                 if (i == 0)
@@ -2100,98 +2203,12 @@ namespace TechnipFMC.Finapp.Business
                 
 
                 // List of property names to process for each quarter
-                var propertyNames = new[] { "Base", "CS1", "CS2" };
-
-                // Dictionary to hold the total values
-                var totalValues = new Dictionary<string, decimal?>
-        {
-    { "TotalBase", null },
-    { "TotalCS1", null },
-    { "TotalCS2", null },
-    { "GroupBaseQ1", null },
-    { "GroupBaseQ2", null },
-  { "GroupBaseQ3", null },
-  { "GroupBaseQ4", null },
-  { "GroupBaseQ5", null },
-  { "GroupBaseQ6", null },
-  { "GroupBaseQ7", null },
-  { "GroupBaseQ8", null },
-  { "GroupBaseQ9", null },
-  { "GroupBaseQ10", null },
-  { "GroupBaseQ11", null },
-  { "GroupBaseQ12", null },
-    { "GroupCS1Q1", null },
-    { "GroupCS1Q2", null },
-    { "GroupCS1Q3", null },
-    { "GroupCS1Q4", null },
-    { "GroupCS1Q5", null },
-    { "GroupCS1Q6", null },
-    { "GroupCS1Q7", null },
-    { "GroupCS1Q8", null },
-    { "GroupCS1Q9", null },
-    { "GroupCS1Q10", null },
-    { "GroupCS1Q11", null },
-    { "GroupCS1Q12", null },
-    { "GroupCS2Q1", null },
-    { "GroupCS2Q2", null },
-    { "GroupCS2Q3", null },
-    { "GroupCS2Q4", null },
-    { "GroupCS2Q5", null },
-    { "GroupCS2Q6", null },
-    { "GroupCS2Q7", null },
-    { "GroupCS2Q8", null },
-    { "GroupCS2Q9", null },
-    { "GroupCS2Q10", null },
-    { "GroupCS2Q11", null },
-    { "GroupCS2Q12", null },
-    { "GroupBaseTotal", null },
-    { "GroupCS1Total", null },
-    { "GroupCS2Total", null },
-     { "GrossBaseQ1", null },
-    { "GrossBaseQ2", null },
-    { "GrossBaseQ3", null },
-    { "GrossBaseQ4", null },
-    { "GrossBaseQ5", null },
-    { "GrossBaseQ6", null },
-    { "GrossBaseQ7", null },
-    { "GrossBaseQ8", null },
-    { "GrossBaseQ9", null },
-    { "GrossBaseQ10", null },
-    { "GrossBaseQ11", null },
-    { "GrossBaseQ12", null },
-    { "GrossCS1Q1", null },
-    { "GrossCS1Q2", null },
-    { "GrossCS1Q3", null },
-    { "GrossCS1Q4", null },
-    { "GrossCS1Q5", null },
-    { "GrossCS1Q6", null },
-    { "GrossCS1Q7", null },
-    { "GrossCS1Q8", null },
-    { "GrossCS1Q9", null },
-    { "GrossCS1Q10", null },
-    { "GrossCS1Q11", null },
-    { "GrossCS1Q12", null },
-    { "GrossCS2Q1", null },
-    { "GrossCS2Q2", null },
-    { "GrossCS2Q3", null },
-    { "GrossCS2Q4", null },
-    { "GrossCS2Q5", null },
-    { "GrossCS2Q6", null },
-    { "GrossCS2Q7", null },
-    { "GrossCS2Q8", null },
-    { "GrossCS2Q9", null },
-    { "GrossCS2Q10", null },
-    { "GrossCS2Q11", null },
-    { "GrossCS2Q12", null },
-    { "GrossBaseTotal", null },
-    { "GrossCS1Total", null },
-    { "GrossCS2Total", null }
-};
+                
 
                 foreach (var quarter in quarters)
                 {
                     if (!quarters.Contains(quarter)) continue;
-
+                    
                     foreach (var propertyName in propertyNames)
                     {
                         var quarterProperty = $"{propertyName}{quarter}";
@@ -2200,23 +2217,24 @@ namespace TechnipFMC.Finapp.Business
                         if (itemQuarterValue.HasValue)
                         {
                             // Update Total values
-                            var totalProperty = $"Total{propertyName}";
+                            var totalProperty = $"Total{propertyName}";  //TotalBase
+                            if (quarter == "Q1") totalValues[totalProperty] = 0;
                             totalValues[totalProperty] = totalValues [totalProperty].HasValue ? totalValues[totalProperty] + itemQuarterValue : itemQuarterValue;
 
                             // Update Group values for the specific quarter
-                            var groupQuarterProperty = $"Group{propertyName}{quarter}";
+                            var groupQuarterProperty = $"Group{propertyName}{quarter}"; //GroupBaseQ1
                             totalValues[groupQuarterProperty] = totalValues[groupQuarterProperty].HasValue ? totalValues[groupQuarterProperty] + itemQuarterValue : itemQuarterValue;
 
                             // Update Group Total values
-                            var groupTotalProperty = $"Group{propertyName}Total";
+                            var groupTotalProperty = $"Group{propertyName}Total"; //GroupBaseTotal
                             totalValues[groupTotalProperty] = totalValues[groupTotalProperty].HasValue ? totalValues[groupTotalProperty] + itemQuarterValue : itemQuarterValue;
 
                             // Update Gross values for the specific quarter
-                            var grossQuarterProperty = $"Gross{propertyName}{quarter}";
+                            var grossQuarterProperty = $"Gross{propertyName}{quarter}"; //GrossBaseQ1 
                             totalValues[grossQuarterProperty] = totalValues[grossQuarterProperty].HasValue ? totalValues[grossQuarterProperty] + itemQuarterValue : itemQuarterValue;
 
                             // Update Gross Total values
-                            var grossTotalProperty = $"Gross{propertyName}Total";
+                            var grossTotalProperty = $"Gross{propertyName}Total"; //GrossBaseTotal
                             totalValues[grossTotalProperty] = totalValues[grossTotalProperty].HasValue ? totalValues[grossTotalProperty] + itemQuarterValue : itemQuarterValue;
                         }
                         else
@@ -2516,7 +2534,7 @@ namespace TechnipFMC.Finapp.Business
 
         }
 
-        public byte[] GetVarianceAnalysisReportExcel(VarianceAnalysisConfig config)
+        public byte[] GetVarianceAnalysisReportExcel(VarianceAnalysisConfig config,int cid)
         {
             var quarters = config.Quarters.Split(',').OrderBy(c => c).ToList();
             var noOfQuarters = quarters.Count;
@@ -2538,7 +2556,7 @@ namespace TechnipFMC.Finapp.Business
                     config.GroupLevels = config.GroupLevels.Replace("Entity", "PE.ProjectEntityName");
                 }
             }
-            var reportData = _reportRepository.GetVarianceAnalysisReportData(config);
+            var reportData = _reportRepository.GetVarianceAnalysisReportData(config,cid);
 
             if (reportData.VarianceAnalysisReportDatas.Count == 0)
             {
@@ -2905,7 +2923,7 @@ namespace TechnipFMC.Finapp.Business
 
             return excelPkg.GetAsByteArray(); ;
         }
-        public byte[] GetVarianceAnalysisReportExcelMonthly(VarianceAnalysisConfig config)
+        public byte[] GetVarianceAnalysisReportExcelMonthly(VarianceAnalysisConfig config,int cid)
         {
             var quarters = config.Quarters.Split(',').OrderBy(c => c).ToList();
             var noOfQuarters = quarters.Count;
@@ -2927,7 +2945,7 @@ namespace TechnipFMC.Finapp.Business
                     config.GroupLevels = config.GroupLevels.Replace("Entity", "PE.ProjectEntityName");
                 }
             }
-            var reportData = _reportRepository.GetVarianceAnalysisReportData(config);
+            var reportData = _reportRepository.GetVarianceAnalysisReportData(config,cid);
 
             if (reportData.VarianceAnalysisReportDatas.Count == 0)
             {
@@ -2946,6 +2964,13 @@ namespace TechnipFMC.Finapp.Business
             workSheet.Row(5).Style.Fill.BackgroundColor.SetColor(Color.White);
             workSheet.Row(6).Style.Fill.BackgroundColor.SetColor(Color.White);
             workSheet.Row(7).Style.Fill.BackgroundColor.SetColor(Color.White);
+            //Currency and scelaing factor
+            workSheet.Cells["A1"].Value = "Currency";
+            workSheet.Cells["B1"].Value = reportData.Currency.CurrencyName;
+            workSheet.Cells["A2"].Value = "Values in";
+            workSheet.Cells["B2"].Value = reportData.Currency.Unit + "s";
+            workSheet.Cells["A1"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+            workSheet.Cells["A1"].Style.WrapText = true;
 
             workSheet.Cells["A5"].Value = "Project No";
             workSheet.Cells["A5:A7"].Merge = true;
@@ -3355,7 +3380,7 @@ namespace TechnipFMC.Finapp.Business
             return new ReportRepository().ProjectLifeCycleReport1(projectid, scenarioscope);
 
         }
-        public byte[] ProjectLifeCycleReportDownload1(ProjectLifeCycle projectLife, string scenarioscope)
+        public byte[] ProjectLifeCycleReportDownload1(ProjectLifeCycle projectLife, string scenarioscope,int cid)
         {
             string positiveFormat = "#,##0.00_)";
             string negativeFormat = "(#,##0.00)";
@@ -3365,6 +3390,7 @@ namespace TechnipFMC.Finapp.Business
             string headerRevenue = "";
             string headerGM = "";
             int dataWidth = 15;
+            var currency = _reportRepository.GetCustomerCurrency(cid);
             if (scenarioscope == "PL")
             {
                 headerRevenue = "PROFIT & LOSS - ACTUALS -  REVENUE(RV)";
@@ -3407,7 +3433,10 @@ namespace TechnipFMC.Finapp.Business
             worksheet.Cells[rowcount, colcount, rowcount, (colcount + (headerRevenuecount * 2) + 3)].Style.Font.Bold = true;
             // worksheet.Cells[rowcount, colcount, rowcount, (colcount + (headerRevenuecount * 2) + 1)].Style.Fill.PatternType = ExcelFillStyle.Solid;
             // worksheet.Cells[rowcount, colcount, rowcount, (colcount + (headerRevenuecount * 2) + 1)].Style.Fill.BackgroundColor.SetColor(colFromHexDarkBlue);
-
+            worksheet.Cells[rowcount, colcount+1].Value = "Currency";
+            worksheet.Cells[rowcount, colcount + 2].Value = currency.CurrencyCode;
+            worksheet.Cells[rowcount, colcount + 3].Value = "Values in";
+            worksheet.Cells[rowcount, colcount + 4].Value = currency.Unit;
 
 
             #endregion
@@ -3702,7 +3731,7 @@ namespace TechnipFMC.Finapp.Business
             return excelPkg.GetAsByteArray();
         }
 
-        public byte[] ProjectLifeCycleReportDownload(ProjectLifeCycle projectLife, string scenarioscope)
+        public byte[] ProjectLifeCycleReportDownload(ProjectLifeCycle projectLife, string scenarioscope,int cid)
         {
             string positiveFormat = "#,##0.00_)";
             string negativeFormat = "(#,##0.00)";
@@ -3747,12 +3776,17 @@ namespace TechnipFMC.Finapp.Business
             Color colFromHexThirdYear = System.Drawing.ColorTranslator.FromHtml("#CFF3F7");
             Color colFromHexFourthYear = System.Drawing.ColorTranslator.FromHtml("#FAEEDF");
             Color colFromHexFifthYear = System.Drawing.ColorTranslator.FromHtml("#F3D396 ");
-
+            var currency = _reportRepository.GetCustomerCurrency(cid);
             #region HeaderFirstRow
 
             worksheet.Cells[rowcount, colcount].Value = "PROJECT LIFECYCLE REPORT";
             worksheet.Cells[rowcount, colcount, rowcount, (colcount)].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
             worksheet.Cells[rowcount, colcount, rowcount, (colcount)].Style.Font.Bold = true;
+            worksheet.Cells[rowcount, colcount+1].Value = "Currency";
+            worksheet.Cells[rowcount, colcount + 2].Value = currency.CurrencyCode;
+            worksheet.Cells[rowcount, colcount + 3].Value = "Values in";
+            worksheet.Cells[rowcount, colcount + 4].Value = currency.Unit;
+
 
             #endregion
 
@@ -5682,7 +5716,7 @@ namespace TechnipFMC.Finapp.Business
             return grid;
 
         }
-        public byte[] GetDevianceReportExcel(DevianceReportConfig config, List<DevianceResponseModel> data)
+        public byte[] GetDevianceReportExcel(DevianceReportConfig config, List<DevianceResponseModel> data,int cid)
         {
             // number formats
             string positiveFormat = "#,##0.00_)";
@@ -5690,55 +5724,121 @@ namespace TechnipFMC.Finapp.Business
             string zeroFormat = "-_)";
             string numberFormat = positiveFormat + ";" + negativeFormat;
             string fullNumberFormat = positiveFormat + ";" + negativeFormat + ";" + zeroFormat;
-
+            var dataentryinterval = "Quarterly";
             int projectCodeWidth = 30;
             int projectCodeElseWidth = 20;
             int dataWidth = 15;
-
-            var quarters = config.Quarters.Split(',');
-            var colcountQuarters = quarters.Length;
-            var headercounter = colcountQuarters * 3 + 4;
+            var currency = _reportRepository.GetCustomerCurrency(cid);
+            var quarters = config.Quarters.Split(',').ToList();
             ExcelPackage excelPkg = new ExcelPackage();
-            
-            foreach(DevianceResponseModel item in data)
+            ExcelWorksheet worksheet = excelPkg.Workbook.Worksheets.Add(data[0].FinancialDataType);
+            if (quarters.Count == 12)
             {
-                ExcelWorksheet worksheet = excelPkg.Workbook.Worksheets.Add(item.FinancialDataType);
-                var colcount = 1;
-                var rowcount = 1;
-                worksheet.Cells["A1:F1"].Style.Fill.PatternType = ExcelFillStyle.Solid;
-                worksheet.Cells["A1:F1"].Style.Fill.BackgroundColor.SetColor(Color.Beige);
-                #region blank row
-                worksheet.Cells[rowcount, colcount].Value = "Entity Name";
-                worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.None);
-                worksheet.Column(colcount).Width = projectCodeWidth;
-                colcount++;
+                dataentryinterval = "Monthly";
+                worksheet.Cells["A2:M2"].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                worksheet.Cells["A2:M2"].Style.Fill.BackgroundColor.SetColor(Color.LightGreen);
+            }
+            
+            var colcount = 1;
+            var rowcount = 1;
+            worksheet.Cells[rowcount, colcount].Value = "Currency";
+            worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+            colcount++;
+            worksheet.Cells[rowcount, colcount].Value = currency.CurrencyCode;
+            worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+            colcount++; colcount++;
+            worksheet.Cells[rowcount, colcount].Value = "Values in";
+            worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+            colcount++;
+            worksheet.Cells[rowcount, colcount].Value = currency.Unit + "s";
+            worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+            rowcount++; colcount = 1;
+            worksheet.Cells["A1:E1"].Style.Fill.PatternType = ExcelFillStyle.Solid;
+            worksheet.Cells["A1:E1"].Style.Fill.BackgroundColor.SetColor(Color.Beige);
+            #region blank row
+            worksheet.Cells[rowcount, colcount].Value = "Entity Name";
+            worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+            worksheet.Column(colcount).Width = projectCodeWidth;
+            colcount++;
+            worksheet.Cells[rowcount, colcount].Value = "Q1";
+            worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+            worksheet.Column(colcount).Width = projectCodeElseWidth;
+            colcount++;
 
-                worksheet.Cells[rowcount, colcount].Value = "Q1";
-                worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.None);
+            worksheet.Cells[rowcount, colcount].Value = "Q2";
+            worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+            worksheet.Column(colcount).Width = projectCodeElseWidth;
+            colcount++;
+
+            worksheet.Cells[rowcount, colcount].Value = "Q3";
+            worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+            worksheet.Column(colcount).Width = projectCodeElseWidth;
+            colcount++;
+
+            worksheet.Cells[rowcount, colcount].Value = "Q4";
+            worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+            worksheet.Column(colcount).Width = projectCodeElseWidth;
+            colcount++;
+            if (dataentryinterval == "Monthly")
+            {
+
+                worksheet.Cells[rowcount, colcount].Value = "Q5";
+                worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
                 worksheet.Column(colcount).Width = projectCodeElseWidth;
                 colcount++;
 
-                worksheet.Cells[rowcount, colcount].Value = "Q2";
-                worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.None);
+                worksheet.Cells[rowcount, colcount].Value = "Q6";
+                worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
                 worksheet.Column(colcount).Width = projectCodeElseWidth;
                 colcount++;
 
-                worksheet.Cells[rowcount, colcount].Value = "Q3";
-                worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.None);
+                worksheet.Cells[rowcount, colcount].Value = "Q7";
+                worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
                 worksheet.Column(colcount).Width = projectCodeElseWidth;
                 colcount++;
 
-                worksheet.Cells[rowcount, colcount].Value = "Q4";
-                worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.None);
+                worksheet.Cells[rowcount, colcount].Value = "Q8";
+                worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+                worksheet.Column(colcount).Width = projectCodeElseWidth;
+                colcount++;
+                worksheet.Cells[rowcount, colcount].Value = "Q9";
+                worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
                 worksheet.Column(colcount).Width = projectCodeElseWidth;
                 colcount++;
 
+                worksheet.Cells[rowcount, colcount].Value = "Q10";
+                worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+                worksheet.Column(colcount).Width = projectCodeElseWidth;
+                colcount++;
+
+                worksheet.Cells[rowcount, colcount].Value = "Q11";
+                worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+                worksheet.Column(colcount).Width = projectCodeElseWidth;
+                colcount++;
+
+                worksheet.Cells[rowcount, colcount].Value = "Q12";
+                worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+                worksheet.Column(colcount).Width = projectCodeElseWidth;
+                colcount++;
                 worksheet.Cells[rowcount, colcount].Value = "Total";
-                worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.None);
+                worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
                 worksheet.Column(colcount).Width = projectCodeElseWidth;
                 colcount++;
-
-                #endregion
+                worksheet.Cells["A2:N2"].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                worksheet.Cells["A2:N2"].Style.Fill.BackgroundColor.SetColor(Color.Green);
+            }
+            else
+            {
+                worksheet.Cells[rowcount, colcount].Value = "Total";
+                worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+                worksheet.Column(colcount).Width = projectCodeElseWidth;
+                colcount++;
+                worksheet.Cells["A2:F2"].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                worksheet.Cells["A2:F2"].Style.Fill.BackgroundColor.SetColor(Color.Green);
+            }
+            #endregion
+            foreach (DevianceResponseModel item in data)
+            {
                 foreach (var row in item.GridResponse)
                 {
                         rowcount++;
@@ -5747,13 +5847,38 @@ namespace TechnipFMC.Finapp.Business
                         worksheet.Cells[rowcount, 3].Value = row.Q2;
                         worksheet.Cells[rowcount, 4].Value = row.Q3;
                         worksheet.Cells[rowcount, 5].Value = row.Q4;
+                    if(dataentryinterval == "Monthly")
+                    {
+                        worksheet.Cells[rowcount, 6].Value = row.Q5;
+                        worksheet.Cells[rowcount, 7].Value = row.Q6;
+                        worksheet.Cells[rowcount, 8].Value = row.Q7;
+                        worksheet.Cells[rowcount, 9].Value = row.Q8;
+                        worksheet.Cells[rowcount, 10].Value = row.Q9;
+                        worksheet.Cells[rowcount, 11].Value = row.Q10;
+                        worksheet.Cells[rowcount, 12].Value = row.Q11;
+                        worksheet.Cells[rowcount, 13].Value = row.Q12;
+                        worksheet.Cells[rowcount, 14].Value = row.Total;
+                        for (int col = 1; col <= 14; col++)
+                        {
+                            worksheet.Cells[rowcount, col].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+                        }
+
+                    }
+                    else
+                    {
                         worksheet.Cells[rowcount, 6].Value = row.Total;
+                        for (int col = 1; col <= 6; col++)
+                        {
+                            worksheet.Cells[rowcount, col].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+                        }
+                    }
+                        
                 }
             }
             
             return excelPkg.GetAsByteArray();
         }
-        public byte[] GetFinanceReportExcel(DashboardConfig config,FinancePerformanceDataModel data)
+        public byte[] GetFinanceReportExcel(DashboardConfig config,FinancePerformanceDataModel data,int cid)
         {
             //number formats
             string positiveFormat = "#,##0.00_)";
@@ -5761,7 +5886,7 @@ namespace TechnipFMC.Finapp.Business
             string zeroFormat = "-_)";
             string numberFormat = positiveFormat + ";" + negativeFormat;
             string fullNumberFormat = positiveFormat + ";" + negativeFormat + ";" + zeroFormat;
-            
+            var currency = _reportRepository.GetCustomerCurrency(cid);
             int projectCodeWidth = 30;
             int projectCodeElseWidth = 20;
             int dataWidth = 15;
@@ -5770,20 +5895,53 @@ namespace TechnipFMC.Finapp.Business
             //var colcountQuarters = quarters.Length;
             //var headercounter = colcountQuarters * 3 + 4;
             ExcelPackage excelPkg = new ExcelPackage();
+            // Define the light green background color
+            Color lightGreen = Color.LightGreen;
 
-           
-                ExcelWorksheet worksheet = excelPkg.Workbook.Worksheets.Add("Department");
+            // Define the contrasting dark green color
+            Color darkGreen = Color.DarkGreen;
+            Color lightblue = Color.LightBlue;
+            Color darkblue = Color.DarkBlue;
+
+            ExcelWorksheet worksheet = excelPkg.Workbook.Worksheets.Add("Department");
                 var colcount = 1;
                 var rowcount = 1;
             var quarters = config.Quarters.Split(',').ToList();
             var dataentryinterval = "Quarterly";
+            // Apply the light green background to the first row
             worksheet.Cells["A1:E1"].Style.Fill.PatternType = ExcelFillStyle.Solid;
-            worksheet.Cells["A1:E1"].Style.Fill.BackgroundColor.SetColor(Color.LightGreen);
+            worksheet.Cells["A1:E1"].Style.Fill.BackgroundColor.SetColor(lightblue);
+            // Apply the light green background to the second row
+            worksheet.Cells["A2:E2"].Style.Fill.PatternType = ExcelFillStyle.Solid;
+            worksheet.Cells["A2:E2"].Style.Fill.BackgroundColor.SetColor(System.Drawing.ColorTranslator.FromHtml("#C6EFCE"));
+
+            // Set the text and border color for the currency cell
+            worksheet.Cells[rowcount, colcount].Value = "Currency";
+
+            // Apply the dark green border
+            worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(ExcelBorderStyle.Thin, darkblue);
+
+            // Optionally, set the font color to dark green for better contrast
+            worksheet.Cells[rowcount, colcount].Style.Font.Color.SetColor(darkblue);
+            colcount++;
+            worksheet.Cells[rowcount, colcount].Value = currency.CurrencyCode;
+            worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin, darkblue);
+            worksheet.Cells[rowcount, colcount].Style.Font.Color.SetColor(darkblue);
+            colcount++;colcount++;
+            worksheet.Cells[rowcount, colcount].Value = "Values in";
+            worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin, darkblue);
+            worksheet.Cells[rowcount, colcount].Style.Font.Color.SetColor(darkblue);
+            colcount++;
+            worksheet.Cells[rowcount, colcount].Value = currency.Unit+"s";
+            worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin, darkblue);
+            worksheet.Cells[rowcount, colcount].Style.Font.Color.SetColor(darkblue);
+            rowcount++; colcount = 1;
+
             if (quarters.Count == 12)
             {
                 dataentryinterval = "Monthly";
-                worksheet.Cells["A1:M1"].Style.Fill.PatternType = ExcelFillStyle.Solid;
-                worksheet.Cells["A1:M1"].Style.Fill.BackgroundColor.SetColor(Color.LightGreen);
+                worksheet.Cells["A2:M2"].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                worksheet.Cells["A2:M2"].Style.Fill.BackgroundColor.SetColor(Color.LightGreen);
             }
             
                 worksheet.Cells[rowcount, colcount].Value = "Department Name";
@@ -5833,7 +5991,7 @@ namespace TechnipFMC.Finapp.Business
 
             return excelPkg.GetAsByteArray();
         }
-        public byte[] GetProjectPerformanceReportExcel(DashboardConfig config, ProjectPerformanceDataModel data)
+        public byte[] GetProjectPerformanceReportExcel(DashboardConfig config, ProjectPerformanceDataModel data,int cid)
         {
             // number formats
             string positiveFormat = "#,##0.00_)";
@@ -5841,7 +5999,7 @@ namespace TechnipFMC.Finapp.Business
             string zeroFormat = "-_)";
             string numberFormat = positiveFormat + ";" + negativeFormat;
             string fullNumberFormat = positiveFormat + ";" + negativeFormat + ";" + zeroFormat;
-
+            var currency = _reportRepository.GetCustomerCurrency(cid);
             //int projectCodeWidth = 30;
             //int projectCodeElseWidth = 20;
             //int dataWidth = 15;
@@ -5855,6 +6013,18 @@ namespace TechnipFMC.Finapp.Business
             ExcelWorksheet worksheet = excelPkg.Workbook.Worksheets.Add("Project");
             var colcount = 1;
             var rowcount = 1;
+            worksheet.Cells[rowcount, colcount].Value = "Currency";
+            worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+            colcount++;
+            worksheet.Cells[rowcount, colcount].Value = currency.CurrencyCode;
+            worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+            colcount++; colcount++;
+            worksheet.Cells[rowcount, colcount].Value = "Values in";
+            worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+            colcount++;
+            worksheet.Cells[rowcount, colcount].Value = currency.Unit + "s";
+            worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+            rowcount++; colcount = 1;
             var quarters = config.Quarters.Split(',').ToList();
             var dataentryinterval = "Quarterly";
             worksheet.Cells["A1:E1"].Style.Fill.PatternType = ExcelFillStyle.Solid;
@@ -5864,6 +6034,11 @@ namespace TechnipFMC.Finapp.Business
                 dataentryinterval = "Monthly";
                 worksheet.Cells["A1:M1"].Style.Fill.PatternType = ExcelFillStyle.Solid;
                 worksheet.Cells["A1:M1"].Style.Fill.BackgroundColor.SetColor(Color.LightCyan);
+                worksheet.Cells["A1:M1"].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thick);
+            }
+            else
+            {
+                worksheet.Cells["A1:E1"].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thick);
             }
             var quarterToMonthMap = new Dictionary<string, string>
                     {
@@ -5873,7 +6048,7 @@ namespace TechnipFMC.Finapp.Business
                     };
             #region Headers
             worksheet.Cells[rowcount, colcount].Value = "Project Name";
-            worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.None);
+            worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thick);
             colcount++;
             foreach (var quarter in quarters)
             {

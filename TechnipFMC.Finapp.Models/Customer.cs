@@ -18,7 +18,10 @@ namespace TechnipFMC.Finapp.Models
         public string PlanName { get; set; }
         public string PlanType { get; set; }
         public string PaymentLink { get; set; }
+        public int Unit { get; set; }
+        
         public int CountryID { get; set; }
+        public int CurrencyID { get; set; }
         public string DataEntryInterval { get; set; }
     }
     public class PlanDetails
