@@ -119,9 +119,16 @@ namespace TechnipFMC.Finapp.Service.API.Controllers
                 Mapper.Map(lockQuarterViewModel, lockQuarterDatamodel);
                 var lockQuarter = _lockQuarterBL.Save(lockQuarterDatamodel);
                 var message = "";
+                var quarterToMonthMap = new Dictionary<string, string>
+{
+    { "Q1", "Jan" }, { "Q2", "Feb" }, { "Q3", "Mar" }, { "Q4", "Apr" },
+    { "Q5", "May" }, { "Q6", "Jun" }, { "Q7", "Jul" }, { "Q8", "Aug" },
+    { "Q9", "Sep" }, { "Q10", "Oct" }, { "Q11", "Nov" }, { "Q12", "Dec" }
+};
                 if (lockQuarter != null && lockQuarter.Id > 0)
                 {
                     lockQuarterViewModel.Id = lockQuarter.Id;
+                    lockQuarterViewModel.Quarter = lockQuarter.DataEntryInterval == "Monthly" ? quarterToMonthMap[lockQuarter.Quarter] : lockQuarter.Quarter; ;
                     if (lockQuarterDatamodel.Lock == true)
                     {
                         lockQuarterViewModel.Status = "Yes";

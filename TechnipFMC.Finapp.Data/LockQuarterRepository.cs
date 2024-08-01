@@ -63,13 +63,19 @@ namespace TechnipFMC.Finapp.Data
                 base.DBConnection.Close();
 
                 List<LockQuarter> obj = new List<LockQuarter>();
-
+                var dataEntryInterval = results.Rows[0]["DataEntryInterval"].ToString();
+                var quarterToMonthMap = new Dictionary<string, string>
+{
+    { "Q1", "Jan" }, { "Q2", "Feb" }, { "Q3", "Mar" }, { "Q4", "Apr" },
+    { "Q5", "May" }, { "Q6", "Jun" }, { "Q7", "Jul" }, { "Q8", "Aug" },
+    { "Q9", "Sep" }, { "Q10", "Oct" }, { "Q11", "Nov" }, { "Q12", "Dec" }
+};
                 for (int i = 0; i < results.Rows.Count; i++)
                 {
                     LockQuarter lockQuarter = new LockQuarter();
                     lockQuarter.Id = Convert.ToInt32(results.Rows[i]["Id"]);
                     lockQuarter.Year = Convert.ToInt32(results.Rows[i]["Year"]);
-                    lockQuarter.Quarter = results.Rows[i]["Quarter"].ToString();
+                    lockQuarter.Quarter = dataEntryInterval == "Monthly" ? quarterToMonthMap[results.Rows[i]["Quarter"].ToString()] : results.Rows[i]["Quarter"].ToString(); ;
                     lockQuarter.Lock = Convert.ToBoolean(results.Rows[i]["Lock"]);
                     lockQuarter.CreatedBy = Convert.ToInt32(results.Rows[i]["CreatedBy"]);
                     lockQuarter.Status = results.Rows[i]["Status"].ToString();
@@ -149,6 +155,7 @@ namespace TechnipFMC.Finapp.Data
                     {
                         lockQuarter.Id = Convert.ToInt32(reader.GetInt32(0));
                         lockQuarter.Message = reader.GetString(1);
+                        lockQuarter.DataEntryInterval = reader.GetString(2);
                     }
                 }
                 return lockQuarter;

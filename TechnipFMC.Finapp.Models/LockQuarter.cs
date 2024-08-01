@@ -14,6 +14,8 @@ namespace TechnipFMC.Finapp.Models
         public bool Lock { get; set; }
         public string Message { get; set; }
         public string Header { get; set; }
+        public string DataEntryInterval { get; set; }
+        
     }
 
     public class QuartersLayOut
