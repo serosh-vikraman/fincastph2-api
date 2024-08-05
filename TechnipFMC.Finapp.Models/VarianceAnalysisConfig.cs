@@ -20,6 +20,7 @@ namespace TechnipFMC.Finapp.Models
     }
     public class VarianceAnalysisResponseModel
     {
+        public string FinancialDataTypeName { get; set; }
         public List<VarianceAnalysisResponse> GridResponse { get; set; }
         public List<VarianceAnalysisResponse> GrandTotal { get; set; }
     }

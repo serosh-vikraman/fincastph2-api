@@ -15,16 +15,19 @@ using System.IO;
 using System.Web.Http;
 using System.Dynamic;
 using Newtonsoft.Json;
+using Swashbuckle.Swagger;
 
 namespace TechnipFMC.Finapp.Service.API.Controllers
 {
     public class ReportController : ApiController
     {
         private readonly IReportBL _reportBL;
+        private readonly IFinancialDataTypeBL _financialdatatypeBL;
 
-        public ReportController(IReportBL reportBL)
+        public ReportController(IReportBL reportBL,IFinancialDataTypeBL financialDataTypeBL)
         {
             _reportBL = reportBL;
+            _financialdatatypeBL = financialDataTypeBL;
         }
 
         #region Old Code
@@ -338,11 +341,21 @@ namespace TechnipFMC.Finapp.Service.API.Controllers
                 config.SubTotalRequired = "Y";
                 VarianceAnalysisConfig varianceAnalysisConfig = new VarianceAnalysisConfig();
                 Mapper.Map(config, varianceAnalysisConfig);
-                varianceAnalysisConfig.ScenarioDataTypeId = "RV";
-                var response = _reportBL.GetVarianceAnalysisReport(varianceAnalysisConfig);
-                varianceAnalysisConfig.ScenarioDataTypeId = "GM";
-                var responseGM = _reportBL.GetVarianceAnalysisReport(varianceAnalysisConfig);
-                byte[] byteinfo = _reportBL.GetVarianceAnalysisExcel(varianceAnalysisConfig, response, responseGM, cid);
+                var financialdatatypes = _financialdatatypeBL.GetAllFinancialDataTypesofReport(1);
+                List<VarianceAnalysisResponseModel> responses = new List<VarianceAnalysisResponseModel> ();
+                foreach (FinancialDataType financialdatatype in financialdatatypes) {
+                    varianceAnalysisConfig.ScenarioDataTypeId = financialdatatype.FinancialDataTypeCode;
+                    var response = new VarianceAnalysisResponseModel ();
+                    response = _reportBL.GetVarianceAnalysisReport(varianceAnalysisConfig);
+                    response.FinancialDataTypeName = financialdatatype.FinancialDataTypeName;
+                    responses.Add(response);
+                }
+                //varianceAnalysisConfig.ScenarioDataTypeId = "RV";
+                //var response = _reportBL.GetVarianceAnalysisReport(varianceAnalysisConfig);
+                //varianceAnalysisConfig.ScenarioDataTypeId = "GM";
+                //var responseGM = _reportBL.GetVarianceAnalysisReport(varianceAnalysisConfig);
+                //byte[] byteinfo = _reportBL.GetVarianceAnalysisExcel(varianceAnalysisConfig, response, responseGM, cid);
+                byte[] byteinfo = _reportBL.GetVarianceAnalysisExcel2(varianceAnalysisConfig, responses, cid);
                 var fileName = $"VarianceAnalysisReport_{DateTime.Now.ToString("ddMMyyyyHHmmss")}.xlsx";
                 var sourceFile = reportPath + fileName;
                 File.WriteAllBytes(sourceFile, byteinfo.ToArray());

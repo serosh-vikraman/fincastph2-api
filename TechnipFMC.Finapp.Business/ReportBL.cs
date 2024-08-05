@@ -682,7 +682,7 @@ namespace TechnipFMC.Finapp.Business
             worksheet.Column(colcount).Width = projectCodeWidth;
             colcount++;
 
-            worksheet.Cells[rowcount, colcount].Value = currency.Unit + "s";
+            worksheet.Cells[rowcount, colcount].Value = (currency.Unit == 1 ? "Actual": currency.Unit.ToString() )+ "s";
             worksheet.Cells[rowcount, colcount].Style.Fill.PatternType = ExcelFillStyle.Solid;
             worksheet.Cells[rowcount, colcount].Style.Fill.BackgroundColor.SetColor(colFromHex);
             worksheet.Cells[rowcount, colcount].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
@@ -1960,6 +1960,1238 @@ namespace TechnipFMC.Finapp.Business
             #endregion
             return excelPkg.GetAsByteArray();
         }
+        public byte[] GetVarianceAnalysisExcel2(VarianceAnalysisConfig config, List<VarianceAnalysisResponseModel> data, int cid)
+        {
+            var currency = _reportRepository.GetCustomerCurrency(cid);
+            // number formats
+            var dataEntryInterval = data[0].GridResponse[0].DataEntryInterval;
+            string positiveFormat = "#,##0.00_)";
+            string negativeFormat = "(#,##0.00)";
+            string zeroFormat = "-_)";
+            string numberFormat = positiveFormat + ";" + negativeFormat;
+            string fullNumberFormat = positiveFormat + ";" + negativeFormat + ";" + zeroFormat;
+
+            int projectCodeWidth = 30;
+            int projectCodeElseWidth = 20;
+            int dataWidth = 15;
+
+            var quarters = config.Quarters.Split(',');
+            var colcountQuarters = quarters.Length;
+            var headercounter = colcountQuarters * 3 + 4;
+            ExcelPackage excelPkg = new ExcelPackage();
+            ExcelWorksheet worksheet = excelPkg.Workbook.Worksheets.Add("Variance Analysis Report");
+            //var header = "REVENUE - " + config.Year;
+
+            //var headerGM = "GROSS MARGIN - " + config.Year;
+            var colcount = 1;
+            var rowcount = 1;
+            Color colFromHexgrandTotal = System.Drawing.ColorTranslator.FromHtml("#FBDACA");
+            #region Header Row
+
+            #region blank row
+            worksheet.Cells[rowcount, colcount].Value = "Currency";
+            Color colFromHex = System.Drawing.ColorTranslator.FromHtml("#C6EFCE");
+            worksheet.Cells[rowcount, colcount].Style.Fill.PatternType = ExcelFillStyle.Solid;
+            worksheet.Cells[rowcount, colcount].Style.Fill.BackgroundColor.SetColor(colFromHexgrandTotal);
+            worksheet.Cells[rowcount, colcount].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+            worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+            worksheet.Column(colcount).Width = projectCodeWidth;
+            colcount++;
+
+            worksheet.Cells[rowcount, colcount].Value = currency.CurrencyCode;
+            worksheet.Cells[rowcount, colcount].Style.Fill.PatternType = ExcelFillStyle.Solid;
+            worksheet.Cells[rowcount, colcount].Style.Fill.BackgroundColor.SetColor(colFromHexgrandTotal);
+            worksheet.Cells[rowcount, colcount].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+            worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+            worksheet.Column(colcount).Width = projectCodeElseWidth;
+            colcount++;
+
+            //worksheet.Cells[rowcount, colcount].Value = "";
+            //worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.None);
+            //worksheet.Column(colcount).Width = projectCodeElseWidth;
+            //colcount++;
+
+            //worksheet.Cells[rowcount, colcount].Value = "";
+            //worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.None);
+            //worksheet.Column(colcount).Width = projectCodeElseWidth;
+            //colcount++;
+
+            //worksheet.Cells[rowcount, colcount].Value = "";
+            //worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.None);
+            //worksheet.Column(colcount).Width = projectCodeElseWidth;
+            //colcount++;
+
+            //worksheet.Cells[rowcount, colcount].Value = "";
+            //worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.None);
+            //worksheet.Column(colcount).Width = projectCodeElseWidth;
+            //colcount++;
+
+            //worksheet.Cells[rowcount, colcount].Value = "";
+            //worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.None);
+            //worksheet.Column(colcount).Width = projectCodeElseWidth;
+            #endregion
+            Color colFromHexHeaderGreen = System.Drawing.ColorTranslator.FromHtml("#75D562");
+            Color colFromHexHeaderBlue = System.Drawing.ColorTranslator.FromHtml("#63C5E9");
+            
+
+            int index = 0;
+            foreach (VarianceAnalysisResponseModel datum in data)
+            {
+                //colcount++;
+
+                // Choose color based on the index
+                Color currentColor = (index % 2 == 0) ? colFromHexHeaderGreen : colFromHexHeaderBlue;
+                worksheet.Cells[rowcount, colcount, rowcount, (colcount + headercounter)].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                worksheet.Cells[rowcount, colcount, rowcount, (colcount + headercounter)].Style.Fill.BackgroundColor.SetColor(colFromHexHeaderGreen);
+                worksheet.Cells[rowcount, colcount, rowcount, (colcount + headercounter)].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+
+                worksheet.Cells[rowcount, colcount, rowcount, (colcount + headercounter)].Merge = true;
+                worksheet.Cells[rowcount, colcount].Value = datum.FinancialDataTypeName + "- " + config.Year;
+                worksheet.Cells[rowcount, colcount, rowcount, (colcount + headercounter)].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+                worksheet.Cells[rowcount, colcount, rowcount, (colcount + headercounter)].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                colcount= colcount + headercounter;
+                colcount++;
+            }
+
+
+            #endregion
+
+            #region First Row
+            rowcount++;
+            colcount = 1;
+            #region blank row
+            worksheet.Cells[rowcount, colcount].Value = "Values in";
+            worksheet.Cells[rowcount, colcount].Style.Fill.PatternType = ExcelFillStyle.Solid;
+            worksheet.Cells[rowcount, colcount].Style.Fill.BackgroundColor.SetColor(colFromHexgrandTotal);
+            worksheet.Cells[rowcount, colcount].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+            worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+            worksheet.Column(colcount).Width = projectCodeWidth;
+            colcount++;
+
+            worksheet.Cells[rowcount, colcount].Value = (currency.Unit == 1 ? "Actual" : currency.Unit.ToString()) + "s";
+            worksheet.Cells[rowcount, colcount].Style.Fill.PatternType = ExcelFillStyle.Solid;
+            worksheet.Cells[rowcount, colcount].Style.Fill.BackgroundColor.SetColor(colFromHexgrandTotal);
+            worksheet.Cells[rowcount, colcount].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+            worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+            worksheet.Column(colcount).Width = projectCodeElseWidth;
+            colcount++;
+
+            //worksheet.Cells[rowcount, colcount].Value = "";
+            //worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.None);
+            //worksheet.Column(colcount).Width = projectCodeElseWidth;
+            //colcount++;
+
+            //worksheet.Cells[rowcount, colcount].Value = "";
+            //worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.None);
+            //worksheet.Column(colcount).Width = projectCodeElseWidth;
+            //colcount++;
+
+            //worksheet.Cells[rowcount, colcount].Value = "";c
+            //worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.None);
+            //worksheet.Column(colcount).Width = projectCodeElseWidth;
+            //colcount++;
+
+            //worksheet.Cells[rowcount, colcount].Value = "";
+            //worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.None);
+            //worksheet.Column(colcount).Width = projectCodeElseWidth;
+            //colcount++;
+
+            //worksheet.Cells[rowcount, colcount].Value = "";
+            //worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.None);
+            //worksheet.Column(colcount).Width = projectCodeElseWidth;
+            #endregion
+
+            Color colFromHexLghtRed = System.Drawing.ColorTranslator.FromHtml("#F9BDA9");
+            foreach (VarianceAnalysisResponseModel datum in data)
+            {
+                //colcount++;
+                worksheet.Cells[rowcount, colcount, rowcount, (colcount + headercounter)].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                worksheet.Cells[rowcount, colcount, rowcount, (colcount + headercounter)].Style.Fill.BackgroundColor.SetColor(colFromHexLghtRed);
+                worksheet.Cells[rowcount, colcount, rowcount, (colcount + headercounter)].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+
+
+                worksheet.Cells[rowcount, colcount, rowcount, (colcount + colcountQuarters)].Merge = true;
+                worksheet.Cells[rowcount, colcount].Value = "Previous Budget - S1";
+                worksheet.Cells[rowcount, colcount, rowcount, (colcount + colcountQuarters)].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+
+
+                colcount = colcount + colcountQuarters + 1;
+                worksheet.Cells[rowcount, colcount, rowcount, (colcount + colcountQuarters)].Merge = true;
+                worksheet.Cells[rowcount, colcount].Value = "Previous Forecast - S2";
+                worksheet.Cells[rowcount, colcount, rowcount, (colcount + colcountQuarters)].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+
+                colcount = colcount + colcountQuarters + 1;
+                worksheet.Cells[rowcount, colcount, rowcount, (colcount + colcountQuarters)].Merge = true;
+                worksheet.Cells[rowcount, colcount].Value = "Current Forecast - S3";
+                worksheet.Cells[rowcount, colcount, rowcount, (colcount + colcountQuarters)].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+
+                colcount = colcount + colcountQuarters + 1;
+                worksheet.Cells[rowcount, colcount, rowcount, (colcount + 1)].Merge = true;
+                worksheet.Cells[rowcount, colcount].Value = "Variance";
+                worksheet.Cells[rowcount, colcount, rowcount, (colcount + 1)].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+                colcount = colcount + 2;
+            }            
+            #endregion
+
+            #region Second Row
+
+            rowcount++;
+            colcount = 1;
+            #region blank row
+            worksheet.Cells[rowcount, colcount].Value = "";
+            worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.None);
+            worksheet.Column(colcount).Width = projectCodeWidth;
+            colcount++;
+
+            worksheet.Cells[rowcount, colcount].Value = "";
+            worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.None);
+            worksheet.Column(colcount).Width = projectCodeElseWidth;
+            colcount++;
+
+            //worksheet.Cells[rowcount, colcount].Value = "";
+            //worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.None);
+            //worksheet.Column(colcount).Width = projectCodeElseWidth;
+            //colcount++;
+
+            //worksheet.Cells[rowcount, colcount].Value = "";
+            //worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.None);
+            //worksheet.Column(colcount).Width = projectCodeElseWidth;
+            //colcount++;
+
+            //worksheet.Cells[rowcount, colcount].Value = "";
+            //worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.None);
+            //worksheet.Column(colcount).Width = projectCodeElseWidth;
+            //colcount++;
+
+            //worksheet.Cells[rowcount, colcount].Value = "";
+            //worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.None);
+            //worksheet.Column(colcount).Width = projectCodeElseWidth;
+            //colcount++;
+
+            //worksheet.Cells[rowcount, colcount].Value = "";
+            //worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.None);
+            //worksheet.Column(colcount).Width = projectCodeElseWidth;
+            #endregion
+
+            Color colFromHexGreen = System.Drawing.ColorTranslator.FromHtml("#92E0B5");
+            foreach (VarianceAnalysisResponseModel datum in data)
+            {
+                //colcount++;
+                worksheet.Cells[rowcount, colcount, rowcount, (colcount + headercounter)].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                worksheet.Cells[rowcount, colcount, rowcount, (colcount + headercounter)].Style.Fill.BackgroundColor.SetColor(colFromHexGreen);
+                worksheet.Cells[rowcount, colcount, rowcount, (colcount + headercounter)].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+
+
+                worksheet.Cells[rowcount, colcount, rowcount, (colcount + colcountQuarters)].Merge = true;
+                worksheet.Cells[rowcount, colcount].Value = "Compare Scenario 2 - C";
+                worksheet.Cells[rowcount, colcount, rowcount, (colcount + colcountQuarters)].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+
+
+                colcount = colcount + colcountQuarters + 1;
+                worksheet.Cells[rowcount, colcount, rowcount, (colcount + colcountQuarters)].Merge = true;
+                worksheet.Cells[rowcount, colcount].Value = "Compare Scenario 1 - B";
+                worksheet.Cells[rowcount, colcount, rowcount, (colcount + colcountQuarters)].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+
+
+                colcount = colcount + colcountQuarters + 1;
+                worksheet.Cells[rowcount, colcount, rowcount, (colcount + colcountQuarters)].Merge = true;
+                worksheet.Cells[rowcount, colcount].Value = "Base Scenario - A";
+                worksheet.Cells[rowcount, colcount, rowcount, (colcount + colcountQuarters)].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+
+
+                colcount = colcount + colcountQuarters + 1;
+                worksheet.Cells[rowcount, colcount, rowcount, (colcount + 1)].Merge = true;
+                worksheet.Cells[rowcount, colcount].Value = "Variance";
+                worksheet.Cells[rowcount, colcount, rowcount, (colcount + 1)].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+
+                //GM
+                colcount = colcount + 2;
+            }
+
+            #endregion
+
+            #region Third Row
+            rowcount++;
+            colcount = 1;
+
+            #region blank row
+            worksheet.Cells[rowcount, colcount].Value = "";
+            worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.None);
+            worksheet.Column(colcount).Width = projectCodeWidth;
+            colcount++;
+
+            worksheet.Cells[rowcount, colcount].Value = "";
+            worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.None);
+            worksheet.Column(colcount).Width = projectCodeElseWidth;
+            colcount++;
+
+            //worksheet.Cells[rowcount, colcount].Value = "";
+            //worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.None);
+            //worksheet.Column(colcount).Width = projectCodeElseWidth;
+            //colcount++;
+
+            //worksheet.Cells[rowcount, colcount].Value = "";
+            //worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.None);
+            //worksheet.Column(colcount).Width = projectCodeElseWidth;
+            //colcount++;
+
+            //worksheet.Cells[rowcount, colcount].Value = "";
+            //worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.None);
+            //worksheet.Column(colcount).Width = projectCodeElseWidth;
+            //colcount++;
+
+            //worksheet.Cells[rowcount, colcount].Value = "";
+            //worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.None);
+            //worksheet.Column(colcount).Width = projectCodeElseWidth;
+            //colcount++;
+
+            //worksheet.Cells[rowcount, colcount].Value = "";
+            //worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.None);
+            //worksheet.Column(colcount).Width = projectCodeElseWidth;
+
+
+            #endregion
+            foreach (VarianceAnalysisResponseModel datum in data)
+            {
+                //colcount++;
+                worksheet.Cells[rowcount, colcount, rowcount, (colcount + headercounter)].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                worksheet.Cells[rowcount, colcount, rowcount, (colcount + headercounter)].Style.Fill.BackgroundColor.SetColor(colFromHexLghtRed);
+                worksheet.Cells[rowcount, colcount, rowcount, (colcount + headercounter)].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+
+                worksheet.Cells[rowcount, colcount, rowcount, (colcount + colcountQuarters)].Merge = true;
+                worksheet.Cells[rowcount, colcount].Value = datum.GrandTotal[0].CS2;
+                worksheet.Cells[rowcount, colcount, rowcount, (colcount + colcountQuarters)].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+                worksheet.Cells[rowcount, colcount, rowcount, (colcount + colcountQuarters)].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+
+
+                colcount = colcount + colcountQuarters + 1;
+                worksheet.Cells[rowcount, colcount, rowcount, (colcount + colcountQuarters)].Merge = true;
+                worksheet.Cells[rowcount, colcount].Value = datum.GrandTotal[0].CS1;
+                worksheet.Cells[rowcount, colcount, rowcount, (colcount + colcountQuarters)].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+
+
+                colcount = colcount + colcountQuarters + 1;
+                worksheet.Cells[rowcount, colcount, rowcount, (colcount + colcountQuarters)].Merge = true;
+                worksheet.Cells[rowcount, colcount].Value = datum.GrandTotal[0].BaseScenario;
+                worksheet.Cells[rowcount, colcount, rowcount, (colcount + colcountQuarters)].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+
+
+                colcount = colcount + colcountQuarters + 1;
+                worksheet.Cells[rowcount, colcount].Value = "A-C";
+                worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+                worksheet.Column(colcount).Width = dataWidth;
+                worksheet.Cells[rowcount, colcount, rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+
+
+                colcount++;
+                worksheet.Cells[rowcount, colcount].Value = "A-B";
+                worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+                worksheet.Column(colcount).Width = dataWidth;
+                worksheet.Cells[rowcount, colcount, rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+
+                //GM
+                colcount++;
+            }
+            #endregion
+
+            #region Fourth Row
+            rowcount++;
+            colcount = 1;
+
+
+
+            Color colFromHexYellow = System.Drawing.ColorTranslator.FromHtml("#FFF7A7");
+            Color colFromHexGreenCum = System.Drawing.ColorTranslator.FromHtml("#C3E9D7");
+            Color colFromHexGreenCumBase = System.Drawing.ColorTranslator.FromHtml("#4EDF9A");
+            Color colFromHexBlue = System.Drawing.ColorTranslator.FromHtml("#ACE8F5");
+
+            worksheet.Cells[rowcount, colcount].Value = "Project No";
+            worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+            worksheet.Column(colcount).Width = projectCodeWidth;
+            worksheet.Cells[rowcount, colcount].Style.Fill.PatternType = ExcelFillStyle.Solid;
+            worksheet.Cells[rowcount, colcount].Style.Fill.BackgroundColor.SetColor(colFromHexYellow);
+
+            colcount++;
+
+            worksheet.Cells[rowcount, colcount].Value = "Project Name";
+            worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+            worksheet.Column(colcount).Width = projectCodeElseWidth;
+            worksheet.Cells[rowcount, colcount].Style.Fill.PatternType = ExcelFillStyle.Solid;
+            worksheet.Cells[rowcount, colcount].Style.Fill.BackgroundColor.SetColor(colFromHexYellow);
+            colcount++;
+
+            //worksheet.Cells[rowcount, colcount].Value = "Contract Status";
+            //worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+            //worksheet.Column(colcount).Width = projectCodeElseWidth;
+            //worksheet.Cells[rowcount, colcount].Style.Fill.PatternType = ExcelFillStyle.Solid;
+            //worksheet.Cells[rowcount, colcount].Style.Fill.BackgroundColor.SetColor(colFromHexYellow);
+            //colcount++;
+
+            //worksheet.Cells[rowcount, colcount].Value = "Entity";
+            //worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+            //worksheet.Column(colcount).Width = projectCodeElseWidth;
+            //worksheet.Cells[rowcount, colcount].Style.Fill.PatternType = ExcelFillStyle.Solid;
+            //worksheet.Cells[rowcount, colcount].Style.Fill.BackgroundColor.SetColor(colFromHexYellow);
+            //colcount++;
+
+            //worksheet.Cells[rowcount, colcount].Value = "Contract Nature/Cat";
+            //worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+            //worksheet.Column(colcount).Width = projectCodeElseWidth;
+            //worksheet.Cells[rowcount, colcount].Style.Fill.PatternType = ExcelFillStyle.Solid;
+            //worksheet.Cells[rowcount, colcount].Style.Fill.BackgroundColor.SetColor(colFromHexYellow);
+            //colcount++;
+
+            //worksheet.Cells[rowcount, colcount].Value = "Segment";
+            //worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+            //worksheet.Column(colcount).Width = projectCodeElseWidth;
+            //worksheet.Cells[rowcount, colcount].Style.Fill.PatternType = ExcelFillStyle.Solid;
+            //worksheet.Cells[rowcount, colcount].Style.Fill.BackgroundColor.SetColor(colFromHexYellow);
+            //colcount++;
+
+            //worksheet.Cells[rowcount, colcount].Value = "Sponsored/Non Sponsored";
+            //worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+            //worksheet.Column(colcount).Width = projectCodeElseWidth;
+            //worksheet.Cells[rowcount, colcount].Style.Fill.PatternType = ExcelFillStyle.Solid;
+            //worksheet.Cells[rowcount, colcount].Style.Fill.BackgroundColor.SetColor(colFromHexYellow);
+            //colcount++;
+
+            var quarterToMonthMap = new Dictionary<string, string>
+{
+    { "Q1", "Jan" }, { "Q2", "Feb" }, { "Q3", "Mar" }, { "Q4", "Apr" },
+    { "Q5", "May" }, { "Q6", "Jun" }, { "Q7", "Jul" }, { "Q8", "Aug" },
+    { "Q9", "Sep" }, { "Q10", "Oct" }, { "Q11", "Nov" }, { "Q12", "Dec" }
+};
+            foreach (VarianceAnalysisResponseModel datum in data)
+            {
+                foreach (var quarter in quarters)
+                {
+                    if (quarterToMonthMap.ContainsKey(quarter))
+                    {
+                        var period = dataEntryInterval == "Monthly" ? quarterToMonthMap[quarter] : quarter;
+
+                        worksheet.Cells[rowcount, colcount].Value = period + " " + config.Year;
+                        worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+                        worksheet.Column(colcount).Width = dataWidth;
+                        worksheet.Cells[rowcount, colcount].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                        worksheet.Cells[rowcount, colcount].Style.Fill.BackgroundColor.SetColor(colFromHexYellow);
+                        colcount++;
+                    }
+                }
+
+
+
+                worksheet.Cells[rowcount, colcount].Value = "Total Cumulative";
+                worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+                worksheet.Column(colcount).Width = dataWidth;
+                worksheet.Cells[rowcount, colcount].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                worksheet.Cells[rowcount, colcount].Style.Fill.BackgroundColor.SetColor(colFromHexYellow);
+                colcount++;
+
+                foreach (var quarter in quarters)
+                {
+                    if (quarterToMonthMap.ContainsKey(quarter))
+                    {
+                        var period = dataEntryInterval == "Monthly" ? quarterToMonthMap[quarter] : quarter;
+
+                        worksheet.Cells[rowcount, colcount].Value = period + " " + config.Year;
+                        worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+                        worksheet.Column(colcount).Width = dataWidth;
+                        worksheet.Cells[rowcount, colcount].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                        worksheet.Cells[rowcount, colcount].Style.Fill.BackgroundColor.SetColor(colFromHexYellow);
+                        colcount++;
+                    }
+                }
+
+
+
+                worksheet.Cells[rowcount, colcount].Value = "Total Cumulative";
+                worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+                worksheet.Column(colcount).Width = dataWidth;
+                worksheet.Cells[rowcount, colcount].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                worksheet.Cells[rowcount, colcount].Style.Fill.BackgroundColor.SetColor(colFromHexGreenCum);
+                colcount++;
+
+                foreach (var quarter in quarters)
+                {
+                    if (quarterToMonthMap.ContainsKey(quarter))
+                    {
+                        var period = dataEntryInterval == "Monthly" ? quarterToMonthMap[quarter] : quarter;
+
+                        worksheet.Cells[rowcount, colcount].Value = period + " " + config.Year;
+                        worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+                        worksheet.Column(colcount).Width = dataWidth;
+                        worksheet.Cells[rowcount, colcount].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                        worksheet.Cells[rowcount, colcount].Style.Fill.BackgroundColor.SetColor(colFromHexYellow);
+                        colcount++;
+                    }
+                }
+
+
+                worksheet.Cells[rowcount, colcount].Value = "Total Cumulative";
+                worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+                worksheet.Column(colcount).Width = 20;
+                worksheet.Cells[rowcount, colcount].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                worksheet.Cells[rowcount, colcount].Style.Fill.BackgroundColor.SetColor(colFromHexGreenCumBase);
+                colcount++;
+
+                worksheet.Cells[rowcount, colcount].Value = "Curr  Fore Vs Budget";
+                worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+                worksheet.Column(colcount).Width = 20;
+                worksheet.Cells[rowcount, colcount].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                worksheet.Cells[rowcount, colcount].Style.Fill.BackgroundColor.SetColor(colFromHexBlue);
+                colcount++;
+
+                worksheet.Cells[rowcount, colcount].Value = "Curr  Fore Vs Forecast";
+                worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+                worksheet.Column(colcount).Width = 20;
+                worksheet.Cells[rowcount, colcount].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                worksheet.Cells[rowcount, colcount].Style.Fill.BackgroundColor.SetColor(colFromHexBlue);
+
+                //GM
+                colcount++;
+            }
+            #endregion
+
+            #region DataRow
+                       
+            foreach (var item in data[0].GridResponse)
+                {
+                rowcount++;
+                colcount = 1;
+                if (item.RecordType == "GroupTotal")
+                    {
+
+                        worksheet.Cells[rowcount, colcount].Value = item.ProjectNo;
+                        worksheet.Column(colcount).Width = projectCodeWidth;
+                        worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+                        worksheet.Cells[rowcount, colcount, rowcount, (colcount + 6 + headercounter + 1 + headercounter + 1)].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                        worksheet.Cells[rowcount, colcount, rowcount, (colcount + 6 + headercounter + 1 + headercounter + 1)].Style.Fill.BackgroundColor.SetColor(colFromHexGreenCum);
+                        worksheet.Cells[rowcount, colcount, rowcount, (colcount + 6 + headercounter + 1 + headercounter + 1)].Style.Font.Bold = true;
+
+                        colcount++;
+                        worksheet.Cells[rowcount, colcount].Value = string.Empty;
+                        worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+                        worksheet.Column(colcount).Width = projectCodeElseWidth;
+                        colcount++;
+
+                        //worksheet.Cells[rowcount, colcount].Value = string.Empty;
+                        //worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+                        //worksheet.Column(colcount).Width = projectCodeElseWidth;
+                        //colcount++;
+
+                        //worksheet.Cells[rowcount, colcount].Value = string.Empty;
+                        //worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+                        //worksheet.Column(colcount).Width = projectCodeElseWidth;
+                        //colcount++;
+
+                        //worksheet.Cells[rowcount, colcount].Value = string.Empty;
+                        //worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+                        //worksheet.Column(colcount).Width = projectCodeElseWidth;
+                        //colcount++;
+
+                        //worksheet.Cells[rowcount, colcount].Value = string.Empty;
+                        //worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+                        //worksheet.Column(colcount).Width = projectCodeElseWidth;
+                        //colcount++;
+
+                        //worksheet.Cells[rowcount, colcount].Value = string.Empty;
+                        //worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+                        //worksheet.Column(colcount).Width = projectCodeElseWidth;
+                        //colcount++;
+                    }
+                    else
+                    {
+                        worksheet.Cells[rowcount, colcount].Value = item.ProjectNo;
+                        worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+                        worksheet.Column(colcount).Width = projectCodeWidth;
+
+
+                        colcount++;
+                        if (item.ClubbingParameterName != null && item.ClubbingParameterName != "")
+                            worksheet.Cells[rowcount, colcount].Value = item.ClubbingParameterName;
+                        else
+                            worksheet.Cells[rowcount, colcount].Value = item.ProjectName;
+                        worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+                        worksheet.Column(colcount).Width = projectCodeElseWidth;
+                        colcount++;
+
+                        //worksheet.Cells[rowcount, colcount].Value = item.ContractStatusCode;
+                        //worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+                        //worksheet.Column(colcount).Width = projectCodeElseWidth;
+                        //colcount++;
+
+                        //worksheet.Cells[rowcount, colcount].Value = item.ProjectEntityCode;
+                        //worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+                        //worksheet.Column(colcount).Width = projectCodeElseWidth;
+                        //colcount++;
+
+                        //worksheet.Cells[rowcount, colcount].Value = item.ContractTypeCode;
+                        //worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+                        //worksheet.Column(colcount).Width = projectCodeElseWidth;
+                        //colcount++;
+
+                        //worksheet.Cells[rowcount, colcount].Value = item.ProjectSegmentCode;
+                        //worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+                        //worksheet.Column(colcount).Width = projectCodeElseWidth;
+                        //colcount++;
+
+                        //worksheet.Cells[rowcount, colcount].Value = item.ManagementCategoryCode;
+                        //worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+                        //worksheet.Column(colcount).Width = projectCodeElseWidth;
+                        //colcount++;
+                    }
+
+
+                    foreach (var quarter in quarters)
+                    {
+                        var propertyName = $"CS2{quarter}";
+                        var propertyInfo = item.GetType().GetProperty(propertyName);
+
+                        if (quarters.Contains(quarter))
+                        {
+                            worksheet.Cells[rowcount, colcount].Style.Numberformat.Format = fullNumberFormat;
+
+                            if (propertyInfo != null)
+                            {
+                                var value = propertyInfo.GetValue(item) as decimal?;
+                                if (value.HasValue)
+                                {
+                                    worksheet.Cells[rowcount, colcount].Value = value.Value;
+                                    if (value.Value < 0)
+                                        worksheet.Cells[rowcount, colcount].Style.Font.Color.SetColor(Color.Red);
+                                }
+                            }
+
+                            worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+                            worksheet.Column(colcount).Width = dataWidth;
+                            worksheet.Cells[rowcount, colcount].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+                            colcount++;
+                        }
+                    }
+
+                    worksheet.Cells[rowcount, colcount].Style.Numberformat.Format = fullNumberFormat;
+                    if (item.TotalCS2.HasValue)
+                    {
+                        worksheet.Cells[rowcount, colcount].Value = item.TotalCS2.Value;
+                        if (item.TotalCS2.Value < 0)
+                            worksheet.Cells[rowcount, colcount].Style.Font.Color.SetColor(Color.Red);
+                    }
+                    worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+                    worksheet.Column(colcount).Width = dataWidth;
+                    worksheet.Cells[rowcount, colcount].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+                    worksheet.Cells[rowcount, colcount].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                    if (item.RecordType != "GroupTotal")
+                        worksheet.Cells[rowcount, colcount].Style.Fill.BackgroundColor.SetColor(colFromHexYellow);
+
+                    colcount++;
+
+                    foreach (var quarter in quarters)
+                    {
+                        var propertyName = $"CS1{quarter}";
+                        var propertyInfo = item.GetType().GetProperty(propertyName);
+
+                        if (quarters.Contains(quarter))
+                        {
+                            worksheet.Cells[rowcount, colcount].Style.Numberformat.Format = fullNumberFormat;
+
+                            if (propertyInfo != null)
+                            {
+                                var value = propertyInfo.GetValue(item) as decimal?;
+                                if (value.HasValue)
+                                {
+                                    worksheet.Cells[rowcount, colcount].Value = value.Value;
+                                    if (value.Value < 0)
+                                        worksheet.Cells[rowcount, colcount].Style.Font.Color.SetColor(Color.Red);
+                                }
+                            }
+
+                            worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+                            worksheet.Column(colcount).Width = dataWidth;
+                            worksheet.Cells[rowcount, colcount].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+                            colcount++;
+                        }
+                    }
+
+                    worksheet.Cells[rowcount, colcount].Style.Numberformat.Format = fullNumberFormat;
+                    if (item.TotalCS1.HasValue)
+                    {
+                        worksheet.Cells[rowcount, colcount].Value = item.TotalCS1.Value;
+                        if (item.TotalCS1.Value < 0)
+                            worksheet.Cells[rowcount, colcount].Style.Font.Color.SetColor(Color.Red);
+                    }
+
+                    worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+                    worksheet.Column(colcount).Width = dataWidth;
+                    worksheet.Cells[rowcount, colcount].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+                    worksheet.Cells[rowcount, colcount].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                    if (item.RecordType != "GroupTotal")
+                        worksheet.Cells[rowcount, colcount].Style.Fill.BackgroundColor.SetColor(colFromHexBlue);
+                    colcount++;
+
+
+                    foreach (var quarter in quarters)
+                    {
+                        var propertyName = $"Base{quarter}";
+                        var propertyInfo = item.GetType().GetProperty(propertyName);
+
+                        if (quarters.Contains(quarter))
+                        {
+                            worksheet.Cells[rowcount, colcount].Style.Numberformat.Format = fullNumberFormat;
+
+                            if (propertyInfo != null)
+                            {
+                                var value = propertyInfo.GetValue(item) as decimal?;
+                                if (value.HasValue)
+                                {
+                                    worksheet.Cells[rowcount, colcount].Value = value.Value;
+                                    if (value.Value < 0)
+                                        worksheet.Cells[rowcount, colcount].Style.Font.Color.SetColor(Color.Red);
+                                }
+                            }
+
+                            worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+                            worksheet.Column(colcount).Width = dataWidth;
+                            worksheet.Cells[rowcount, colcount].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+                            colcount++;
+                        }
+                    }
+
+                    worksheet.Cells[rowcount, colcount].Style.Numberformat.Format = fullNumberFormat;
+                    if (item.TotalBase.HasValue)
+                    {
+                        worksheet.Cells[rowcount, colcount].Value = item.TotalBase.Value;
+                        if (item.TotalBase.Value < 0)
+                            worksheet.Cells[rowcount, colcount].Style.Font.Color.SetColor(Color.Red);
+                    }
+
+                    worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+                    worksheet.Column(colcount).Width = dataWidth;
+                    worksheet.Cells[rowcount, colcount].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+                    worksheet.Cells[rowcount, colcount].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                    if (item.RecordType != "GroupTotal")
+                        worksheet.Cells[rowcount, colcount].Style.Fill.BackgroundColor.SetColor(colFromHexGreenCumBase);
+                    colcount++;
+
+                    worksheet.Cells[rowcount, colcount].Style.Numberformat.Format = fullNumberFormat;
+                    if (item.Var1.HasValue)
+                    {
+                        worksheet.Cells[rowcount, colcount].Value = item.Var1.Value;
+                        if (item.Var1.Value < 0)
+                            worksheet.Cells[rowcount, colcount].Style.Font.Color.SetColor(Color.Red);
+                    }
+                    worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+                    worksheet.Column(colcount).Width = dataWidth;
+                    worksheet.Cells[rowcount, colcount].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+                    colcount++;
+
+                    worksheet.Cells[rowcount, colcount].Style.Numberformat.Format = fullNumberFormat;
+                    if (item.Var2.HasValue)
+                    {
+                        worksheet.Cells[rowcount, colcount].Value = item.Var2.Value;
+                        if (item.Var2.Value < 0)
+                            worksheet.Cells[rowcount, colcount].Style.Font.Color.SetColor(Color.Red);
+                    }
+                    worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+                    worksheet.Column(colcount).Width = dataWidth;
+                    worksheet.Cells[rowcount, colcount].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+
+                    colcount++;
+                for(int i = 1; i < data.Count; i++) {
+                    //GM
+                    List<VarianceAnalysisResponse> itemGM;
+                    if (item.RecordType == "GroupTotal")
+                    {
+                        itemGM = data[i].GridResponse.Where(a => a.GroupingParametersCode == item.GroupingParametersCode && a.OriginalProjectNo == item.OriginalProjectNo).ToList();
+
+                    }
+                    else
+                        itemGM = data[i].GridResponse.Where(a => a.GroupingParametersCode == item.GroupingParametersCode && a.ProjectNo == item.OriginalProjectNo).ToList();
+                    if (itemGM.Count > 1)
+                    {
+                        throw new Exception("More than one record found!");
+                    }
+                    var itemGMrecord = itemGM.FirstOrDefault();
+
+                    foreach (var quarter in quarters)
+                    {
+                        var propertyName = $"CS2{quarter}";
+                        var propertyInfo = itemGMrecord.GetType().GetProperty(propertyName);
+
+                        if (quarters.Contains(quarter))
+                        {
+                            worksheet.Cells[rowcount, colcount].Style.Numberformat.Format = fullNumberFormat;
+
+                            if (propertyInfo != null)
+                            {
+                                var value = propertyInfo.GetValue(itemGMrecord) as decimal?;
+                                if (value.HasValue)
+                                {
+                                    worksheet.Cells[rowcount, colcount].Value = value.Value;
+                                    if (value.Value < 0)
+                                        worksheet.Cells[rowcount, colcount].Style.Font.Color.SetColor(Color.Red);
+                                }
+                            }
+
+                            worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+                            worksheet.Column(colcount).Width = dataWidth;
+                            worksheet.Cells[rowcount, colcount].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+                            colcount++;
+                        }
+                    }
+
+                    worksheet.Cells[rowcount, colcount].Style.Numberformat.Format = fullNumberFormat;
+                    if (itemGMrecord.TotalCS2.HasValue)
+                    {
+                        worksheet.Cells[rowcount, colcount].Value = itemGMrecord.TotalCS2.Value;
+                        if (itemGMrecord.TotalCS2.Value < 0)
+                            worksheet.Cells[rowcount, colcount].Style.Font.Color.SetColor(Color.Red);
+                    }
+
+                    worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+                    worksheet.Column(colcount).Width = dataWidth;
+                    worksheet.Cells[rowcount, colcount].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+                    worksheet.Cells[rowcount, colcount].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                    if (item.RecordType != "GroupTotal")
+                        worksheet.Cells[rowcount, colcount].Style.Fill.BackgroundColor.SetColor(colFromHexYellow);
+                    colcount++;
+
+                    foreach (var quarter in quarters)
+                    {
+                        var propertyName = $"CS1{quarter}";
+                        var propertyInfo = itemGMrecord.GetType().GetProperty(propertyName);
+
+                        if (quarters.Contains(quarter))
+                        {
+                            worksheet.Cells[rowcount, colcount].Style.Numberformat.Format = fullNumberFormat;
+
+                            if (propertyInfo != null)
+                            {
+                                var value = propertyInfo.GetValue(itemGMrecord) as decimal?;
+                                if (value.HasValue)
+                                {
+                                    worksheet.Cells[rowcount, colcount].Value = value.Value;
+                                    if (value.Value < 0)
+                                        worksheet.Cells[rowcount, colcount].Style.Font.Color.SetColor(Color.Red);
+                                }
+                            }
+
+                            worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+                            worksheet.Column(colcount).Width = dataWidth;
+                            worksheet.Cells[rowcount, colcount].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+                            colcount++;
+                        }
+                    }
+
+                    worksheet.Cells[rowcount, colcount].Style.Numberformat.Format = fullNumberFormat;
+                    if (itemGMrecord.TotalCS1.HasValue)
+                    {
+                        worksheet.Cells[rowcount, colcount].Value = itemGMrecord.TotalCS1.Value;
+                        if (itemGMrecord.TotalCS1.Value < 0)
+                            worksheet.Cells[rowcount, colcount].Style.Font.Color.SetColor(Color.Red);
+                    }
+
+                    worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+                    worksheet.Column(colcount).Width = dataWidth;
+                    worksheet.Cells[rowcount, colcount].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+                    worksheet.Cells[rowcount, colcount].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                    if (item.RecordType != "GroupTotal")
+                        worksheet.Cells[rowcount, colcount].Style.Fill.BackgroundColor.SetColor(colFromHexBlue);
+                    colcount++;
+
+                    foreach (var quarter in quarters)
+                    {
+                        var propertyName = $"Base{quarter}";
+                        var propertyInfo = itemGMrecord.GetType().GetProperty(propertyName);
+
+                        if (propertyInfo != null)
+                        {
+                            worksheet.Cells[rowcount, colcount].Style.Numberformat.Format = fullNumberFormat;
+
+                            var value = propertyInfo.GetValue(itemGMrecord) as decimal?;
+                            if (value.HasValue)
+                            {
+                                worksheet.Cells[rowcount, colcount].Value = value.Value;
+                                if (value.Value < 0)
+                                    worksheet.Cells[rowcount, colcount].Style.Font.Color.SetColor(Color.Red);
+                            }
+
+                            worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+                            worksheet.Column(colcount).Width = dataWidth;
+                            worksheet.Cells[rowcount, colcount].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+                            colcount++;
+                        }
+                    }
+
+                    worksheet.Cells[rowcount, colcount].Style.Numberformat.Format = fullNumberFormat;
+                    if (itemGMrecord.TotalBase.HasValue)
+                    {
+                        worksheet.Cells[rowcount, colcount].Value = itemGMrecord.TotalBase.Value;
+                        if (itemGMrecord.TotalBase.Value < 0)
+                            worksheet.Cells[rowcount, colcount].Style.Font.Color.SetColor(Color.Red);
+                    }
+
+                    worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+                    worksheet.Column(colcount).Width = dataWidth;
+                    worksheet.Cells[rowcount, colcount].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+                    worksheet.Cells[rowcount, colcount].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                    if (item.RecordType != "GroupTotal")
+                        worksheet.Cells[rowcount, colcount].Style.Fill.BackgroundColor.SetColor(colFromHexGreenCumBase);
+                    colcount++;
+
+                    worksheet.Cells[rowcount, colcount].Style.Numberformat.Format = fullNumberFormat;
+                    if (itemGMrecord.Var1.HasValue)
+                    {
+                        worksheet.Cells[rowcount, colcount].Value = (itemGMrecord.Var1.Value);
+                        if (itemGMrecord.Var1.Value < 0)
+                            worksheet.Cells[rowcount, colcount].Style.Font.Color.SetColor(Color.Red);
+                    }
+                    worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+                    worksheet.Column(colcount).Width = dataWidth;
+                    worksheet.Cells[rowcount, colcount].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+                    colcount++;
+
+                    worksheet.Cells[rowcount, colcount].Style.Numberformat.Format = fullNumberFormat;
+                    if (itemGMrecord.Var2.HasValue)
+                    {
+                        worksheet.Cells[rowcount, colcount].Value = (itemGMrecord.Var2.Value);
+                        if (itemGMrecord.Var1.Value < 0)
+                            worksheet.Cells[rowcount, colcount].Style.Font.Color.SetColor(Color.Red);
+                    }
+                    worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+                    worksheet.Column(colcount).Width = dataWidth;
+                    worksheet.Cells[rowcount, colcount].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+                    colcount++;
+                }
+                    
+                }
+            
+
+            #endregion
+
+            #region Grand Total
+            foreach (var item in data[0].GrandTotal)
+                {
+                    rowcount++;
+                    colcount = 1;
+
+                    worksheet.Cells[rowcount, colcount].Value = "GRAND TOTAL";
+                    worksheet.Column(colcount).Width = projectCodeWidth;
+                    worksheet.Cells[rowcount, colcount, rowcount, (colcount + 6)].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+                    worksheet.Cells[rowcount, colcount, rowcount, (colcount + 7)].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                    worksheet.Cells[rowcount, colcount, rowcount, (colcount + 7)].Style.Fill.BackgroundColor.SetColor(colFromHexgrandTotal);
+                    worksheet.Cells[rowcount, colcount, rowcount, (colcount + 7)].Style.Font.Bold = true;
+
+                    colcount++;
+                    worksheet.Cells[rowcount, colcount].Value = string.Empty;
+                    worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+                    worksheet.Column(colcount).Width = projectCodeElseWidth;
+                    colcount++;
+
+                    //worksheet.Cells[rowcount, colcount].Value = string.Empty;
+                    //worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+                    //worksheet.Column(colcount).Width = projectCodeElseWidth;
+                    //colcount++;
+
+                    //worksheet.Cells[rowcount, colcount].Value = string.Empty;
+                    //worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+                    //worksheet.Column(colcount).Width = projectCodeElseWidth;
+                    //colcount++;
+
+                    //worksheet.Cells[rowcount, colcount].Value = string.Empty;
+                    //worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+                    //worksheet.Column(colcount).Width = projectCodeElseWidth;
+                    //colcount++;
+
+                    //worksheet.Cells[rowcount, colcount].Value = string.Empty;
+                    //worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+                    //worksheet.Column(colcount).Width = projectCodeElseWidth;
+                    //colcount++;
+
+                    //worksheet.Cells[rowcount, colcount].Value = string.Empty;
+                    //worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+                    //worksheet.Column(colcount).Width = projectCodeElseWidth;
+                    //colcount++;
+
+                    foreach (var quarter in quarters)
+                    {
+                        var propertyName = $"CS2{quarter}";
+                        var propertyInfo = item.GetType().GetProperty(propertyName);
+
+                        if (propertyInfo != null)
+                        {
+                            worksheet.Cells[rowcount, colcount].Style.Numberformat.Format = fullNumberFormat;
+
+                            var value = propertyInfo.GetValue(item) as decimal?;
+                            if (value.HasValue)
+                            {
+                                worksheet.Cells[rowcount, colcount].Value = value.Value;
+                            }
+
+                            worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+                            worksheet.Column(colcount).Width = dataWidth;
+                            worksheet.Cells[rowcount, colcount].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                            worksheet.Cells[rowcount, colcount].Style.Fill.BackgroundColor.SetColor(colFromHexgrandTotal);
+                            worksheet.Cells[rowcount, colcount].Style.Font.Bold = true;
+                            worksheet.Cells[rowcount, colcount].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+                            colcount++;
+                        }
+                    }
+
+                    worksheet.Cells[rowcount, colcount].Style.Numberformat.Format = fullNumberFormat;
+                    if (item.TotalCS2.HasValue)
+                        worksheet.Cells[rowcount, colcount].Value = (item.TotalCS2.Value);
+                    worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+                    worksheet.Column(colcount).Width = dataWidth;
+                    worksheet.Cells[rowcount, colcount].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                    worksheet.Cells[rowcount, colcount].Style.Fill.BackgroundColor.SetColor(colFromHexgrandTotal);
+                    worksheet.Cells[rowcount, colcount].Style.Font.Bold = true;
+                    worksheet.Cells[rowcount, colcount].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+                    colcount++;
+
+                    foreach (var quarter in quarters)
+                    {
+                        var propertyName = $"CS1{quarter}";
+                        var propertyInfo = item.GetType().GetProperty(propertyName);
+
+                        if (propertyInfo != null)
+                        {
+                            worksheet.Cells[rowcount, colcount].Style.Numberformat.Format = fullNumberFormat;
+
+                            var value = propertyInfo.GetValue(item) as decimal?;
+                            if (value.HasValue)
+                            {
+                                worksheet.Cells[rowcount, colcount].Value = value.Value;
+                            }
+
+                            worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+                            worksheet.Column(colcount).Width = dataWidth;
+                            worksheet.Cells[rowcount, colcount].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                            worksheet.Cells[rowcount, colcount].Style.Fill.BackgroundColor.SetColor(colFromHexgrandTotal);
+                            worksheet.Cells[rowcount, colcount].Style.Font.Bold = true;
+                            worksheet.Cells[rowcount, colcount].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+                            colcount++;
+                        }
+                    }
+
+                    worksheet.Cells[rowcount, colcount].Style.Numberformat.Format = fullNumberFormat;
+                    if (item.TotalCS1.HasValue)
+                        worksheet.Cells[rowcount, colcount].Value = (item.TotalCS1.Value);
+                    worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+                    worksheet.Column(colcount).Width = dataWidth;
+                    worksheet.Cells[rowcount, colcount].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                    worksheet.Cells[rowcount, colcount].Style.Fill.BackgroundColor.SetColor(colFromHexgrandTotal);
+                    worksheet.Cells[rowcount, colcount].Style.Font.Bold = true;
+                    worksheet.Cells[rowcount, colcount].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+                    colcount++;
+
+                    foreach (var quarter in quarters)
+                    {
+                        var propertyName = $"Base{quarter}";
+                        var propertyInfo = item.GetType().GetProperty(propertyName);
+
+                        if (propertyInfo != null)
+                        {
+                            worksheet.Cells[rowcount, colcount].Style.Numberformat.Format = fullNumberFormat;
+
+                            var value = propertyInfo.GetValue(item) as decimal?;
+                            if (value.HasValue)
+                            {
+                                worksheet.Cells[rowcount, colcount].Value = value.Value;
+                            }
+
+                            worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+                            worksheet.Column(colcount).Width = dataWidth;
+                            worksheet.Cells[rowcount, colcount].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                            worksheet.Cells[rowcount, colcount].Style.Fill.BackgroundColor.SetColor(colFromHexgrandTotal);
+                            worksheet.Cells[rowcount, colcount].Style.Font.Bold = true;
+                            worksheet.Cells[rowcount, colcount].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+                            colcount++;
+                        }
+                    }
+
+                    worksheet.Cells[rowcount, colcount].Style.Numberformat.Format = fullNumberFormat;
+                    if (item.TotalBase.HasValue)
+                        worksheet.Cells[rowcount, colcount].Value = (item.TotalBase.Value);
+                    worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+                    worksheet.Column(colcount).Width = dataWidth;
+                    worksheet.Cells[rowcount, colcount].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                    worksheet.Cells[rowcount, colcount].Style.Fill.BackgroundColor.SetColor(colFromHexgrandTotal);
+                    worksheet.Cells[rowcount, colcount].Style.Font.Bold = true;
+                    worksheet.Cells[rowcount, colcount].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+                    colcount++;
+
+                    worksheet.Cells[rowcount, colcount].Style.Numberformat.Format = fullNumberFormat;
+                    if (item.Var1.HasValue)
+                        worksheet.Cells[rowcount, colcount].Value = (item.Var1.Value);
+                    worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+                    worksheet.Column(colcount).Width = dataWidth;
+                    worksheet.Cells[rowcount, colcount].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                    worksheet.Cells[rowcount, colcount].Style.Fill.BackgroundColor.SetColor(colFromHexgrandTotal);
+                    worksheet.Cells[rowcount, colcount].Style.Font.Bold = true;
+                    worksheet.Cells[rowcount, colcount].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+                    colcount++;
+
+                    worksheet.Cells[rowcount, colcount].Style.Numberformat.Format = fullNumberFormat;
+                    if (item.Var2.HasValue)
+                        worksheet.Cells[rowcount, colcount].Value = (item.Var2.Value);
+                    worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+                    worksheet.Column(colcount).Width = dataWidth;
+                    worksheet.Cells[rowcount, colcount].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                    worksheet.Cells[rowcount, colcount].Style.Fill.BackgroundColor.SetColor(colFromHexgrandTotal);
+                    worksheet.Cells[rowcount, colcount].Style.Font.Bold = true;
+                    worksheet.Cells[rowcount, colcount].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+                for(int i = 1; i < data.Count; i++)
+                {
+                    //GM
+                    colcount++;
+                    foreach (var itemGM in data[i].GrandTotal)
+                    {
+                        foreach (var quarter in quarters)
+                        {
+                            if (quarters.Contains(quarter))
+                            {
+                                var propertyName = $"CS2{quarter}";
+                                var propertyInfo = itemGM.GetType().GetProperty(propertyName);
+
+                                if (propertyInfo != null)
+                                {
+                                    worksheet.Cells[rowcount, colcount].Style.Numberformat.Format = fullNumberFormat;
+
+                                    var value = propertyInfo.GetValue(itemGM) as decimal?;
+                                    if (value.HasValue)
+                                    {
+                                        worksheet.Cells[rowcount, colcount].Value = value.Value;
+                                    }
+
+                                    worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+                                    worksheet.Column(colcount).Width = dataWidth;
+                                    worksheet.Cells[rowcount, colcount].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                                    worksheet.Cells[rowcount, colcount].Style.Fill.BackgroundColor.SetColor(colFromHexgrandTotal);
+                                    worksheet.Cells[rowcount, colcount].Style.Font.Bold = true;
+                                    worksheet.Cells[rowcount, colcount].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+                                    colcount++;
+                                }
+                            }
+                        }
+
+                        worksheet.Cells[rowcount, colcount].Style.Numberformat.Format = fullNumberFormat;
+                        if (itemGM.TotalCS2.HasValue)
+                            worksheet.Cells[rowcount, colcount].Value = (itemGM.TotalCS2.Value);
+                        worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+                        worksheet.Column(colcount).Width = dataWidth;
+                        worksheet.Cells[rowcount, colcount].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                        worksheet.Cells[rowcount, colcount].Style.Fill.BackgroundColor.SetColor(colFromHexgrandTotal);
+                        worksheet.Cells[rowcount, colcount].Style.Font.Bold = true;
+                        worksheet.Cells[rowcount, colcount].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+                        colcount++;
+
+
+                        foreach (var quarter in quarters)
+                        {
+                            if (quarters.Contains(quarter))
+                            {
+                                var propertyName = $"CS1{quarter}";
+                                var propertyInfo = itemGM.GetType().GetProperty(propertyName);
+
+                                if (propertyInfo != null)
+                                {
+                                    worksheet.Cells[rowcount, colcount].Style.Numberformat.Format = fullNumberFormat;
+
+                                    var value = propertyInfo.GetValue(itemGM) as decimal?;
+                                    if (value.HasValue)
+                                    {
+                                        worksheet.Cells[rowcount, colcount].Value = value.Value;
+                                    }
+
+                                    worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+                                    worksheet.Column(colcount).Width = dataWidth;
+                                    worksheet.Cells[rowcount, colcount].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                                    worksheet.Cells[rowcount, colcount].Style.Fill.BackgroundColor.SetColor(colFromHexgrandTotal);
+                                    worksheet.Cells[rowcount, colcount].Style.Font.Bold = true;
+                                    worksheet.Cells[rowcount, colcount].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+                                    colcount++;
+                                }
+                            }
+                        }
+
+                        worksheet.Cells[rowcount, colcount].Style.Numberformat.Format = fullNumberFormat;
+                        if (itemGM.TotalCS1.HasValue)
+                            worksheet.Cells[rowcount, colcount].Value = (itemGM.TotalCS1.Value);
+                        worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+                        worksheet.Column(colcount).Width = dataWidth;
+                        worksheet.Cells[rowcount, colcount].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                        worksheet.Cells[rowcount, colcount].Style.Fill.BackgroundColor.SetColor(colFromHexgrandTotal);
+                        worksheet.Cells[rowcount, colcount].Style.Font.Bold = true;
+                        worksheet.Cells[rowcount, colcount].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+                        colcount++;
+
+                        foreach (var quarter in quarters)
+                        {
+                            if (quarters.Contains(quarter))
+                            {
+                                var propertyName = $"Base{quarter}";
+                                var propertyInfo = itemGM.GetType().GetProperty(propertyName);
+
+                                if (propertyInfo != null)
+                                {
+                                    worksheet.Cells[rowcount, colcount].Style.Numberformat.Format = fullNumberFormat;
+
+                                    var value = propertyInfo.GetValue(itemGM) as decimal?;
+                                    if (value.HasValue)
+                                    {
+                                        worksheet.Cells[rowcount, colcount].Value = value.Value;
+                                    }
+
+                                    worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+                                    worksheet.Column(colcount).Width = dataWidth;
+                                    worksheet.Cells[rowcount, colcount].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                                    worksheet.Cells[rowcount, colcount].Style.Fill.BackgroundColor.SetColor(colFromHexgrandTotal);
+                                    worksheet.Cells[rowcount, colcount].Style.Font.Bold = true;
+                                    worksheet.Cells[rowcount, colcount].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+                                    colcount++;
+                                }
+                            }
+                        }
+
+                        worksheet.Cells[rowcount, colcount].Style.Numberformat.Format = fullNumberFormat;
+                        if (itemGM.TotalBase.HasValue)
+                            worksheet.Cells[rowcount, colcount].Value = (itemGM.TotalBase.Value);
+                        worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+                        worksheet.Column(colcount).Width = dataWidth;
+                        worksheet.Cells[rowcount, colcount].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                        worksheet.Cells[rowcount, colcount].Style.Fill.BackgroundColor.SetColor(colFromHexgrandTotal);
+                        worksheet.Cells[rowcount, colcount].Style.Font.Bold = true;
+                        worksheet.Cells[rowcount, colcount].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+                        colcount++;
+
+                        worksheet.Cells[rowcount, colcount].Style.Numberformat.Format = fullNumberFormat;
+                        if (itemGM.Var1.HasValue)
+                            worksheet.Cells[rowcount, colcount].Value = (itemGM.Var1.Value);
+                        worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+                        worksheet.Column(colcount).Width = dataWidth;
+                        worksheet.Cells[rowcount, colcount].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                        worksheet.Cells[rowcount, colcount].Style.Fill.BackgroundColor.SetColor(colFromHexgrandTotal);
+                        worksheet.Cells[rowcount, colcount].Style.Font.Bold = true;
+                        worksheet.Cells[rowcount, colcount].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+                        colcount++;
+
+                        worksheet.Cells[rowcount, colcount].Style.Numberformat.Format = fullNumberFormat;
+                        if (itemGM.Var2.HasValue)
+                            worksheet.Cells[rowcount, colcount].Value = (itemGM.Var2.Value);
+                        worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+                        worksheet.Column(colcount).Width = dataWidth;
+                        worksheet.Cells[rowcount, colcount].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                        worksheet.Cells[rowcount, colcount].Style.Fill.BackgroundColor.SetColor(colFromHexgrandTotal);
+                        worksheet.Cells[rowcount, colcount].Style.Font.Bold = true;
+                        worksheet.Cells[rowcount, colcount].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+                    }
+                }
+                }
+            
+                
+            #endregion
+            return excelPkg.GetAsByteArray();
+        }
 
         public VarianceAnalysisResponseModel GetVarianceAnalysisReport(VarianceAnalysisConfig config)
         {
@@ -2968,7 +4200,7 @@ namespace TechnipFMC.Finapp.Business
             workSheet.Cells["A1"].Value = "Currency";
             workSheet.Cells["B1"].Value = reportData.Currency.CurrencyName;
             workSheet.Cells["A2"].Value = "Values in";
-            workSheet.Cells["B2"].Value = reportData.Currency.Unit + "s";
+            workSheet.Cells["B2"].Value = (reportData.Currency.Unit == 1 ? "Actual" : reportData.Currency.Unit.ToString()) + "s"; 
             workSheet.Cells["A1"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
             workSheet.Cells["A1"].Style.WrapText = true;
 
@@ -3436,7 +4668,7 @@ namespace TechnipFMC.Finapp.Business
             worksheet.Cells[rowcount, colcount+1].Value = "Currency";
             worksheet.Cells[rowcount, colcount + 2].Value = currency.CurrencyCode;
             worksheet.Cells[rowcount, colcount + 3].Value = "Values in";
-            worksheet.Cells[rowcount, colcount + 4].Value = currency.Unit;
+            worksheet.Cells[rowcount, colcount + 4].Value = (currency.Unit == 1 ? "Actual" : currency.Unit.ToString()) + "s"; 
 
 
             #endregion
@@ -3785,7 +5017,7 @@ namespace TechnipFMC.Finapp.Business
             worksheet.Cells[rowcount, colcount+1].Value = "Currency";
             worksheet.Cells[rowcount, colcount + 2].Value = currency.CurrencyCode;
             worksheet.Cells[rowcount, colcount + 3].Value = "Values in";
-            worksheet.Cells[rowcount, colcount + 4].Value = currency.Unit;
+            worksheet.Cells[rowcount, colcount + 4].Value = (currency.Unit == 1 ? "Actual" : currency.Unit.ToString()) + "s"; 
 
 
             #endregion
@@ -5750,7 +6982,7 @@ namespace TechnipFMC.Finapp.Business
             worksheet.Cells[rowcount, colcount].Value = "Values in";
             worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
             colcount++;
-            worksheet.Cells[rowcount, colcount].Value = currency.Unit + "s";
+            worksheet.Cells[rowcount, colcount].Value = (currency.Unit == 1 ? "Actual" : currency.Unit.ToString()) + "s";
             worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
             rowcount++; colcount = 1;
             worksheet.Cells["A1:E1"].Style.Fill.PatternType = ExcelFillStyle.Solid;
@@ -5932,7 +7164,7 @@ namespace TechnipFMC.Finapp.Business
             worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin, darkblue);
             worksheet.Cells[rowcount, colcount].Style.Font.Color.SetColor(darkblue);
             colcount++;
-            worksheet.Cells[rowcount, colcount].Value = currency.Unit+"s";
+            worksheet.Cells[rowcount, colcount].Value = (currency.Unit == 1 ? "Actual" : currency.Unit.ToString()) + "s";
             worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin, darkblue);
             worksheet.Cells[rowcount, colcount].Style.Font.Color.SetColor(darkblue);
             rowcount++; colcount = 1;
@@ -6022,7 +7254,7 @@ namespace TechnipFMC.Finapp.Business
             worksheet.Cells[rowcount, colcount].Value = "Values in";
             worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
             colcount++;
-            worksheet.Cells[rowcount, colcount].Value = currency.Unit + "s";
+            worksheet.Cells[rowcount, colcount].Value = (currency.Unit == 1 ? "Actual" : currency.Unit.ToString()) + "s";
             worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
             rowcount++; colcount = 1;
             var quarters = config.Quarters.Split(',').ToList();

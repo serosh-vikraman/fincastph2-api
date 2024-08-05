@@ -374,9 +374,19 @@ namespace TechnipFMC.Finapp.Service.API.Controllers
                 }
                 else
                 {
-                    message = new CommonBL().GetMessage("UPNS");
-                    return Request.CreateResponse(HttpStatusCode.BadRequest,
-                    new APIResponse<string>(HttpStatusCode.BadRequest, "Failure", null, message, "", ""));
+                    if(userMaster.Id == -1)
+                    {
+                        message = "Maximum Number of Users already entered for chosen plan. Please upgrade to add more users.";
+                        return Request.CreateResponse(HttpStatusCode.BadRequest,
+                        new APIResponse<string>(HttpStatusCode.BadRequest, "Failure", null, message, "", ""));
+                    }
+                    else
+                    {
+                        message = new CommonBL().GetMessage("UPNS");
+                        return Request.CreateResponse(HttpStatusCode.BadRequest,
+                        new APIResponse<string>(HttpStatusCode.BadRequest, "Failure", null, message, "", ""));
+                    }
+                    
 
                 }
             }

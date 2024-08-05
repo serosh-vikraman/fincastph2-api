@@ -24,6 +24,8 @@ namespace TechnipFMC.Finapp.Business.Interfaces
         ProjectLifeCycle ProjectLifeCycleReport(int projectid, string scenarioscope);
         ExtractResponseDataModel REPExtractReport(int year, string scenarioTypeCode, string isCurrencyConversionRequired);
         byte[] GetVarianceAnalysisExcel(VarianceAnalysisConfig config, VarianceAnalysisResponseModel data, VarianceAnalysisResponseModel dataGM,int cid);
+        byte[] GetVarianceAnalysisExcel2(VarianceAnalysisConfig config, List<VarianceAnalysisResponseModel> data, int cid);
+
         byte[] GetDevianceReportExcel(DevianceReportConfig config,List<DevianceResponseModel> data,int cid);
         byte[] GetFinanceReportExcel(DashboardConfig config, FinancePerformanceDataModel data,int cid);
         byte[] GetProjectPerformanceReportExcel(DashboardConfig config, ProjectPerformanceDataModel data,int cid);
