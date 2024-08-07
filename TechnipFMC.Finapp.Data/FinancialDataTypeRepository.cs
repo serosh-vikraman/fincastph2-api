@@ -67,6 +67,7 @@ namespace TechnipFMC.Finapp.Data
                     financialDataType.FinancialDataTypeID = Convert.ToInt32(results.Rows[i]["FinancialDataTypeID"]);
                     financialDataType.FinancialDataTypeName = results.Rows[i]["FinancialDataTypeName"].ToString();
                     financialDataType.FinancialDataTypeCode = results.Rows[i]["FinancialDataTypeCode"].ToString();
+                    financialDataType.Indicator = results.Rows[i]["Indicator"].ToString();
                     financialDataType.CreatedBy = Convert.ToInt32(results.Rows[i]["CreatedBy"]);
                     financialDataType.Active = Convert.ToBoolean(results.Rows[i]["Active"]);
                     financialDataType.Status = results.Rows[i]["Status"].ToString();
@@ -214,6 +215,7 @@ namespace TechnipFMC.Finapp.Data
                             FinancialDataTypeID = (int)reader["FinancialDataTypeID"],
                             FinancialDataTypeName = (string)reader["FinancialDataTypeName"],
                             FinancialDataTypeCode = (string)reader["FinancialDataTypeCode"],
+                            Indicator = (string)reader["Indicator"],
                             CreatedBy = (int)reader["CreatedBy"],
                             Active = (bool)reader["Active"],
                             Status = (string)reader["Status"],
@@ -243,6 +245,7 @@ namespace TechnipFMC.Finapp.Data
                 cmd.Parameters.AddWithValue("@P_Id", financialDataType.FinancialDataTypeID);
                 cmd.Parameters.AddWithValue("@P_FinancialDataTypeName", financialDataType.FinancialDataTypeName);
                 cmd.Parameters.AddWithValue("@P_FinancialDataTypeCode", financialDataType.FinancialDataTypeCode);
+                cmd.Parameters.AddWithValue("@P_Indicator", financialDataType.Indicator);
                 cmd.Parameters.AddWithValue("@P_Active", financialDataType.Active);
                 cmd.Parameters.AddWithValue("@P_CreatedBy", financialDataType.CreatedBy);
                 //cmd.Parameters.AddWithValue("@P_CustomerId", financialDataType.CustomerID);

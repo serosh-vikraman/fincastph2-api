@@ -11,6 +11,7 @@ namespace TechnipFMC.Finapp.Models
         public int FinancialDataTypeID { get; set; }
         public string FinancialDataTypeCode { get; set; }
         public string FinancialDataTypeName { get; set; }
+        public string Indicator { get; set; }
         public string Message { get; set; }
 
     }

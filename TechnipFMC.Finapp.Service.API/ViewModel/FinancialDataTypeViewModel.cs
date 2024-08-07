@@ -10,6 +10,7 @@ namespace TechnipFMC.Finapp.Service.API.ViewModel
         public int FinancialDataTypeID { get; set; }
         public string FinancialDataTypeCode { get; set; }
         public string FinancialDataTypeName { get; set; }
+        public string Indicator { get; set; }
         public int CreatedBy { get; set; }
         public string Status { get; set; }
         public bool Active { get; set; }
