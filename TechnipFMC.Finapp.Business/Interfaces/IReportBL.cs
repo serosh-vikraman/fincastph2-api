@@ -18,6 +18,12 @@ namespace TechnipFMC.Finapp.Business.Interfaces
         DashboardDataModel GetDashboardData(DashboardConfig devianceConfig);
         FinancePerformanceDataModel FinancePerformanceReport(DashboardConfig devianceConfig);
         ProjectPerformanceDataModel ProjectPerformanceReport(DashboardConfig devianceConfig);
+        List<ProjectDataModel> DepartmentProjectReport(DevianceReportConfig devianceConfig); 
+        List<BudgetDeviationDataModel> DepartmentReport(DevianceReportConfig devianceConfig);
+        byte[] GetDepartmentProjectReportExcel(DevianceReportConfig config, List<ProjectDataModel> data, int cid);
+        byte[] GetDepartmentReportExcel(DevianceReportConfig config, List<BudgetDeviationDataModel> data, int cid);
+
+        byte[] Downloaddashboardreport(DashboardConfig config, DashboardDataModel data, int cid);
         TrendReportData TrendAnalysisReport(DashboardConfig devianceConfig);
         List<FinancialDataType> GetAllFinancialDataTypesOfScenario(int id);
 

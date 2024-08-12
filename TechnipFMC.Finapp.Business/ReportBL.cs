@@ -6929,19 +6929,19 @@ namespace TechnipFMC.Finapp.Business
             //}
             grid.Add(new DevianceGridResponse()
             {
-                Q1 = returnList.OrgQ1 -(GrossQ1C + GrossQ1D),
-                Q2 = returnList.OrgQ2 - (GrossQ2C + GrossQ2D),
-                Q3 = returnList.OrgQ3 - (GrossQ3C + GrossQ3D),
-                Q4 = returnList.OrgQ4 - (GrossQ4C + GrossQ4D),
-                Q5 = returnList.OrgQ5 - (GrossQ5C + GrossQ5D),
-                Q6 = returnList.OrgQ6 - (GrossQ6C + GrossQ6D),
-                Q7 = returnList.OrgQ7 - (GrossQ7C + GrossQ7D),
-                Q8 = returnList.OrgQ8 - (GrossQ8C + GrossQ8D),
-                Q9 = returnList.OrgQ9 - (GrossQ9C + GrossQ9D),
-                Q10 = returnList.OrgQ10 - (GrossQ10C + GrossQ10D),
-                Q11 = returnList.OrgQ11 - (GrossQ11C + GrossQ11D),
-                Q12 = returnList.OrgQ12 - (GrossQ12C + GrossQ12D),
-                Total = returnList.TotalOrg - (GrossTotalClient + GrossTotalDep),
+                Q1 = (GrossQ1C + GrossQ1D)  - returnList.OrgQ1,
+                Q2 = (GrossQ2C + GrossQ2D)  - returnList.OrgQ2,
+                Q3 = (GrossQ3C + GrossQ3D)  - returnList.OrgQ3,
+                Q4 = (GrossQ4C + GrossQ4D) - returnList.OrgQ4,
+                Q5 = (GrossQ5C + GrossQ5D) -  returnList.OrgQ5,
+                Q6 = (GrossQ6C + GrossQ6D)  - returnList.OrgQ6,
+                Q7 = (GrossQ7C + GrossQ7D) - returnList.OrgQ7,
+                Q8 = (GrossQ8C + GrossQ8D) - returnList.OrgQ8,
+                Q9 = (GrossQ9C + GrossQ9D) - returnList.OrgQ9,
+                Q10 = (GrossQ10C + GrossQ10D)  - returnList.OrgQ10,
+                Q11 = (GrossQ11C + GrossQ11D)  - returnList.OrgQ11,
+                Q12 = (GrossQ12C + GrossQ12D) - returnList.OrgQ12,
+                Total = (GrossTotalClient + GrossTotalDep)  - returnList.TotalOrg,
                 EntityName = "Deviation",
             });
 
@@ -6986,7 +6986,7 @@ namespace TechnipFMC.Finapp.Business
             worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
             rowcount++; colcount = 1;
             worksheet.Cells["A1:E1"].Style.Fill.PatternType = ExcelFillStyle.Solid;
-            worksheet.Cells["A1:E1"].Style.Fill.BackgroundColor.SetColor(Color.Beige);
+            worksheet.Cells["A1:E1"].Style.Fill.BackgroundColor.SetColor(Color.LightGray);
             #region blank row
             worksheet.Cells[rowcount, colcount].Value = "Entity Name";
             worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
@@ -7057,7 +7057,7 @@ namespace TechnipFMC.Finapp.Business
                 worksheet.Column(colcount).Width = projectCodeElseWidth;
                 colcount++;
                 worksheet.Cells["A2:N2"].Style.Fill.PatternType = ExcelFillStyle.Solid;
-                worksheet.Cells["A2:N2"].Style.Fill.BackgroundColor.SetColor(Color.Green);
+                worksheet.Cells["A2:N2"].Style.Fill.BackgroundColor.SetColor(Color.LightGoldenrodYellow);
             }
             else
             {
@@ -7066,16 +7066,25 @@ namespace TechnipFMC.Finapp.Business
                 worksheet.Column(colcount).Width = projectCodeElseWidth;
                 colcount++;
                 worksheet.Cells["A2:F2"].Style.Fill.PatternType = ExcelFillStyle.Solid;
-                worksheet.Cells["A2:F2"].Style.Fill.BackgroundColor.SetColor(Color.Green);
+                worksheet.Cells["A2:F2"].Style.Fill.BackgroundColor.SetColor(Color.LightGoldenrodYellow);
             }
             #endregion
             foreach (DevianceResponseModel item in data)
             {
+                rowcount++;
+                worksheet.Cells[rowcount, 1].Value = item.FinancialDataType;
+                worksheet.Cells[rowcount, 1].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                worksheet.Cells[rowcount, 1].Style.Fill.BackgroundColor.SetColor(Color.LavenderBlush);
                 foreach (var row in item.GridResponse)
                 {
-                        rowcount++;
-                        worksheet.Cells[rowcount, 1].Value = row.EntityName;
-                        worksheet.Cells[rowcount, 2].Value = row.Q1;
+                    rowcount++;
+                    worksheet.Cells[rowcount, 1].Value = row.EntityName;
+                    
+                    if (row.EntityName == "Organization" || row.EntityName == "Departments" || row.EntityName == "Sub Total Department" || row.EntityName == "Deviation")
+                    {
+                        worksheet.Cells[rowcount, 1].Style.Font.Bold = true;
+                    }
+                    worksheet.Cells[rowcount, 2].Value = row.Q1;
                         worksheet.Cells[rowcount, 3].Value = row.Q2;
                         worksheet.Cells[rowcount, 4].Value = row.Q3;
                         worksheet.Cells[rowcount, 5].Value = row.Q4;
@@ -7092,6 +7101,27 @@ namespace TechnipFMC.Finapp.Business
                         worksheet.Cells[rowcount, 14].Value = row.Total;
                         for (int col = 1; col <= 14; col++)
                         {
+                            if (row.EntityName == "Organization")
+                            {
+                                worksheet.Cells[rowcount, col].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                                worksheet.Cells[rowcount, col].Style.Fill.BackgroundColor.SetColor(Color.LightCoral);
+                                
+                            }
+                            else if (row.EntityName == "Departments")
+                            {
+                                worksheet.Cells[rowcount, col].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                                worksheet.Cells[rowcount, col].Style.Fill.BackgroundColor.SetColor(Color.LightSalmon);
+                            }
+                            else if (row.EntityName == "Sub Total Department")
+                            {
+                                worksheet.Cells[rowcount, col].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                                worksheet.Cells[rowcount, col].Style.Fill.BackgroundColor.SetColor(Color.LightSkyBlue);
+                            }
+                            else if (row.EntityName == "Deviation")
+                            {
+                                worksheet.Cells[rowcount, col].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                                worksheet.Cells[rowcount, col].Style.Fill.BackgroundColor.SetColor(Color.LightPink);
+                            }
                             worksheet.Cells[rowcount, col].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
                         }
 
@@ -7101,6 +7131,22 @@ namespace TechnipFMC.Finapp.Business
                         worksheet.Cells[rowcount, 6].Value = row.Total;
                         for (int col = 1; col <= 6; col++)
                         {
+                            if (row.EntityName == "Organization")
+                            {
+                                worksheet.Cells[rowcount, col].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                                worksheet.Cells[rowcount, col].Style.Fill.BackgroundColor.SetColor(Color.LightCoral);
+
+                            }
+                            else if (row.EntityName == "Departments")
+                            {
+                                worksheet.Cells[rowcount, col].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                                worksheet.Cells[rowcount, col].Style.Fill.BackgroundColor.SetColor(Color.LightSalmon);
+                            }
+                            else if (row.EntityName == "Sub Total Department")
+                            {
+                                worksheet.Cells[rowcount, col].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                                worksheet.Cells[rowcount, col].Style.Fill.BackgroundColor.SetColor(Color.LightSkyBlue);
+                            }
                             worksheet.Cells[rowcount, col].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
                         }
                     }
@@ -7343,6 +7389,181 @@ namespace TechnipFMC.Finapp.Business
             return grid;
 
         }
+        public byte[] Downloaddashboardreport(DashboardConfig config, DashboardDataModel data, int cid)
+        {
+            // number formats
+            string positiveFormat = "#,##0.00_)";
+            string negativeFormat = "(#,##0.00)";
+            string zeroFormat = "-_)";
+            string numberFormat = positiveFormat + ";" + negativeFormat;
+            string fullNumberFormat = positiveFormat + ";" + negativeFormat + ";" + zeroFormat;
+            var currency = _reportRepository.GetCustomerCurrency(cid);
+            ExcelPackage excelPkg = new ExcelPackage();
+
+
+            ExcelWorksheet worksheet = excelPkg.Workbook.Worksheets.Add("Project");
+            var colcount = 1;
+            var rowcount = 1;
+            worksheet.Cells[rowcount, colcount].Value = "Currency";
+            worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+            colcount++;
+            worksheet.Cells[rowcount, colcount].Value = currency.CurrencyCode;
+            worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+            colcount++; colcount++;
+            worksheet.Cells[rowcount, colcount].Value = "Values in";
+            worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+            colcount++;
+            worksheet.Cells[rowcount, colcount].Value = (currency.Unit == 1 ? "Actual" : currency.Unit.ToString()) + "s";
+            worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+            rowcount++; colcount = 1;
+            var quarters = config.Quarters.Split(',').ToList();
+            var dataentryinterval = "Quarterly";
+            worksheet.Cells["A1:F1"].Style.Fill.PatternType = ExcelFillStyle.Solid;
+            worksheet.Cells["A1:F1"].Style.Fill.BackgroundColor.SetColor(Color.LightCyan);
+            if (quarters.Count == 12)
+            {
+                dataentryinterval = "Monthly";
+                worksheet.Cells["A1:N1"].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                worksheet.Cells["A1:N1"].Style.Fill.BackgroundColor.SetColor(Color.LightCyan);
+                worksheet.Cells["A1:N1"].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+            }
+            else
+            {
+                worksheet.Cells["A1:F1"].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+            }
+            var quarterToMonthMap = new Dictionary<string, string>
+                    {
+                        { "Q1", "Jan" }, { "Q2", "Feb" }, { "Q3", "Mar" }, { "Q4", "Apr" },
+                        { "Q5", "May" }, { "Q6", "Jun" }, { "Q7", "Jul" }, { "Q8", "Aug" },
+                        { "Q9", "Sep" }, { "Q10", "Oct" }, { "Q11", "Nov" }, { "Q12", "Dec" }
+                    };
+            #region Headers
+            worksheet.Cells[rowcount, colcount].Value = "Scenario Name";
+            worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+            colcount++;
+            worksheet.Cells[rowcount, colcount].Value = "Scenario Type";
+            worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+            colcount++;
+            foreach (var quarter in quarters)
+            {
+                if (quarterToMonthMap.ContainsKey(quarter))
+                {
+                    worksheet.Cells[rowcount, colcount].Value = dataentryinterval == "Monthly" ? quarterToMonthMap[quarter] : quarter;
+                    worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+                    colcount++;
+                }
+            }
+            #endregion
+            foreach (var row in data.BudgetDeviationData)
+            {
+                rowcount++;
+                worksheet.Cells[rowcount, 1].Value = row.ScenarioName;
+                worksheet.Cells[rowcount, 1].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+                worksheet.Cells[rowcount, 2].Value = row.ScenarioType;
+                worksheet.Cells[rowcount,2].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+
+                int j = 2;
+                foreach (var quarter in quarters)
+                {
+                    j++;
+                    var propertyName = $"{quarter}";
+                    var propertyInfo = row.GetType().GetProperty(propertyName);
+                    if (propertyInfo != null)
+                    {
+                        var value = propertyInfo.GetValue(row) as decimal?;
+                        worksheet.Cells[rowcount, j].Value = value;
+                        if (value < 0) worksheet.Cells[rowcount, j].Style.Font.Color.SetColor(Color.Red);
+                        worksheet.Cells[rowcount, j].Style.Numberformat.Format = fullNumberFormat;
+                        worksheet.Cells[rowcount, j].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+                    }
+                }
+            }
+            rowcount++;colcount = 1;
+            worksheet.Cells[rowcount, 1].Value = "";
+            worksheet.Cells[rowcount, 1].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+            colcount++;
+            worksheet.Cells[rowcount, colcount].Value = "Budget Deviation";
+            worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+            foreach (var quarter in quarters)
+            {
+                colcount++;
+
+                // Get the corresponding property names dynamically for both rows
+                var propertyInfo1 = data.BudgetDeviationData[0].GetType().GetProperty(quarter);
+                var propertyInfo2 = data.BudgetDeviationData[1].GetType().GetProperty(quarter);
+
+                if (propertyInfo1 != null && propertyInfo2 != null)
+                {
+                    var value1 = propertyInfo1.GetValue(data.BudgetDeviationData[0]) as decimal?;
+                    var value2 = propertyInfo2.GetValue(data.BudgetDeviationData[1]) as decimal?;
+                    var deviation = (value2 ?? 0) - (value1 ?? 0); // Calculate the deviation
+
+                    worksheet.Cells[rowcount, colcount].Value = deviation;
+                    if (deviation < 0) worksheet.Cells[rowcount, colcount].Style.Font.Color.SetColor(Color.Red);
+                    worksheet.Cells[rowcount, colcount].Style.Numberformat.Format = fullNumberFormat;
+                    worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+                }
+            }
+            if(data.ForecastDeviationData.Count > 1)
+            {
+                foreach (var row in data.ForecastDeviationData)
+                {
+                    rowcount++; colcount = 1;
+                    worksheet.Cells[rowcount, colcount].Value = row.ScenarioName;
+                    worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+                    colcount++;
+                    worksheet.Cells[rowcount, colcount].Value = row.ScenarioType;
+                    worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+                    foreach (var quarter in quarters)
+                    {
+                        colcount++;
+                        var propertyName = $"{quarter}";
+                        var propertyInfo = row.GetType().GetProperty(propertyName);
+                        if (propertyInfo != null)
+                        {
+                            var value = propertyInfo.GetValue(row) as decimal?;
+                            worksheet.Cells[rowcount, colcount].Value = value;
+                            if (value < 0) worksheet.Cells[rowcount, colcount].Style.Font.Color.SetColor(Color.Red);
+                            worksheet.Cells[rowcount, colcount].Style.Numberformat.Format = fullNumberFormat;
+                            worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+                        }
+                    }
+                }
+                rowcount++; colcount = 1;
+                worksheet.Cells[rowcount, colcount].Value = "";
+                worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+                colcount++;
+                worksheet.Cells[rowcount, colcount].Value = "Forecast Deviation";
+                worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+
+                foreach (var quarter in quarters)
+                {
+
+                    colcount++;
+
+                    // Get the corresponding property names dynamically for both rows
+                    var propertyInfo1 = data.ForecastDeviationData[0].GetType().GetProperty(quarter);
+                    var propertyInfo2 = data.ForecastDeviationData[1].GetType().GetProperty(quarter);
+
+                    if (propertyInfo1 != null && propertyInfo2 != null)
+                    {
+                        var value1 = propertyInfo1.GetValue(data.ForecastDeviationData[0]) as decimal?;
+                        var value2 = propertyInfo2.GetValue(data.ForecastDeviationData[1]) as decimal?;
+                        var deviation = (value2 ?? 0) - (value1 ?? 0); // Calculate the deviation
+
+                        worksheet.Cells[rowcount, colcount].Value = deviation;
+                        if (deviation < 0) worksheet.Cells[rowcount, colcount].Style.Font.Color.SetColor(Color.Red);
+                        worksheet.Cells[rowcount, colcount].Style.Numberformat.Format = fullNumberFormat;
+                        worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+                    }
+                }
+
+            }
+
+
+            return excelPkg.GetAsByteArray();
+        }
+
         public FinancePerformanceDataModel FinancePerformanceReport(DashboardConfig config)
         {
             //var quarters = config.Quarters.Split(',').OrderBy(c => c).ToList();
@@ -7363,6 +7584,231 @@ namespace TechnipFMC.Finapp.Business
             return grid;
 
         }
+        public List<ProjectDataModel> DepartmentProjectReport(DevianceReportConfig config)
+        {
+            var grid = new List<ProjectDataModel>();
+            grid = new ReportRepository().DepartmentProjectReport(config);
+
+
+            return grid;
+
+        }
+        public byte[] GetDepartmentProjectReportExcel(DevianceReportConfig config, List<ProjectDataModel> data, int cid)
+        {
+            // number formats
+            string positiveFormat = "#,##0.00_)";
+            string negativeFormat = "(#,##0.00)";
+            string zeroFormat = "-_)";
+            string numberFormat = positiveFormat + ";" + negativeFormat;
+            string fullNumberFormat = positiveFormat + ";" + negativeFormat + ";" + zeroFormat;
+            var currency = _reportRepository.GetCustomerCurrency(cid);
+            //int projectCodeWidth = 30;
+            //int projectCodeElseWidth = 20;
+            //int dataWidth = 15;
+
+            //var quarters = config.Quarters.Split(',');
+            //var colcountQuarters = quarters.Length;
+            //var headercounter = colcountQuarters * 3 + 4;
+            ExcelPackage excelPkg = new ExcelPackage();
+
+
+            ExcelWorksheet worksheet = excelPkg.Workbook.Worksheets.Add("Project");
+            var colcount = 1;
+            var rowcount = 1;
+            worksheet.Cells[rowcount, colcount].Value = "Currency";
+            worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+            colcount++;
+            worksheet.Cells[rowcount, colcount].Value = currency.CurrencyCode;
+            worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+            colcount++; colcount++;
+            worksheet.Cells[rowcount, colcount].Value = "Values in";
+            worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+            colcount++;
+            worksheet.Cells[rowcount, colcount].Value = (currency.Unit == 1 ? "Actual" : currency.Unit.ToString()) + "s";
+            worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+            rowcount++; colcount = 1;
+            var quarters = config.Quarters.Split(',').ToList();
+            var dataentryinterval = "Quarterly";
+            worksheet.Cells["A1:E1"].Style.Fill.PatternType = ExcelFillStyle.Solid;
+            worksheet.Cells["A1:E1"].Style.Fill.BackgroundColor.SetColor(Color.LightCyan);
+            if (quarters.Count == 12)
+            {
+                dataentryinterval = "Monthly";
+                worksheet.Cells["A1:M1"].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                worksheet.Cells["A1:M1"].Style.Fill.BackgroundColor.SetColor(Color.LightCyan);
+                worksheet.Cells["A1:M1"].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thick);
+            }
+            else
+            {
+                worksheet.Cells["A1:E1"].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thick);
+            }
+            var quarterToMonthMap = new Dictionary<string, string>
+                    {
+                        { "Q1", "Jan" }, { "Q2", "Feb" }, { "Q3", "Mar" }, { "Q4", "Apr" },
+                        { "Q5", "May" }, { "Q6", "Jun" }, { "Q7", "Jul" }, { "Q8", "Aug" },
+                        { "Q9", "Sep" }, { "Q10", "Oct" }, { "Q11", "Nov" }, { "Q12", "Dec" }
+                    };
+            #region Headers
+            worksheet.Cells[rowcount, colcount].Value = "Project Name";
+            worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thick);
+            colcount++;
+            foreach (var quarter in quarters)
+            {
+                if (quarterToMonthMap.ContainsKey(quarter))
+                {
+                    worksheet.Cells[rowcount, colcount].Value = dataentryinterval == "Monthly" ? quarterToMonthMap[quarter] : quarter;
+                    worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+                    worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thick);
+                    colcount++;
+                }
+            }
+            #endregion
+            foreach (var row in data)
+            {
+                rowcount++;
+                worksheet.Cells[rowcount, 1].Value = row.ProjectName;
+                worksheet.Cells[rowcount, 1].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+                int i = 1;
+                foreach (var quarter in quarters)
+                {
+                    i++;
+                    var propertyName = $"{quarter}";
+                    var propertyInfo = row.GetType().GetProperty(propertyName);
+                    if (propertyInfo != null)
+                    {
+                        var value = propertyInfo.GetValue(row) as decimal?;
+                        worksheet.Cells[rowcount, i].Value = value;
+                        if (value < 0) worksheet.Cells[rowcount, i].Style.Font.Color.SetColor(Color.Red);
+                        worksheet.Cells[rowcount, i].Style.Numberformat.Format = fullNumberFormat;
+                        worksheet.Cells[rowcount, i].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+                    }
+                }
+            }
+
+
+            return excelPkg.GetAsByteArray();
+        }
+        public List<BudgetDeviationDataModel> DepartmentReport(DevianceReportConfig config)
+        {
+            var grid = new List<BudgetDeviationDataModel>();
+            grid = new ReportRepository().DepartmentReport(config);
+
+
+            return grid;
+
+        }
+        public byte[] GetDepartmentReportExcel(DevianceReportConfig config, List<BudgetDeviationDataModel> data, int cid)
+        {
+            // number formats
+            string positiveFormat = "#,##0.00_)";
+            string negativeFormat = "(#,##0.00)";
+            string zeroFormat = "-_)";
+            string numberFormat = positiveFormat + ";" + negativeFormat;
+            string fullNumberFormat = positiveFormat + ";" + negativeFormat + ";" + zeroFormat;
+            var currency = _reportRepository.GetCustomerCurrency(cid);
+            //int projectCodeWidth = 30;
+            //int projectCodeElseWidth = 20;
+            //int dataWidth = 15;
+
+            //var quarters = config.Quarters.Split(',');
+            //var colcountQuarters = quarters.Length;
+            //var headercounter = colcountQuarters * 3 + 4;
+            ExcelPackage excelPkg = new ExcelPackage();
+
+
+            ExcelWorksheet worksheet = excelPkg.Workbook.Worksheets.Add("Project");
+            var colcount = 1;
+            var rowcount = 1;
+            worksheet.Cells[rowcount, colcount].Value = "Currency";
+            worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+            colcount++;
+            worksheet.Cells[rowcount, colcount].Value = currency.CurrencyCode;
+            worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+            colcount++; colcount++;
+            worksheet.Cells[rowcount, colcount].Value = "Values in";
+            worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+            colcount++;
+            worksheet.Cells[rowcount, colcount].Value = (currency.Unit == 1 ? "Actual" : currency.Unit.ToString()) + "s";
+            worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+            rowcount++; colcount = 1;
+            var quarters = config.Quarters.Split(',').ToList();
+            var dataentryinterval = "Quarterly";
+            worksheet.Cells["A1:F1"].Style.Fill.PatternType = ExcelFillStyle.Solid;
+            worksheet.Cells["A1:F1"].Style.Fill.BackgroundColor.SetColor(Color.LightCyan);
+            if (quarters.Count == 12)
+            {
+                dataentryinterval = "Monthly";
+                worksheet.Cells["A1:N1"].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                worksheet.Cells["A1:N1"].Style.Fill.BackgroundColor.SetColor(Color.LightCyan);
+                worksheet.Cells["A1:N1"].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+            }
+            else
+            {
+                worksheet.Cells["A1:F1"].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+            }
+            var quarterToMonthMap = new Dictionary<string, string>
+                    {
+                        { "Q1", "Jan" }, { "Q2", "Feb" }, { "Q3", "Mar" }, { "Q4", "Apr" },
+                        { "Q5", "May" }, { "Q6", "Jun" }, { "Q7", "Jul" }, { "Q8", "Aug" },
+                        { "Q9", "Sep" }, { "Q10", "Oct" }, { "Q11", "Nov" }, { "Q12", "Dec" }
+                    };
+            #region Headers
+            worksheet.Cells[rowcount, colcount].Value = "Department Name";
+            worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+            colcount++;
+            worksheet.Cells[rowcount, colcount].Value = "Scenario Name";
+            worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+            colcount++;
+
+            foreach (var quarter in quarters)
+            {
+                if (quarterToMonthMap.ContainsKey(quarter))
+                {
+                    worksheet.Cells[rowcount, colcount].Value = dataentryinterval == "Monthly" ? quarterToMonthMap[quarter] : quarter;
+                    worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+                    colcount++;
+                }
+            }
+            if (quarters.Count == 12)
+            {
+                dataentryinterval = "Monthly";
+                worksheet.Cells["A2:N2"].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                worksheet.Cells["A2:N2"].Style.Fill.BackgroundColor.SetColor(Color.LightBlue);
+                worksheet.Cells["A2:N2"].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+            }
+            else
+            {
+                worksheet.Cells["A2:F2"].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+            }
+            #endregion
+            foreach (var row in data)
+            {
+                rowcount++;colcount = 1;
+                worksheet.Cells[rowcount, colcount].Value = row.DepartmentName;
+                worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+                colcount++;
+                worksheet.Cells[rowcount, colcount].Value = row.ScenarioName;
+                worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+                foreach (var quarter in quarters)
+                {
+                    colcount++;
+                    var propertyName = $"{quarter}";
+                    var propertyInfo = row.GetType().GetProperty(propertyName);
+                    if (propertyInfo != null)
+                    {
+                        var value = propertyInfo.GetValue(row) as decimal?;
+                        worksheet.Cells[rowcount, colcount].Value = value;
+                        if (value < 0) worksheet.Cells[rowcount, colcount].Style.Font.Color.SetColor(Color.Red);
+                        worksheet.Cells[rowcount, colcount].Style.Numberformat.Format = fullNumberFormat;
+                        worksheet.Cells[rowcount, colcount].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+                    }
+                }
+            }
+
+
+            return excelPkg.GetAsByteArray();
+        }
+
         public TrendReportData TrendAnalysisReport(DashboardConfig config)
         {
             //var quarters = config.Quarters.Split(',').OrderBy(c => c).ToList();

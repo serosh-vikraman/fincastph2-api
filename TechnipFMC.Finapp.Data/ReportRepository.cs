@@ -1621,6 +1621,127 @@ namespace TechnipFMC.Finapp.Data
                 base.Dispose();
             }
         }
+        public List<ProjectDataModel> DepartmentProjectReport(DevianceReportConfig config)
+        {
+            try
+            {
+                var reportData = new List<ProjectDataModel>();
+
+                BudgetDeviationDataModel budgetDataModel = new BudgetDeviationDataModel();
+                List<ProjectGross> projectModel = new List<ProjectGross>();
+                List<DepartmentWiseDataModel> listchartData = new List<DepartmentWiseDataModel>();
+                decimal GrossYear = 0;
+                DataSet ds = new DataSet();
+
+                SqlCommand cmd = base.DBConnection.CreateCommand();
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.CommandText = "DepartmentProjectReport";
+                cmd.Parameters.AddWithValue("@P_BaseOrgScenarioId", config.OrgScenarioId);
+                cmd.Parameters.AddWithValue("@P_FinancialDataTypeID", config.ScenarioDataTypeId);
+                cmd.Parameters.AddWithValue("@P_Spec", config.Spec);
+                cmd.Parameters.AddWithValue("@P_DepartmentID", config.DepartmentId);
+
+
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                adapter.Fill(ds);
+                base.DBConnection.Close();
+
+                if ((ds != null) && (ds.Tables.Count > 0) && (ds.Tables[0] != null) && (ds.Tables[0].Rows.Count > 0))
+                {
+                    for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
+                    {
+                        ProjectDataModel client = new ProjectDataModel();
+                        client.ProjectName = ds.Tables[0].Rows[i]["ProjectName"].ToString();
+                        client.ScenarioName = ds.Tables[0].Rows[i]["ScenarioName"].ToString();
+                        client.Q1 = Convert.ToDecimal(ds.Tables[0].Rows[i]["Q1"]);
+                        client.Q2 = Convert.ToDecimal(ds.Tables[0].Rows[i]["Q2"]);
+                        client.Q3 = Convert.ToDecimal(ds.Tables[0].Rows[i]["Q3"]);
+                        client.Q4 = Convert.ToDecimal(ds.Tables[0].Rows[i]["Q4"]);
+                        client.Q5 = Convert.ToDecimal(ds.Tables[0].Rows[i]["Q5"]);
+                        client.Q6 = Convert.ToDecimal(ds.Tables[0].Rows[i]["Q6"]);
+                        client.Q7 = Convert.ToDecimal(ds.Tables[0].Rows[i]["Q7"]);
+                        client.Q8 = Convert.ToDecimal(ds.Tables[0].Rows[i]["Q8"]);
+                        client.Q9 = Convert.ToDecimal(ds.Tables[0].Rows[i]["Q9"]);
+                        client.Q10 = Convert.ToDecimal(ds.Tables[0].Rows[i]["Q10"]);
+                        client.Q11 = Convert.ToDecimal(ds.Tables[0].Rows[i]["Q11"]);
+                        client.Q12 = Convert.ToDecimal(ds.Tables[0].Rows[i]["Q12"]);
+                        reportData.Add(client);
+                    }
+
+                }
+
+                return reportData;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+            finally
+            {
+                base.Dispose();
+            }
+        }
+        public List<BudgetDeviationDataModel> DepartmentReport(DevianceReportConfig config)
+        {
+            try
+            {
+                var reportData = new List<BudgetDeviationDataModel>();
+
+                BudgetDeviationDataModel budgetDataModel = new BudgetDeviationDataModel();
+                List<ProjectGross> projectModel = new List<ProjectGross>();
+                List<DepartmentWiseDataModel> listchartData = new List<DepartmentWiseDataModel>();
+                decimal GrossYear = 0;
+                DataSet ds = new DataSet();
+
+                SqlCommand cmd = base.DBConnection.CreateCommand();
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.CommandText = "DepartmentReport";
+                cmd.Parameters.AddWithValue("@P_BaseOrgScenarioId", config.OrgScenarioId);
+                cmd.Parameters.AddWithValue("@P_FinancialDataTypeID", config.ScenarioDataTypeId);
+                cmd.Parameters.AddWithValue("@P_Spec", config.Spec);
+                cmd.Parameters.AddWithValue("@P_DepartmentID", 0);
+
+
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                adapter.Fill(ds);
+                base.DBConnection.Close();
+
+                if ((ds != null) && (ds.Tables.Count > 0) && (ds.Tables[0] != null) && (ds.Tables[0].Rows.Count > 0))
+                {
+                    for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
+                    {
+                        BudgetDeviationDataModel client = new BudgetDeviationDataModel();
+                        client.DepartmentName = ds.Tables[0].Rows[i]["DepartmentName"].ToString().Decrypt();
+                        client.ScenarioName = ds.Tables[0].Rows[i]["ScenarioName"].ToString();
+                        client.Q1 = Convert.ToDecimal(ds.Tables[0].Rows[i]["Q1"]);
+                        client.Q2 = Convert.ToDecimal(ds.Tables[0].Rows[i]["Q2"]);
+                        client.Q3 = Convert.ToDecimal(ds.Tables[0].Rows[i]["Q3"]);
+                        client.Q4 = Convert.ToDecimal(ds.Tables[0].Rows[i]["Q4"]);
+                        client.Q5 = Convert.ToDecimal(ds.Tables[0].Rows[i]["Q5"]);
+                        client.Q6 = Convert.ToDecimal(ds.Tables[0].Rows[i]["Q6"]);
+                        client.Q7 = Convert.ToDecimal(ds.Tables[0].Rows[i]["Q7"]);
+                        client.Q8 = Convert.ToDecimal(ds.Tables[0].Rows[i]["Q8"]);
+                        client.Q9 = Convert.ToDecimal(ds.Tables[0].Rows[i]["Q9"]);
+                        client.Q10 = Convert.ToDecimal(ds.Tables[0].Rows[i]["Q10"]);
+                        client.Q11 = Convert.ToDecimal(ds.Tables[0].Rows[i]["Q11"]);
+                        client.Q12 = Convert.ToDecimal(ds.Tables[0].Rows[i]["Q12"]);
+                        reportData.Add(client);
+                    }
+
+                }
+
+                return reportData;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+            finally
+            {
+                base.Dispose();
+            }
+        }
+
         public TrendReportData TrendAnalysisReport(DashboardConfig config)
         {
             try

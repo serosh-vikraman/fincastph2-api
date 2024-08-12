@@ -589,6 +589,170 @@ namespace TechnipFMC.Finapp.Service.API.Controllers
 
             }
         }
+        [HttpPost]
+        [Route("api/getdepartmentprojectreportdownload/{cid}")]
+        // [Authorize]
+        public HttpResponseMessage GetDepartmentProjectReportDownload(DevianceReportConfigViewModel financeconfigviewmodel, int cid)
+        {
+            try
+            {
+                string sharedReportPath = System.Configuration.ConfigurationManager.AppSettings["ReportFilePath"].ToString();
+                string reportPath = System.Configuration.ConfigurationManager.AppSettings["TempReportPath"].ToString();
+
+                Directory.GetFiles(reportPath)
+                     .Select(f => new FileInfo(f))
+                     .Where(f => f.LastAccessTime < DateTime.Now.AddDays(-1))
+                     .ToList()
+                     .ForEach(f => f.Delete());
+
+                string excelFolderName = Path.GetFileName(Path.GetDirectoryName(reportPath));
+
+                //config.SubTotalRequired = "Y";
+                DevianceReportConfig financeConfig = new DevianceReportConfig();
+                Mapper.Map(financeconfigviewmodel, financeConfig);
+                // List<FinancialDataType> financialDataTypes = new List<FinancialDataType>();
+                //financialDataTypes = _reportBL.GetAllFinancialDataTypesOfScenario(financeConfig.OrgScenarioId);
+                List<ProjectDataModel> data = new List<ProjectDataModel>();
+                //foreach (FinancialDataType item in financialDataTypes)
+                //{
+                //    varianceAnalysisConfig.ScenarioDataTypeId = item.FinancialDataTypeCode;
+                data = _reportBL.DepartmentProjectReport(financeConfig);
+                //    data.Add(new DevianceResponseModel
+                //    {
+                //        FinancialDataType = item.FinancialDataTypeName,
+                //        GridResponse = response
+                //    });
+                //}
+                byte[] byteinfo = _reportBL.GetDepartmentProjectReportExcel(financeConfig, data, cid);
+                var fileName = $"DepartmentProjectReport_{DateTime.Now.ToString("ddMMyyyyHHmmss")}.xlsx";
+                var sourceFile = reportPath + fileName;
+                File.WriteAllBytes(sourceFile, byteinfo.ToArray());
+
+                string destFile = sharedReportPath + fileName;
+                System.IO.File.Copy(sourceFile, destFile, true);
+
+
+                ReportPath obj = new ReportPath();
+                obj.FilePath = excelFolderName + "/" + fileName;
+                return Request.CreateResponse<APIResponse<ReportPath>>(HttpStatusCode.OK,
+                   new APIResponse<ReportPath>(HttpStatusCode.OK, obj, null, "", "", ""));
+            }
+            catch (Exception ex)
+            {
+                RaintelsLogManager.Error(ex, "TechnipFMC.Finapp.Service.API.ReportController", "GetDevianceReportDownload", "");
+
+                return Request.CreateResponse(HttpStatusCode.InternalServerError,
+                    new APIResponse<ReportPath>(HttpStatusCode.InternalServerError, null, "Exception occured." + ex.ToString(), "", "", ""));
+
+
+
+            }
+        }
+        [HttpPost]
+        [Route("api/getdepartmentreportdownload/{cid}")]
+        // [Authorize]
+        public HttpResponseMessage GetDepartmentReportDownload(DevianceReportConfigViewModel financeconfigviewmodel, int cid)
+        {
+            try
+            {
+                string sharedReportPath = System.Configuration.ConfigurationManager.AppSettings["ReportFilePath"].ToString();
+                string reportPath = System.Configuration.ConfigurationManager.AppSettings["TempReportPath"].ToString();
+
+                Directory.GetFiles(reportPath)
+                     .Select(f => new FileInfo(f))
+                     .Where(f => f.LastAccessTime < DateTime.Now.AddDays(-1))
+                     .ToList()
+                     .ForEach(f => f.Delete());
+
+                string excelFolderName = Path.GetFileName(Path.GetDirectoryName(reportPath));
+
+                //config.SubTotalRequired = "Y";
+                DevianceReportConfig financeConfig = new DevianceReportConfig();
+                Mapper.Map(financeconfigviewmodel, financeConfig);
+                // List<FinancialDataType> financialDataTypes = new List<FinancialDataType>();
+                //financialDataTypes = _reportBL.GetAllFinancialDataTypesOfScenario(financeConfig.OrgScenarioId);
+                List<BudgetDeviationDataModel> data = new List<BudgetDeviationDataModel>();
+                //foreach (FinancialDataType item in financialDataTypes)
+                //{
+                //    varianceAnalysisConfig.ScenarioDataTypeId = item.FinancialDataTypeCode;
+                data = _reportBL.DepartmentReport(financeConfig);
+                //    data.Add(new DevianceResponseModel
+                //    {
+                //        FinancialDataType = item.FinancialDataTypeName,
+                //        GridResponse = response
+                //    });
+                //}
+                byte[] byteinfo = _reportBL.GetDepartmentReportExcel(financeConfig, data, cid);
+                var fileName = $"DepartmentReport_{DateTime.Now.ToString("ddMMyyyyHHmmss")}.xlsx";
+                var sourceFile = reportPath + fileName;
+                File.WriteAllBytes(sourceFile, byteinfo.ToArray());
+
+                string destFile = sharedReportPath + fileName;
+                System.IO.File.Copy(sourceFile, destFile, true);
+
+
+                ReportPath obj = new ReportPath();
+                obj.FilePath = excelFolderName + "/" + fileName;
+                return Request.CreateResponse<APIResponse<ReportPath>>(HttpStatusCode.OK,
+                   new APIResponse<ReportPath>(HttpStatusCode.OK, obj, null, "", "", ""));
+            }
+            catch (Exception ex)
+            {
+                RaintelsLogManager.Error(ex, "TechnipFMC.Finapp.Service.API.ReportController", "GetDevianceReportDownload", "");
+
+                return Request.CreateResponse(HttpStatusCode.InternalServerError,
+                    new APIResponse<ReportPath>(HttpStatusCode.InternalServerError, null, "Exception occured." + ex.ToString(), "", "", ""));
+
+
+
+            }
+        }
+
+        [HttpPost]
+        [Route("api/downloaddashboardreport/{cid}")]
+        // [Authorize]
+        public HttpResponseMessage Downloaddashboardreport(DashboardConfigViewModel configView, int cid)
+        {
+            try
+            {
+                string sharedReportPath = System.Configuration.ConfigurationManager.AppSettings["ReportFilePath"].ToString();
+                string reportPath = System.Configuration.ConfigurationManager.AppSettings["TempReportPath"].ToString();
+
+                Directory.GetFiles(reportPath)
+                     .Select(f => new FileInfo(f))
+                     .Where(f => f.LastAccessTime < DateTime.Now.AddDays(-1))
+                     .ToList()
+                     .ForEach(f => f.Delete());
+
+                string excelFolderName = Path.GetFileName(Path.GetDirectoryName(reportPath));
+                DashboardConfig config = new DashboardConfig();
+                Mapper.Map(configView, config);
+                var response = _reportBL.GetDashboardData(config);
+                byte[] byteinfo = _reportBL.Downloaddashboardreport(config, response, cid);
+                var fileName = $"DashboardReport_{DateTime.Now.ToString("ddMMyyyyHHmmss")}.xlsx";
+                var sourceFile = reportPath + fileName;
+                File.WriteAllBytes(sourceFile, byteinfo.ToArray());
+
+                string destFile = sharedReportPath + fileName;
+                System.IO.File.Copy(sourceFile, destFile, true);
+
+
+                ReportPath obj = new ReportPath();
+                obj.FilePath = excelFolderName + "/" + fileName;
+                return Request.CreateResponse<APIResponse<ReportPath>>(HttpStatusCode.OK,
+                   new APIResponse<ReportPath>(HttpStatusCode.OK, obj, null, "", "", ""));
+            }
+            catch (Exception ex)
+            {
+                RaintelsLogManager.Error(ex, "TechnipFMC.Finapp.Service.API.ReportController", "GetDevianceReportDownload", "");
+
+                return Request.CreateResponse(HttpStatusCode.InternalServerError,
+                    new APIResponse<ReportPath>(HttpStatusCode.InternalServerError, null, "Exception occured." + ex.ToString(), "", "", ""));
+
+
+
+            }
+        }
 
         #endregion
         [HttpPost]
