@@ -18,6 +18,7 @@ namespace TechnipFMC.Finapp.Service.API.ViewModel
         public int ScenarioSequenceNumber { get; set; }
         public string ScenarioName { get; set; }
         public string Description { get; set; }
+        public int Variance { get; set; }
         public string Spec { get; set; }
         public bool ScenarioLock { get; set; }
         public string ScenarioScopeCode { get; set; }

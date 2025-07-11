@@ -460,6 +460,7 @@ namespace TechnipFMC.Finapp.Data
                 cmd.Parameters.AddWithValue("@P_CreatedBy", scenario.CreatedBy);
                 cmd.Parameters.AddWithValue("@P_DepartmentId", scenario.DepartmentID);
                 cmd.Parameters.AddWithValue("@P_ClientId", scenario.ClientID);
+                cmd.Parameters.AddWithValue("@P_Variance", scenario.Variance);
 
                 SqlDataReader reader = cmd.ExecuteReader();
                 if (reader.HasRows)

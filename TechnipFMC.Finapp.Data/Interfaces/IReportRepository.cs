@@ -15,12 +15,13 @@ namespace TechnipFMC.Finapp.Data.Interfaces
         ProjectLifeCycle ProjectLifeCycleReport(int projectid, string scenarioscope);
         DeviationAnalysisYearWiseModel GetDeviationAnalysisReport(DevianceReportConfig config);
         DashboardDataModel GetDashboardData(DashboardConfig config);
+        DashboardDataModel GetDashboardGridData(DashboardConfig config);
         FinancePerformanceDataModel FinancePerformanceReport(DashboardConfig config);
         ProjectPerformanceDataModel ProjectPerformanceReport(DashboardConfig config);
         TrendReportData TrendAnalysisReport(DashboardConfig config);
         List<ProjectDataModel> YearOverYear(int id1, int id2, string code);
         List<ProjectDataModel> DepartmentProjectReport(DevianceReportConfig devianceConfig);
         List<BudgetDeviationDataModel> DepartmentReport(DevianceReportConfig devianceConfig);
-
+        string GetAIAssistedReportData(int year);
     }
 }

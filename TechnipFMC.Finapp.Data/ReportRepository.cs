@@ -6,6 +6,8 @@ using System.Linq;
 using TechnipFMC.Common;
 using TechnipFMC.Finapp.Data.Interfaces;
 using TechnipFMC.Finapp.Models;
+using Newtonsoft.Json;
+using System.IO;
 
 namespace TechnipFMC.Finapp.Data
 {
@@ -1444,6 +1446,94 @@ namespace TechnipFMC.Finapp.Data
                 base.Dispose();
             }
         }
+        public DashboardDataModel GetDashboardGridData(DashboardConfig config)
+        {
+            try
+            {
+                var reportData = new DashboardDataModel();
+
+                List<BudgetDeviationDataModel> budgetDataModel = new List<BudgetDeviationDataModel>();
+                List<BudgetDeviationDataModel> forecastDataModel = new List<BudgetDeviationDataModel>();
+                List<FinancialDataGross> financialDataModel = new List<FinancialDataGross>();
+                List<DifferenceData> differenceDataModel = new List<DifferenceData>();
+                //List<decimal> nonOrgData = new List<decimal>();
+                DataSet ds = new DataSet();
+
+                SqlCommand cmd = base.DBConnection.CreateCommand();
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.CommandText = "DashboardGridData";
+                cmd.Parameters.AddWithValue("@P_Scope", config.Scope);
+                cmd.Parameters.AddWithValue("@P_Year", config.Year);
+                cmd.Parameters.AddWithValue("@P_FinancialDataTypeID", config.ScenarioDataTypeId);
+                //cmd.Parameters.AddWithValue("@P_DepartmentID", config.DepartmentId);
+
+
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                adapter.Fill(ds);
+                base.DBConnection.Close();
+
+                if ((ds != null) && (ds.Tables.Count > 0) && (ds.Tables[0] != null) && (ds.Tables[0].Rows.Count > 0))
+                {
+                    for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
+                    {
+                        BudgetDeviationDataModel client = new BudgetDeviationDataModel();
+                        client.ScenarioType = ds.Tables[0].Rows[i]["ScenarioType"].ToString();
+                        client.ScenarioName = ds.Tables[0].Rows[i]["ScenarioName"].ToString();
+                        client.Q1 = ds.Tables[0].Rows[i]["Q1"] == DBNull.Value ? 0 : Convert.ToDecimal(ds.Tables[0].Rows[i]["Q1"]);
+                        client.Q2 = ds.Tables[0].Rows[i]["Q2"] == DBNull.Value ? 0 : Convert.ToDecimal(ds.Tables[0].Rows[i]["Q2"]);
+                        client.Q3 = ds.Tables[0].Rows[i]["Q3"] == DBNull.Value ? 0 : Convert.ToDecimal(ds.Tables[0].Rows[i]["Q3"]);
+                        client.Q4 = ds.Tables[0].Rows[i]["Q4"] == DBNull.Value ? 0 : Convert.ToDecimal(ds.Tables[0].Rows[i]["Q4"]);
+                        client.Q5 = ds.Tables[0].Rows[i]["Q5"] == DBNull.Value ? 0 : Convert.ToDecimal(ds.Tables[0].Rows[i]["Q5"]);
+                        client.Q6 = ds.Tables[0].Rows[i]["Q6"] == DBNull.Value ? 0 : Convert.ToDecimal(ds.Tables[0].Rows[i]["Q6"]);
+                        client.Q7 = ds.Tables[0].Rows[i]["Q7"] == DBNull.Value ? 0 : Convert.ToDecimal(ds.Tables[0].Rows[i]["Q7"]);
+                        client.Q8 = ds.Tables[0].Rows[i]["Q8"] == DBNull.Value ? 0 : Convert.ToDecimal(ds.Tables[0].Rows[i]["Q8"]);
+                        client.Q9 = ds.Tables[0].Rows[i]["Q9"] == DBNull.Value ? 0 : Convert.ToDecimal(ds.Tables[0].Rows[i]["Q9"]);
+                        client.Q10 = ds.Tables[0].Rows[i]["Q10"] == DBNull.Value ? 0 : Convert.ToDecimal(ds.Tables[0].Rows[i]["Q10"]);
+                        client.Q11 = ds.Tables[0].Rows[i]["Q11"] == DBNull.Value ? 0 : Convert.ToDecimal(ds.Tables[0].Rows[i]["Q11"]);
+                        client.Q12 = ds.Tables[0].Rows[i]["Q12"] == DBNull.Value ? 0 : Convert.ToDecimal(ds.Tables[0].Rows[i]["Q12"]);
+                        budgetDataModel.Add(client);
+                    }
+
+                }
+                if ((ds != null) && (ds.Tables.Count > 0) && (ds.Tables[1] != null) && (ds.Tables[1].Rows.Count > 0))
+                {
+                    for (int i = 0; i < ds.Tables[1].Rows.Count; i++)
+                    {
+                        BudgetDeviationDataModel client = new BudgetDeviationDataModel();
+                        client.ScenarioType = ds.Tables[1].Rows[i]["ScenarioType"].ToString();
+                        client.ScenarioName = ds.Tables[1].Rows[i]["ScenarioName"].ToString();
+                        client.Q1 = ds.Tables[1].Rows[i]["Q1"] == DBNull.Value ? 0 : Convert.ToDecimal(ds.Tables[1].Rows[i]["Q1"]);
+                        client.Q2 = ds.Tables[1].Rows[i]["Q2"] == DBNull.Value ? 0 : Convert.ToDecimal(ds.Tables[1].Rows[i]["Q2"]);
+                        client.Q3 = ds.Tables[1].Rows[i]["Q3"] == DBNull.Value ? 0 : Convert.ToDecimal(ds.Tables[1].Rows[i]["Q3"]);
+                        client.Q4 = ds.Tables[1].Rows[i]["Q4"] == DBNull.Value ? 0 : Convert.ToDecimal(ds.Tables[1].Rows[i]["Q4"]);
+                        client.Q5 = ds.Tables[0].Rows[i]["Q5"] == DBNull.Value ? 0 : Convert.ToDecimal(ds.Tables[1].Rows[i]["Q5"]);
+                        client.Q6 = ds.Tables[0].Rows[i]["Q6"] == DBNull.Value ? 0 : Convert.ToDecimal(ds.Tables[1].Rows[i]["Q6"]);
+                        client.Q7 = ds.Tables[0].Rows[i]["Q7"] == DBNull.Value ? 0 : Convert.ToDecimal(ds.Tables[1].Rows[i]["Q7"]);
+                        client.Q8 = ds.Tables[0].Rows[i]["Q8"] == DBNull.Value ? 0 : Convert.ToDecimal(ds.Tables[1].Rows[i]["Q8"]);
+                        client.Q9 = ds.Tables[0].Rows[i]["Q9"] == DBNull.Value ? 0 : Convert.ToDecimal(ds.Tables[1].Rows[i]["Q9"]);
+                        client.Q10 = ds.Tables[0].Rows[i]["Q10"] == DBNull.Value ? 0 : Convert.ToDecimal(ds.Tables[1].Rows[i]["Q10"]);
+                        client.Q11 = ds.Tables[0].Rows[i]["Q11"] == DBNull.Value ? 0 : Convert.ToDecimal(ds.Tables[1].Rows[i]["Q11"]);
+                        client.Q12 = ds.Tables[0].Rows[i]["Q12"] == DBNull.Value ? 0 : Convert.ToDecimal(ds.Tables[1].Rows[i]["Q12"]);
+                        forecastDataModel.Add(client);
+                    }
+
+                }
+                
+
+                reportData.BudgetDeviationData = budgetDataModel;
+                reportData.ForecastDeviationData = forecastDataModel;
+                return reportData;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+            finally
+            {
+                base.Dispose();
+            }
+        }
+
         public FinancePerformanceDataModel FinancePerformanceReport(DashboardConfig config)
         {
             try
@@ -1883,6 +1973,52 @@ namespace TechnipFMC.Finapp.Data
             }
             catch (Exception ex)
             {
+                throw;
+            }
+            finally
+            {
+                base.Dispose();
+            }
+        }
+
+        public string GetAIAssistedReportData(int year)
+        {
+            try
+            {
+                SqlCommand cmd = base.DBConnection.CreateCommand();
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.CommandText = "GetLatestScenarioDataByYear";
+                cmd.Parameters.AddWithValue("@P_Year", year);
+
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                DataSet ds = new DataSet();
+                adapter.Fill(ds);
+                base.DBConnection.Close();
+
+                if (ds != null && ds.Tables.Count > 0 && ds.Tables[0] != null)
+                {
+                    // Convert DataTable to JSON
+                    string jsonData = JsonConvert.SerializeObject(ds.Tables[0]);
+
+                    // Define report path and filename following the same pattern as other methods
+                    string reportPath = System.Configuration.ConfigurationManager.AppSettings["TempReportPath"].ToString();
+                    if (!Directory.Exists(reportPath))
+                    {
+                        Directory.CreateDirectory(reportPath);
+                    }
+                    
+                    string fileName = $"AIAssistedReportData_{year}_{DateTime.Now.ToString("ddMMyyyyHHmmss")}.json";
+                    string filePath = reportPath + fileName;
+
+                    // Save JSON to file
+                    File.WriteAllText(filePath, jsonData);
+                    return fileName;
+                }
+                return null;
+            }
+            catch (Exception ex)
+            {
+                RaintelsLogManager.Error(ex, "TechnipFMC.Finapp.Data.ReportRepository", "GetAIAssistedReportData", "");
                 throw;
             }
             finally

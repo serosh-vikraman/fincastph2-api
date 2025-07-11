@@ -35,7 +35,8 @@ namespace TechnipFMC.Finapp.Models
     {
         public string FinancialDataType { get; set; }
         public List<DevianceGridResponse> GridResponse { get; set; }
-        //public List<DevianceGridResponse> GrandTotal { get; set; }
+        public string DepartmentName { get; set; }
+        public string ScenarioName { get; set; }
     }
     public class DevianceGridResponse
     {
@@ -117,16 +118,28 @@ namespace TechnipFMC.Finapp.Models
     }
     public class DeviationAnalysisYearWiseModel
     {
-        //public string RecordType { get; set; }
-
-
         public decimal[] OrgData { get; set; }
         public decimal[] NonOrgData { get; set; }
         public List<DepartmentWiseDataModel> DepartmentYearlyData { get; set; }
         public List<ProjectDataModel> ProjectYearlyData { get; set; }
         public List<BudgetDeviationDataModel> BudgetDeviationData { get; set; }
         public List<BudgetDeviationDataModel> ForecastDeviationData { get; set; }
-        //public List<NonOrgDataModel> DepClientYearlyData { get; set; }
+        public List<DepartmentData> DData { get; set; }
+
+        // Add missing properties
+        public Decimal? OrgQ1 { get; set; }
+        public Decimal? OrgQ2 { get; set; }
+        public Decimal? OrgQ3 { get; set; }
+        public Decimal? OrgQ4 { get; set; }
+        public Decimal? OrgQ5 { get; set; }
+        public Decimal? OrgQ6 { get; set; }
+        public Decimal? OrgQ7 { get; set; }
+        public Decimal? OrgQ8 { get; set; }
+        public Decimal? OrgQ9 { get; set; }
+        public Decimal? OrgQ10 { get; set; }
+        public Decimal? OrgQ11 { get; set; }
+        public Decimal? OrgQ12 { get; set; }
+        public Decimal? TotalOrg { get; set; }
     }
     public class NonOrgDataModel
     {

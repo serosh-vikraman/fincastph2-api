@@ -1,0 +1,962 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Executive Financial Performance Report</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        /* General Styles */
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            width: 90%;
+            margin: auto;
+            overflow: hidden;
+            padding: 20px;
+        }
+
+        section {
+            padding: 20px 0;
+        }
+
+        /* Header Styles */
+        header {
+            background: #333;
+            color: #fff;
+            padding-top: 30px;
+            min-height: 70px;
+            border-bottom: 3px solid #e8491d;
+        }
+
+        header a {
+            color: #fff;
+            text-decoration: none;
+            text-transform: uppercase;
+            font-size: 16px;
+        }
+
+        header ul {
+            padding: 0;
+            margin: 0;
+        }
+
+        header li {
+            float: left;
+            display: inline;
+            padding: 0 20px 0 20px;
+        }
+
+        header #branding {
+            float: left;
+        }
+
+        header #branding h1 {
+            margin: 0;
+        }
+
+        header nav {
+            float: right;
+            margin-top: 10px;
+        }
+
+        header .highlight, header .current a {
+            color: #e8491d;
+            font-weight: bold;
+        }
+
+        header a:hover {
+            color: #ccc;
+            font-weight: bold;
+        }
+
+        /* Executive Summary Styles */
+        #executive-summary {
+            background: #fff;
+            color: #333;
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        #executive-summary h2 {
+            color: #e8491d;
+            border-bottom: 2px solid #e8491d;
+            padding-bottom: 5px;
+        }
+
+        #executive-summary p {
+            font-size: 1.1em;
+        }
+
+        .highlighted {
+            background-color: #f9f9f9;
+            padding: 10px;
+            border-left: 5px solid #e8491d;
+            margin: 10px 0;
+        }
+
+        /* Financial Analysis Sections */
+        .financial-analysis {
+            background: #fff;
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .financial-analysis h3 {
+            color: #333;
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 5px;
+        }
+
+        .financial-analysis p {
+            font-size: 1em;
+        }
+
+        /* Chart Styles */
+        .chart-container {
+            width: 100%;
+            margin: 20px 0;
+        }
+
+        /* Footer Styles */
+        footer {
+            padding: 20px;
+            margin-top: 20px;
+            color: #fff;
+            background-color: #e8491d;
+            text-align: center;
+        }
+
+        /* Responsive Design */
+        @media(max-width: 768px) {
+            header #branding,
+            header nav {
+                float: none;
+                text-align: center;
+            }
+
+            header h1 {
+                margin-bottom: 10px;
+            }
+
+            header nav li {
+                float: none;
+                display: block;
+            }
+
+            .container {
+                width: 95%;
+            }
+        }
+
+        /* Print Styles */
+        @media print {
+            body {
+                background-color: #fff;
+                color: #000;
+            }
+
+            header, footer {
+                display: none;
+            }
+
+            .financial-analysis {
+                box-shadow: none;
+                border: 1px solid #ccc;
+            }
+        }
+    </style>
+<script src='https://cdn.jsdelivr.net/npm/chart.js'></script>
+</head>
+<body>
+
+    <header>
+        <div class="container">
+            <div id="branding">
+                <h1><span class="highlight">Executive</span> Financial Report</h1>
+            </div>
+            <nav>
+                <ul>
+                    <li class="current"><a href="#">Home</a></li>
+                    <li><a href="#executive-summary">Summary</a></li>
+                    <li><a href="#financial-analysis">Analysis</a></li>
+                    <li><a href="#recommendations">Recommendations</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section id="executive-summary">
+        <div class="container">
+            <h2>Executive Summary</h2>
+            <p>This report provides a comprehensive overview of the financial performance for the year 2024. It includes an analysis of revenue, gross margin, and man-hours across various projects and scenarios. Key trends and potential risks are identified, along with recommendations for future improvements.</p>
+
+            <div class="highlighted">
+                <p><strong>Key Finding:</strong> Revenue showed consistent growth across most projects, with a notable increase in Q4. However, some projects experienced negative revenue in certain quarters, requiring further investigation.</p>
+            </div>
+
+            <div class="highlighted">
+                <p><strong>Gross Margin:</strong> Gross margin generally followed the revenue trend, indicating a strong correlation between sales and profitability. However, fluctuations in man-hours suggest potential inefficiencies in resource allocation.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="financial-analysis">
+        <div class="container">
+            <h2>Financial Performance Analysis</h2>
+
+            <div class="financial-analysis">
+                <h3>Revenue and Gross Margin Trends</h3>
+                <p>The following chart illustrates the trends in revenue and gross margin over the quarters. It provides a visual representation of the company's financial performance throughout the year.</p>
+                <div class="chart-container">
+                    <canvas id="revenueGrossMarginChart"></canvas>
+                </div>
+            </div>
+
+            <div class="financial-analysis">
+                <h3>Quarterly Performance Comparison Across Projects</h3>
+                <p>This chart compares the quarterly performance of different projects, highlighting the projects that contributed the most to the overall revenue.</p>
+                <div class="chart-container">
+                    <canvas id="quarterlyPerformanceChart"></canvas>
+                </div>
+            </div>
+
+            <div class="financial-analysis">
+                <h3>Revenue Distribution by Project</h3>
+                <p>The pie chart below shows the distribution of revenue across different projects, indicating the relative contribution of each project to the total revenue.</p>
+                <div class="chart-container">
+                    <canvas id="revenueDistributionChart"></canvas>
+                </div>
+            </div>
+
+            <div class="financial-analysis">
+                <h3>Efficiency Metrics Scatter Plot</h3>
+                <p>This scatter plot visualizes the relationship between man-hours and revenue, providing insights into the efficiency of resource utilization across different projects.</p>
+                <div class="chart-container">
+                    <canvas id="efficiencyMetricsChart"></canvas>
+                </div>
+            </div>
+
+            <div class="financial-analysis">
+                <h3>Trend Analysis</h3>
+                <p>Overall, the trend analysis indicates a positive trajectory for revenue and gross margin. However, it is crucial to address the negative revenue instances and optimize resource allocation to improve efficiency.</p>
+            </div>
+
+            <div class="financial-analysis">
+                <h3>Risk Assessment</h3>
+                <p>Potential risks include fluctuations in man-hours, which could impact profitability. Additionally, negative revenue in certain quarters requires immediate attention to identify and mitigate the underlying causes.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="recommendations">
+        <div class="container">
+            <h2>Recommendations</h2>
+            <p>Based on the financial analysis, the following recommendations are proposed:</p>
+            <ul>
+                <li>Conduct a thorough investigation into the projects with negative revenue to identify and address the issues.</li>
+                <li>Optimize resource allocation to improve efficiency and reduce man-hours where possible.</li>
+                <li>Implement strategies to maintain consistent growth in revenue and gross margin across all projects.</li>
+                <li>Monitor key performance indicators (KPIs) regularly to identify and mitigate potential risks.</li>
+            </ul>
+        </div>
+    </section>
+
+    <footer>
+        <p>Executive Financial Report &copy; 2024</p>
+    </footer>
+
+    <script>
+        const financialData = [
+  {
+    "Id": 36,
+    "ScenarioId": 16,
+    "ProjectId": 1,
+    "ProjectName": "A010",
+    "ScenarioScopeName": "OI",
+    "ScenarioTypeName": "AC",
+    "Spec": "Organization",
+    "ScenarioDataTypeId": 14,
+    "Year": 2024,
+    "Q1New": 740000.0,
+    "Q1Variant": null,
+    "Q2New": 820000.0,
+    "Q2Variant": null,
+    "Q3New": -1000.0,
+    "Q3Variant": null,
+    "Q4New": 890000.0,
+    "Q4Variant": null,
+    "Q5New": 930000.0,
+    "Q5Variant": null,
+    "Q6New": 980000.0,
+    "Q6Variant": null,
+    "Q7New": -20000.0,
+    "Q7Variant": null,
+    "Q8New": 940000.0,
+    "Q8Variant": null,
+    "Q9New": 870000.0,
+    "Q9Variant": null,
+    "Q10New": 920000.0,
+    "Q10Variant": null,
+    "Q11New": 830000.0,
+    "Q11Variant": null,
+    "Q12New": 1110000.0,
+    "Q12Variant": null,
+    "ScenarioDataType": "Revenue"
+  },
+  {
+    "Id": 37,
+    "ScenarioId": 16,
+    "ProjectId": 1,
+    "ProjectName": "A010",
+    "ScenarioScopeName": "OI",
+    "ScenarioTypeName": "AC",
+    "Spec": "Organization",
+    "ScenarioDataTypeId": 15,
+    "Year": 2024,
+    "Q1New": 290000.0,
+    "Q1Variant": null,
+    "Q2New": 330000.0,
+    "Q2Variant": null,
+    "Q3New": -8000.0,
+    "Q3Variant": null,
+    "Q4New": 370000.0,
+    "Q4Variant": null,
+    "Q5New": 360000.0,
+    "Q5Variant": null,
+    "Q6New": 410000.0,
+    "Q6Variant": null,
+    "Q7New": 460000.0,
+    "Q7Variant": null,
+    "Q8New": 370000.0,
+    "Q8Variant": null,
+    "Q9New": 350000.0,
+    "Q9Variant": null,
+    "Q10New": 380000.0,
+    "Q10Variant": null,
+    "Q11New": 320000.0,
+    "Q11Variant": null,
+    "Q12New": 440000.0,
+    "Q12Variant": null,
+    "ScenarioDataType": "Gross Margin"
+  },
+  {
+    "Id": 38,
+    "ScenarioId": 16,
+    "ProjectId": 1,
+    "ProjectName": "A010",
+    "ScenarioScopeName": "OI",
+    "ScenarioTypeName": "AC",
+    "Spec": "Organization",
+    "ScenarioDataTypeId": 16,
+    "Year": 2024,
+    "Q1New": 210000.0,
+    "Q1Variant": null,
+    "Q2New": 220000.0,
+    "Q2Variant": null,
+    "Q3New": 230000.0,
+    "Q3Variant": null,
+    "Q4New": 240000.0,
+    "Q4Variant": null,
+    "Q5New": 250000.0,
+    "Q5Variant": null,
+    "Q6New": -40000.0,
+    "Q6Variant": null,
+    "Q7New": 280000.0,
+    "Q7Variant": null,
+    "Q8New": 250000.0,
+    "Q8Variant": null,
+    "Q9New": 230000.0,
+    "Q9Variant": null,
+    "Q10New": 240000.0,
+    "Q10Variant": null,
+    "Q11New": 210000.0,
+    "Q11Variant": null,
+    "Q12New": 260000.0,
+    "Q12Variant": null,
+    "ScenarioDataType": "Man Hours"
+  },
+  {
+    "Id": 51,
+    "ScenarioId": 17,
+    "ProjectId": 1,
+    "ProjectName": "A010",
+    "ScenarioScopeName": "OI",
+    "ScenarioTypeName": "FC",
+    "Spec": "Organization",
+    "ScenarioDataTypeId": 11,
+    "Year": 2024,
+    "Q1New": 850000.0,
+    "Q1Variant": null,
+    "Q2New": 900000.0,
+    "Q2Variant": null,
+    "Q3New": 950000.0,
+    "Q3Variant": null,
+    "Q4New": 1000000.0,
+    "Q4Variant": null,
+    "Q5New": 980000.0,
+    "Q5Variant": null,
+    "Q6New": 1020000.0,
+    "Q6Variant": null,
+    "Q7New": 1060000.0,
+    "Q7Variant": null,
+    "Q8New": 1090000.0,
+    "Q8Variant": null,
+    "Q9New": 1120000.0,
+    "Q9Variant": null,
+    "Q10New": 1150000.0,
+    "Q10Variant": null,
+    "Q11New": 1180000.0,
+    "Q11Variant": null,
+    "Q12New": 1210000.0,
+    "Q12Variant": null,
+    "ScenarioDataType": "Revenue"
+  },
+  {
+    "Id": 52,
+    "ScenarioId": 17,
+    "ProjectId": 1,
+    "ProjectName": "A010",
+    "ScenarioScopeName": "OI",
+    "ScenarioTypeName": "FC",
+    "Spec": "Organization",
+    "ScenarioDataTypeId": 12,
+    "Year": 2024,
+    "Q1New": 280000.0,
+    "Q1Variant": null,
+    "Q2New": 320000.0,
+    "Q2Variant": null,
+    "Q3New": 340000.0,
+    "Q3Variant": null,
+    "Q4New": 380000.0,
+    "Q4Variant": null,
+    "Q5New": 350000.0,
+    "Q5Variant": null,
+    "Q6New": 330000.0,
+    "Q6Variant": null,
+    "Q7New": 400000.0,
+    "Q7Variant": null,
+    "Q8New": 420000.0,
+    "Q8Variant": null,
+    "Q9New": 450000.0,
+    "Q9Variant": null,
+    "Q10New": 470000.0,
+    "Q10Variant": null,
+    "Q11New": 490000.0,
+    "Q11Variant": null,
+    "Q12New": 510000.0,
+    "Q12Variant": null,
+    "ScenarioDataType": "Gross Margin"
+  },
+  {
+    "Id": 53,
+    "ScenarioId": 17,
+    "ProjectId": 1,
+    "ProjectName": "A010",
+    "ScenarioScopeName": "OI",
+    "ScenarioTypeName": "FC",
+    "Spec": "Organization",
+    "ScenarioDataTypeId": 13,
+    "Year": 2024,
+    "Q1New": 200000.0,
+    "Q1Variant": null,
+    "Q2New": 220000.0,
+    "Q2Variant": null,
+    "Q3New": 240000.0,
+    "Q3Variant": null,
+    "Q4New": 270000.0,
+    "Q4Variant": null,
+    "Q5New": 290000.0,
+    "Q5Variant": null,
+    "Q6New": 310000.0,
+    "Q6Variant": null,
+    "Q7New": 330000.0,
+    "Q7Variant": null,
+    "Q8New": 350000.0,
+    "Q8Variant": null,
+    "Q9New": 370000.0,
+    "Q9Variant": null,
+    "Q10New": 390000.0,
+    "Q10Variant": null,
+    "Q11New": 410000.0,
+    "Q11Variant": null,
+    "Q12New": 430000.0,
+    "Q12Variant": null,
+    "ScenarioDataType": "Man Hours"
+  },
+  {
+    "Id": 221,
+    "ScenarioId": 18,
+    "ProjectId": 13,
+    "ProjectName": "Omega Fund",
+    "ScenarioScopeName": "OI",
+    "ScenarioTypeName": "BD",
+    "Spec": "Department",
+    "ScenarioDataTypeId": 8,
+    "Year": 2024,
+    "Q1New": 87000.0,
+    "Q1Variant": null,
+    "Q2New": 88000.0,
+    "Q2Variant": null,
+    "Q3New": 89000.0,
+    "Q3Variant": null,
+    "Q4New": 90000.0,
+    "Q4Variant": null,
+    "Q5New": 91000.0,
+    "Q5Variant": null,
+    "Q6New": 92000.0,
+    "Q6Variant": null,
+    "Q7New": 93000.0,
+    "Q7Variant": null,
+    "Q8New": 94000.0,
+    "Q8Variant": null,
+    "Q9New": 95000.0,
+    "Q9Variant": null,
+    "Q10New": 96000.0,
+    "Q10Variant": null,
+    "Q11New": 97000.0,
+    "Q11Variant": null,
+    "Q12New": 98000.0,
+    "Q12Variant": null,
+    "ScenarioDataType": "Revenue"
+  },
+  {
+    "Id": 222,
+    "ScenarioId": 18,
+    "ProjectId": 13,
+    "ProjectName": "Omega Fund",
+    "ScenarioScopeName": "OI",
+    "ScenarioTypeName": "BD",
+    "Spec": "Department",
+    "ScenarioDataTypeId": 9,
+    "Year": 2024,
+    "Q1New": 43000.0,
+    "Q1Variant": null,
+    "Q2New": 43500.0,
+    "Q2Variant": null,
+    "Q3New": 44000.0,
+    "Q3Variant": null,
+    "Q4New": 44500.0,
+    "Q4Variant": null,
+    "Q5New": 45000.0,
+    "Q5Variant": null,
+    "Q6New": 45500.0,
+    "Q6Variant": null,
+    "Q7New": 46000.0,
+    "Q7Variant": null,
+    "Q8New": 46500.0,
+    "Q8Variant": null,
+    "Q9New": 47000.0,
+    "Q9Variant": null,
+    "Q10New": 47500.0,
+    "Q10Variant": null,
+    "Q11New": 48000.0,
+    "Q11Variant": null,
+    "Q12New": 48500.0,
+    "Q12Variant": null,
+    "ScenarioDataType": "Gross Margin"
+  },
+  {
+    "Id": 223,
+    "ScenarioId": 18,
+    "ProjectId": 13,
+    "ProjectName": "Omega Fund",
+    "ScenarioScopeName": "OI",
+    "ScenarioTypeName": "BD",
+    "Spec": "Department",
+    "ScenarioDataTypeId": 10,
+    "Year": 2024,
+    "Q1New": 31500.0,
+    "Q1Variant": null,
+    "Q2New": 32000.0,
+    "Q2Variant": null,
+    "Q3New": 32500.0,
+    "Q3Variant": null,
+    "Q4New": 33000.0,
+    "Q4Variant": null,
+    "Q5New": 33500.0,
+    "Q5Variant": null,
+    "Q6New": 34000.0,
+    "Q6Variant": null,
+    "Q7New": 34500.0,
+    "Q7Variant": null,
+    "Q8New": 35000.0,
+    "Q8Variant": null,
+    "Q9New": 35500.0,
+    "Q9Variant": null,
+    "Q10New": 36000.0,
+    "Q10Variant": null,
+    "Q11New": 36500.0,
+    "Q11Variant": null,
+    "Q12New": 37000.0,
+    "Q12Variant": null,
+    "ScenarioDataType": "Man Hours"
+  },
+  {
+    "Id": 224,
+    "ScenarioId": 18,
+    "ProjectId": 13,
+    "ProjectName": "Omega Fund",
+    "ScenarioScopeName": "OI",
+    "ScenarioTypeName": "BD",
+    "Spec": "Department",
+    "ScenarioDataTypeId": 2065,
+    "Year": 2024,
+    "Q1New": 16500.0,
+    "Q1Variant": null,
+    "Q2New": 16750.0,
+    "Q2Variant": null,
+    "Q3New": 17000.0,
+    "Q3Variant": null,
+    "Q4New": 17250.0,
+    "Q4Variant": null,
+    "Q5New": 17500.0,
+    "Q5Variant": null,
+    "Q6New": 17750.0,
+    "Q6Variant": null,
+    "Q7New": 18000.0,
+    "Q7Variant": null,
+    "Q8New": 18250.0,
+    "Q8Variant": null,
+    "Q9New": 18500.0,
+    "Q9Variant": null,
+    "Q10New": 18750.0,
+    "Q10Variant": null,
+    "Q11New": 19000.0,
+    "Q11Variant": null,
+    "Q12New": 19250.0,
+    "Q12Variant": null,
+    "ScenarioDataType": "Bank Interest"
+  },
+  {
+    "Id": 225,
+    "ScenarioId": 18,
+    "ProjectId": 13,
+    "ProjectName": "Omega Fund",
+    "ScenarioScopeName": "OI",
+    "ScenarioTypeName": "BD",
+    "Spec": "Department",
+    "ScenarioDataTypeId": 2066,
+    "Year": 2024,
+    "Q1New": 14500.0,
+    "Q1Variant": null,
+    "Q2New": 14750.0,
+    "Q2Variant": null,
+    "Q3New": 15000.0,
+    "Q3Variant": null,
+    "Q4New": 15250.0,
+    "Q4Variant": null,
+    "Q5New": 15500.0,
+    "Q5Variant": null,
+    "Q6New": 15750.0,
+    "Q6Variant": null,
+    "Q7New": 16000.0,
+    "Q7Variant": null,
+    "Q8New": 16250.0,
+    "Q8Variant": null,
+    "Q9New": 16500.0,
+    "Q9Variant": null,
+    "Q10New": 16750.0,
+    "Q10Variant": null,
+    "Q11New": 17000.0,
+    "Q11Variant": null,
+    "Q12New": 17250.0,
+    "Q12Variant": null,
+    "ScenarioDataType": "Overseas Revenue"
+  },
+  {
+    "Id": 396,
+    "ScenarioId": 21,
+    "ProjectId": 5,
+    "ProjectName": "Eagle Eye Investment",
+    "ScenarioScopeName": "OI",
+    "ScenarioTypeName": "FC",
+    "Spec": "Department",
+    "ScenarioDataTypeId": 11,
+    "Year": 2024,
+    "Q1New": 45000.0,
+    "Q1Variant": null,
+    "Q2New": 46000.0,
+    "Q2Variant": null,
+    "Q3New": 47000.0,
+    "Q3Variant": null,
+    "Q4New": 48000.0,
+    "Q4Variant": null,
+    "Q5New": 49000.0,
+    "Q5Variant": null,
+    "Q6New": 50000.0,
+    "Q6Variant": null,
+    "Q7New": 51000.0,
+    "Q7Variant": null,
+    "Q8New": 52000.0,
+    "Q8Variant": null,
+    "Q9New": 53000.0,
+    "Q9Variant": null,
+    "Q10New": 54000.0,
+    "Q10Variant": null,
+    "Q11New": 55000.0,
+    "Q11Variant": null,
+    "Q12New": 56000.0,
+    "Q12Variant": null,
+    "ScenarioDataType": "Revenue"
+  },
+  {
+    "Id": 397,
+    "ScenarioId": 21,
+    "ProjectId": 5,
+    "ProjectName": "Eagle Eye Investment",
+    "ScenarioScopeName": "OI",
+    "ScenarioTypeName": "FC",
+    "Spec": "Department",
+    "ScenarioDataTypeId": 12,
+    "Year": 2024,
+    "Q1New": 27000.0,
+    "Q1Variant": null,
+    "Q2New": 27500.0,
+    "Q2Variant": null,
+    "Q3New": 28000.0,
+    "Q3Variant": null,
+    "Q4New": 28500.0,
+    "Q4Variant": null,
+    "Q5New": 29000.0,
+    "Q5Variant": null,
+    "Q6New": 29500.0,
+    "Q6Variant": null,
+    "Q7New": 30000.0,
+    "Q7Variant": null,
+    "Q8New": 30500.0,
+    "Q8Variant": null,
+    "Q9New": 31000.0,
+    "Q9Variant": null,
+    "Q10New": 31500.0,
+    "Q10Variant": null,
+    "Q11New": 32000.0,
+    "Q11Variant": null,
+    "Q12New": 32500.0,
+    "Q12Variant": null,
+    "ScenarioDataType": "Gross Margin"
+  },
+  {
+    "Id": 398,
+    "ScenarioId": 21,
+    "ProjectId": 5,
+    "ProjectName": "Eagle Eye Investment",
+    "ScenarioScopeName": "OI",
+    "ScenarioTypeName": "FC",
+    "Spec": "Department",
+    "ScenarioDataTypeId": 13,
+    "Year": 2024,
+    "Q1New": 14000.0,
+    "Q1Variant": null,
+    "Q2New": 14500.0,
+    "Q2Variant": null,
+    "Q3New": 15000.0,
+    "Q3Variant": null,
+    "Q4New": 15500.0,
+    "Q4Variant": null,
+    "Q5New": 16000.0,
+    "Q5Variant": null,
+    "Q6New": 16500.0,
+    "Q6Variant": null,
+    "Q7New": 17000.0,
+    "Q7Variant": null,
+    "Q8New": 17500.0,
+    "Q8Variant": null,
+    "Q9New": 18000.0,
+    "Q9Variant": null,
+    "Q10New": 18500.0,
+    "Q10Variant": null,
+    "Q11New": 19000.0,
+    "Q11Variant": null,
+    "Q12New": 19500.0,
+    "Q12Variant": null,
+    "ScenarioDataType": "Man Hours"
+  },
+  {
+    "Id": 399,
+    "ScenarioId": 21,
+    "ProjectId": 5,
+    "ProjectName": "Eagle Eye Investment",
+    "ScenarioScopeName": "OI",
+    "ScenarioTypeName": "FC",
+    "Spec": "Department",
+    "ScenarioDataTypeId": 2067,
+    "Year": 2024,
+    "Q1New": 6500.0,
+    "Q1Variant
+<script>
+
+        // Wait for DOM to be ready
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Initializing charts...');
+            
+            // Chart 1: Revenue and Gross Margin Trends
+            const revenueCtx = document.getElementById('revenueGrossMarginChart');
+            if (revenueCtx) {
+                new Chart(revenueCtx.getContext('2d'), {
+                    type: 'line',
+                    data: {
+                        labels: ["Q1","Q2","Q3","Q4","Q5","Q6","Q7","Q8","Q9","Q10","Q11","Q12"],
+                        datasets: [
+                            {
+                                label: 'Revenue',
+                                data: [0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],
+                                borderColor: 'rgb(75, 192, 192)',
+                                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                                tension: 0.1
+                            },
+                            {
+                                label: 'Gross Margin',
+                                data: [0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],
+                                borderColor: 'rgb(255, 99, 132)',
+                                backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                                tension: 0.1
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            title: {
+                                display: true,
+                                text: 'Revenue and Gross Margin Trends'
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+                console.log('Revenue chart created');
+            }
+            
+            // Chart 2: Quarterly Performance
+            const quarterlyCtx = document.getElementById('quarterlyPerformanceChart');
+            if (quarterlyCtx) {
+                new Chart(quarterlyCtx.getContext('2d'), {
+                    type: 'bar',
+                    data: {
+                        labels: ["Q1","Q2","Q3","Q4","Q5","Q6","Q7","Q8","Q9","Q10","Q11","Q12"],
+                        datasets: [
+                            {
+                                label: 'Revenue',
+                                data: [0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],
+                                backgroundColor: 'rgba(54, 162, 235, 0.8)'
+                            },
+                            {
+                                label: 'Man Hours',
+                                data: [0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],
+                                backgroundColor: 'rgba(255, 205, 86, 0.8)'
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            title: {
+                                display: true,
+                                text: 'Quarterly Performance'
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+                console.log('Quarterly chart created');
+            }
+            
+            // Chart 3: Revenue Distribution
+            const distributionCtx = document.getElementById('revenueDistributionChart');
+            if (distributionCtx) {
+                new Chart(distributionCtx.getContext('2d'), {
+                    type: 'pie',
+                    data: {
+                        labels: ["A010","Omega Fund","Eagle Eye Investment","Mercury Capital","Sapphire Securities"],
+                        datasets: [{
+                            data: [0.0,0.0,0.0,0.0,0.0],
+                            backgroundColor: [
+                                'rgba(255, 99, 132, 0.8)',
+                                'rgba(54, 162, 235, 0.8)',
+                                'rgba(255, 205, 86, 0.8)',
+                                'rgba(75, 192, 192, 0.8)',
+                                'rgba(153, 102, 255, 0.8)'
+                            ]
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            title: {
+                                display: true,
+                                text: 'Revenue Distribution by Project'
+                            }
+                        }
+                    }
+                });
+                console.log('Distribution chart created');
+            }
+            
+            // Chart 4: Efficiency Metrics
+            const efficiencyCtx = document.getElementById('efficiencyMetricsChart');
+            if (efficiencyCtx) {
+                const efficiencyData = [];
+                new Chart(efficiencyCtx.getContext('2d'), {
+                    type: 'scatter',
+                    data: {
+                        datasets: [{
+                            label: 'Revenue vs Man Hours',
+                            data: efficiencyData,
+                            backgroundColor: 'rgba(255, 99, 132, 0.8)'
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            title: {
+                                display: true,
+                                text: 'Efficiency Analysis'
+                            }
+                        },
+                        scales: {
+                            x: {
+                                title: {
+                                    display: true,
+                                    text: 'Man Hours'
+                                }
+                            },
+                            y: {
+                                title: {
+                                    display: true,
+                                    text: 'Revenue'
+                                }
+                            }
+                        }
+                    }
+                });
+                console.log('Efficiency chart created');
+            }
+            
+            console.log('All charts initialized');
+        });
+
+</script>
+</body>
+</html>

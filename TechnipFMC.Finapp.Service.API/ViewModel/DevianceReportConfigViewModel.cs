@@ -232,4 +232,16 @@ namespace TechnipFMC.Finapp.Service.API.ViewModel
         //public string SubTotalRequired { get; set; }
         public string Quarters { get; set; }
     }
+    public class ReportRequest
+    {
+        public string Prompt { get; set; }
+        public string ModelName { get; set; }
+    }
+
+    public class FileReportRequest
+    {
+        public string FileLink { get; set; } // This would be a local path or a URL you've processed.
+        public string Prompt { get; set; }
+        public string ModelName { get; set; }
+    }
 }

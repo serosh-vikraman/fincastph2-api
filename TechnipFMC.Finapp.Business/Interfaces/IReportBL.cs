@@ -16,6 +16,7 @@ namespace TechnipFMC.Finapp.Business.Interfaces
         List<DevianceGridResponse> GetDevianceReport(DevianceReportConfig config);
         DeviationAnalysisYearWiseModel GetDeviationAnalysisReport(DevianceReportConfig devianceConfig);
         DashboardDataModel GetDashboardData(DashboardConfig devianceConfig);
+        DashboardDataModel GetDashboardGridData(DashboardConfig devianceConfig);
         FinancePerformanceDataModel FinancePerformanceReport(DashboardConfig devianceConfig);
         ProjectPerformanceDataModel ProjectPerformanceReport(DashboardConfig devianceConfig);
         List<ProjectDataModel> DepartmentProjectReport(DevianceReportConfig devianceConfig); 
@@ -41,5 +42,6 @@ namespace TechnipFMC.Finapp.Business.Interfaces
         byte[] ProjectLifeCycleReportDownload1(ProjectLifeCycle projectLife, string scenarioscope,int cid);
         ProjectLifeCycleDataModel ProjectLifeCycleReport1(int projectid, string scenarioscope);
         List<ProjectDataModel> YearOverYear(int id1, int id2, string code);
+        string GetAIAssistedReportData(int year);
     }
 }

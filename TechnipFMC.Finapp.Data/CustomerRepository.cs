@@ -21,6 +21,7 @@ using System.Net.Http.Headers;
 using Newtonsoft.Json;
 using Mailjet.Client.TransactionalEmails.Response;
 using static HttpFs.Client;
+using TechnipFMC.Common;
 
 namespace TechnipFMC.Finapp.Data
 {
@@ -276,6 +277,7 @@ namespace TechnipFMC.Finapp.Data
                     sb.Append("<b><a href=https://fincast.app/emailconfirmed?username=" + encodedloginId + "&code=" + authToken + ">Click here</a><br/></b>");
                     sb.Append("Thanks,<br> Fincast Team <br/>");
                     int ret = await SendEmail(customer.Email.Decrypt(), sb.ToString(), "Welcome to Fincast");
+                    RaintelsLogManager.Info( "Customer Repository", "InitialSignup", "Email Sent. Email Id:"+ customer.Email.Decrypt());
                 }  
 
                 return val;
